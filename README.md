@@ -32,6 +32,8 @@ Previsão por inteligência artificial permanece no backlog, fora da entrega atu
 | [`docs/diagrama-classes.png`](docs/diagrama-classes.png) | Diagrama de classes UML, com 17 classes |
 | [`docs/diagrama-der.png`](docs/diagrama-der.png) | Diagrama entidade-relacionamento |
 | [`docs/Seminario_Smart_City.pdf`](docs/Seminario_Smart_City.pdf) | Apresentação do seminário, incluindo arquitetura e telas do protótipo |
+| [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf) | Retrospectiva, backlog revisado e planejamento da Sprint 4 |
+| [`docs/decisoes/`](docs/decisoes/) | Registros das decisões de arquitetura e de modelagem |
 
 Os arquivos `.drawio` na mesma pasta são as versões editáveis dos diagramas, abertas em [diagrams.net](https://app.diagrams.net).
 
@@ -60,9 +62,78 @@ Posição geográfica usa os tipos espaciais do PostGIS: `geography` para dispos
 
 A plataforma consome dados reais sempre que existe fonte pública para a variável: **Open-Meteo** para qualidade do ar, previsão do tempo e vazão fluvial; **TomTom Traffic** para fluxo de veículos e incidentes de trânsito; **IBGE Localidades** para a base territorial do município; e **OpenStreetMap** para malha viária, semáforos e pontos de iluminação já mapeados. Ruído, ocupação de vagas e consumo não têm fonte pública aberta e vêm do simulador desenvolvido pela equipe.
 
+## Como executar
+
+O ambiente inteiro sobe com Docker Compose. A máquina precisa apenas do
+[Docker](https://docs.docker.com/get-docker/) com o Compose v2 (Docker Desktop já inclui) e do Git.
+Node.js e PostgreSQL não precisam estar instalados.
+
+1. Clone o repositório e entre na pasta:
+
+   ```sh
+   git clone https://github.com/Sivwen0741/projeto-smart-city.git
+   cd projeto-smart-city
+   ```
+
+2. Crie o arquivo de variáveis a partir do exemplo e troque a senha do banco:
+
+   ```sh
+   cp .env.example .env
+   ```
+
+3. Suba tudo:
+
+   ```sh
+   docker compose up --build
+   ```
+
+   A primeira subida baixa as imagens e compila a aplicação, o que leva alguns minutos. A
+   interface de programação aplica as migrações e a carga inicial de distritos e bairros antes de
+   aceitar requisições, e a interface web só sobe depois que ela responde.
+
+| Serviço | Endereço |
+|---|---|
+| Interface web | <http://localhost:8080> |
+| Interface de programação | <http://localhost:3000/api> |
+| Documentação Swagger | <http://localhost:3000/api/docs> |
+| Verificação de saúde | <http://localhost:3000/api/health> |
+| Broker MQTT (Mosquitto) | `localhost:1883` |
+| PostgreSQL com PostGIS | `localhost:5432` |
+
+As portas publicadas ficam restritas ao `localhost`. Se alguma já estiver em uso, defina outra no
+`.env` (`WEB_PORTA_LOCAL`, `API_PORTA_LOCAL`, `MQTT_PORTA_LOCAL`, `DB_PORTA_LOCAL`).
+
+Para parar, use `docker compose down`. Para apagar também o banco e recomeçar do zero, use
+`docker compose down -v`.
+
+### Testes automatizados
+
+Os testes e2e rodam dentro de contêineres, contra um banco PostGIS descartável:
+
+```sh
+docker compose --profile teste run --rm --build api-teste
+```
+
+Cada teste traz no nome o número do critério de aceite que verifica (por exemplo, `TT01-3`).
+
+### Base territorial
+
+Distritos e bairros vêm de arquivos GeoJSON versionados em
+`api/src/database/seeds/territorio/`, gerados a partir da API de Localidades do IBGE e do
+OpenStreetMap. A subida não acessa a internet para isso. Para regerar os arquivos (exige Node.js
+24 ou mais recente e acesso à internet):
+
+```sh
+cd api && npm ci && npm run territorio:atualizar
+```
+
+O motivo da decisão está em
+[`docs/decisoes/2026-10-20-bairros-ibge-osm.md`](docs/decisoes/2026-10-20-bairros-ibge-osm.md).
+
 ## Situação
 
-A Sprint 1, com personas e product backlog, e a modelagem estrutural e de dados estão entregues. A implementação ainda não começou, de modo que este repositório concentra, por enquanto, os artefatos de documentação.
+A Sprint 4 é a primeira sprint de implementação. Os itens em andamento e seus critérios de aceite
+estão em [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf).
 
 As tarefas são acompanhadas no [quadro Kanban da equipe](https://trello.com/b/tzN6oUT8).
 
