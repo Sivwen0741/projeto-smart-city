@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { DataSource } from 'typeorm';
+import { Publico } from '../auth/publico.decorator';
 
+@Publico()
 @ApiTags('saúde')
 @Controller('health')
 export class HealthController {

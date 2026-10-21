@@ -1,0 +1,34 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.entrada {
+  height: var(--altura-controle);
+  padding: 0 9px;
+  background: var(--cor-folha);
+  border: var(--borda-forte);
+  border-radius: var(--raio);
+  font-size: var(--texto-padrao);
+}
+
+.grande {
+  height: var(--altura-campo-grande);
+  font-size: var(--texto-campo);
+}
+
+.entrada[aria-invalid='true'] {
+  border-color: var(--cor-grave);
+}
+
+.erro {
+  font-size: var(--texto-apoio);
+  color: var(--cor-grave);
+}

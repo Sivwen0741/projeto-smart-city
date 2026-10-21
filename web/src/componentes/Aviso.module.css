@@ -1,0 +1,7 @@
+.aviso {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: var(--barra-gravidade) solid var(--cor-grave);
+  background: var(--cor-grave-fundo);
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta);
+}

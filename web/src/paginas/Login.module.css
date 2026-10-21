@@ -1,0 +1,167 @@
+.pagina {
+  display: grid;
+  grid-template-columns: 1fr 512px;
+  min-height: 100%;
+  background: var(--cor-papel);
+}
+
+.cena {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 47px 52px 44px;
+  overflow: hidden;
+  background: var(--cor-tinta);
+  color: var(--cor-cena-texto);
+}
+
+.malha {
+  position: absolute;
+  top: 85px;
+  left: -126px;
+  width: 1180px;
+  height: 760px;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.identificacao {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.nome {
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-seminegrito);
+  line-height: 1.2;
+}
+
+.prefeitura {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-cena-rotulo);
+}
+
+.chamada {
+  position: relative;
+  margin: auto 0;
+  max-width: 500px;
+}
+
+.chamada h1 {
+  font-size: var(--texto-display);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-display);
+  line-height: 1.15;
+}
+
+.chamada p {
+  margin-top: var(--espaco-3);
+  font-size: var(--texto-destaque);
+  line-height: 1.6;
+  color: var(--cor-cena-apoio);
+}
+
+.medidas {
+  position: relative;
+  display: flex;
+  padding-top: 21px;
+  border-top: 1px solid var(--cor-cena-divisoria);
+}
+
+.medida {
+  display: flex;
+  flex-direction: column;
+  padding-right: 37px;
+}
+
+.medida + .medida {
+  padding-left: 37px;
+  border-left: 1px solid var(--cor-cena-divisoria);
+}
+
+.medida strong {
+  font-size: var(--texto-numero-medio);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-numero);
+  line-height: 1.2;
+}
+
+.medida span {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-cena-rotulo);
+}
+
+.acesso {
+  display: flex;
+  align-items: center;
+  padding: var(--espaco-8) 64px;
+  background: var(--cor-folha);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 384px;
+}
+
+.formulario h2 {
+  font-size: var(--texto-titulo-1);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-titulo-1);
+}
+
+.orientacao {
+  margin-top: var(--espaco-2);
+  font-size: var(--texto-campo);
+  line-height: 1.6;
+  color: var(--cor-tinta-media);
+}
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  margin-top: var(--espaco-8);
+}
+
+.manter {
+  margin-top: 21px;
+}
+
+.aviso {
+  margin-top: var(--espaco-4);
+}
+
+.entrar {
+  margin-top: 27px;
+}
+
+.rodape {
+  margin-top: 28px;
+  padding-top: 26px;
+  border-top: var(--borda);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  line-height: 1.6;
+  color: var(--cor-tinta-suave);
+}
+
+@media (max-width: 960px) {
+  .pagina {
+    grid-template-columns: 1fr;
+  }
+
+  .cena {
+    display: none;
+  }
+
+  .acesso {
+    justify-content: center;
+    padding: var(--espaco-8) var(--espaco-4);
+  }
+}
