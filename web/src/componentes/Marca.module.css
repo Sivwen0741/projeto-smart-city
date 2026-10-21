@@ -1,0 +1,18 @@
+.marca {
+  display: inline-grid;
+  place-content: center;
+  width: 21px;
+  height: 26px;
+  background: var(--cor-topo-texto);
+  color: var(--cor-tinta);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-weight: var(--peso-negrito);
+  line-height: 1;
+}
+
+.grande {
+  width: 26px;
+  height: 32px;
+  font-size: var(--texto-pequeno);
+}

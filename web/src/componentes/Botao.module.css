@@ -1,0 +1,61 @@
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--altura-controle);
+  padding-inline: 14px;
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  font-size: var(--texto-padrao);
+  font-weight: var(--peso-medio);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.primario {
+  background: var(--cor-tinta);
+  border-color: var(--cor-tinta);
+  color: var(--cor-sobre-tinta);
+}
+
+.secundario {
+  background: var(--cor-folha);
+  border-color: var(--cor-regua-forte);
+  color: var(--cor-tinta);
+}
+
+.perigo {
+  background: var(--cor-folha);
+  border-color: var(--cor-perigo-borda);
+  color: var(--cor-grave);
+}
+
+.link {
+  height: auto;
+  padding: 0;
+  background: none;
+  color: var(--cor-tinta-media);
+  text-decoration: underline;
+  text-decoration-color: var(--cor-regua-forte);
+  text-underline-offset: 3px;
+}
+
+.grande {
+  height: var(--altura-botao-grande);
+  font-size: var(--texto-botao-grande);
+}
+
+.largo {
+  width: 100%;
+}
+
+.botao:disabled {
+  cursor: not-allowed;
+  background: var(--cor-folha-2);
+  border-color: var(--cor-regua);
+  color: var(--cor-parado);
+}
+
+.link:disabled {
+  background: none;
+}

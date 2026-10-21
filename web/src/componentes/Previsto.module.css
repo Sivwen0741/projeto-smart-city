@@ -1,0 +1,7 @@
+.previsto {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-suave);
+  white-space: nowrap;
+}

@@ -1,0 +1,146 @@
+.moldura {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  height: var(--altura-topo);
+  padding: 0 22px;
+  background: var(--cor-tinta);
+  color: var(--cor-topo-apoio);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-family: var(--fonte-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: -0.1px;
+  color: var(--cor-topo-texto);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 14px;
+  border-left: 1px solid var(--cor-topo-divisoria);
+}
+
+.prefeitura {
+  margin-left: 14px;
+}
+
+.direita {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.hora {
+  margin-left: 5px;
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-topo-texto);
+}
+
+.sair {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--cor-topo-apoio);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  text-decoration: underline;
+  text-decoration-color: var(--cor-topo-divisoria);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.sair:hover {
+  color: var(--cor-topo-texto);
+}
+
+.navegacao {
+  display: flex;
+  align-items: stretch;
+  height: var(--altura-navegacao);
+  padding: 0 22px 0 7px;
+  background: var(--cor-folha);
+  border-bottom: var(--borda-tinta);
+}
+
+.abas,
+.abas li {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aba {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 15px;
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta-media);
+  text-decoration: none;
+}
+
+a.aba:hover {
+  color: var(--cor-tinta);
+}
+
+.ativa {
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta);
+}
+
+.ativa::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: var(--barra-aba);
+  background: var(--cor-grave);
+}
+
+.prevista {
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: auto;
+}
+
+.busca {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+  width: 178px;
+  height: var(--altura-controle);
+  padding: 0 9px 0 var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.conteudo {
+  flex: 1;
+}

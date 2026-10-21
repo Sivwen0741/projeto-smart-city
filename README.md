@@ -75,11 +75,16 @@ Node.js e PostgreSQL não precisam estar instalados.
    cd projeto-smart-city
    ```
 
-2. Crie o arquivo de variáveis a partir do exemplo e troque a senha do banco:
+2. Crie o arquivo de variáveis a partir do exemplo e troque os valores, principalmente a senha
+   do banco, o `JWT_SEGREDO` e a senha do administrador:
 
    ```sh
    cp .env.example .env
    ```
+
+   Na primeira subida é criado um usuário administrador com o `ADMIN_EMAIL` e a `ADMIN_SENHA`
+   do `.env`. Use essas credenciais para entrar na interface web. Se o e-mail já existir, o
+   usuário não é alterado.
 
 3. Suba tudo:
 
