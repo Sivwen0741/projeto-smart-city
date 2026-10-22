@@ -32,3 +32,33 @@
   font-size: var(--texto-apoio);
   color: var(--cor-grave);
 }
+
+.selecao {
+  appearance: none;
+  padding-right: 26px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--cor-tinta) 50%),
+    linear-gradient(135deg, var(--cor-tinta) 50%, transparent 50%);
+  background-position:
+    calc(100% - 13px) 50%,
+    calc(100% - 9px) 50%;
+  background-size:
+    4px 4px,
+    4px 4px;
+  background-repeat: no-repeat;
+}
+
+.unidade {
+  position: relative;
+}
+
+.unidade::after {
+  content: attr(data-unidade);
+  position: absolute;
+  right: 9px;
+  bottom: calc(var(--altura-controle) / 2);
+  transform: translateY(50%);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+  pointer-events: none;
+}

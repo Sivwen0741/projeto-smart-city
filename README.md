@@ -33,6 +33,7 @@ Previsão por inteligência artificial permanece no backlog, fora da entrega atu
 | [`docs/diagrama-der.png`](docs/diagrama-der.png) | Diagrama entidade-relacionamento |
 | [`docs/Seminario_Smart_City.pdf`](docs/Seminario_Smart_City.pdf) | Apresentação do seminário, incluindo arquitetura e telas do protótipo |
 | [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf) | Retrospectiva, backlog revisado e planejamento da Sprint 4 |
+| [`docs/Documento_de_Visao.pdf`](docs/Documento_de_Visao.pdf) | Objetivos, escopo e fora do escopo do projeto |
 | [`docs/decisoes/`](docs/decisoes/) | Registros das decisões de arquitetura e de modelagem |
 
 Os arquivos `.drawio` na mesma pasta são as versões editáveis dos diagramas, abertas em [diagrams.net](https://app.diagrams.net).
@@ -134,6 +135,17 @@ cd api && npm ci && npm run territorio:atualizar
 
 O motivo da decisão está em
 [`docs/decisoes/2026-10-20-bairros-ibge-osm.md`](docs/decisoes/2026-10-20-bairros-ibge-osm.md).
+
+### Cadastro de dispositivos
+
+A aba Dispositivos lista os equipamentos e abre o formulário de cadastro e edição no painel
+lateral. O bairro sai da coordenada marcada no mapa, por consulta espacial; ponto na zona rural
+fica sem bairro, e ponto fora do município é recusado. Dispositivo não é excluído, só inativado.
+
+Os campos próprios de cada tipo e a regra de "Sem comunicação" estão em
+[`docs/decisoes/2026-10-22-atributos-por-tipo.md`](docs/decisoes/2026-10-22-atributos-por-tipo.md)
+e [`docs/decisoes/2026-10-22-situacao-sem-comunicacao.md`](docs/decisoes/2026-10-22-situacao-sem-comunicacao.md).
+As rotas estão no Swagger, na seção `dispositivos`.
 
 ## Situação
 
