@@ -147,6 +147,17 @@ Os campos próprios de cada tipo e a regra de "Sem comunicação" estão em
 e [`docs/decisoes/2026-10-22-situacao-sem-comunicacao.md`](docs/decisoes/2026-10-22-situacao-sem-comunicacao.md).
 As rotas estão no Swagger, na seção `dispositivos`.
 
+### Regras de alerta
+
+A aba Regras cadastra os limites que disparam alertas: grandeza observada, operador, valor
+limite, duração mínima e gravidade. Uma regra vale para todos os dispositivos que medem a
+grandeza. Ela não é excluída, só desativada, e cada alteração fica registrada com o valor
+anterior e o novo. Os motivos estão em
+[`docs/decisoes/2026-10-22-regras-de-alerta.md`](docs/decisoes/2026-10-22-regras-de-alerta.md).
+
+A primeira subida carrega dispositivos e regras de exemplo para a tela não abrir vazia. Os
+limites das regras de exemplo são ilustrativos.
+
 ## Situação
 
 A Sprint 4 é a primeira sprint de implementação. Os itens em andamento e seus critérios de aceite

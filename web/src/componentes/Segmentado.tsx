@@ -3,7 +3,7 @@ import estilos from './Segmentado.module.css';
 
 interface Props<T extends string> {
   rotulo: string;
-  opcoes: { valor: T; rotulo: string }[];
+  opcoes: { valor: T; rotulo: string; descricao?: string; classe?: string }[];
   valor: T | null;
   aoMudar: (valor: T) => void;
   erro?: string;
@@ -23,8 +23,10 @@ export function Segmentado<T extends string>({ rotulo, opcoes, valor, aoMudar, e
           <button
             key={o.valor}
             type="button"
-            className={estilos.opcao}
+            className={[estilos.opcao, o.classe].filter(Boolean).join(' ')}
             aria-pressed={o.valor === valor}
+            aria-label={o.descricao}
+            title={o.descricao}
             onClick={() => aoMudar(o.valor)}
           >
             {o.rotulo}
