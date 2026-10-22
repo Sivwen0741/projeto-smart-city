@@ -18,7 +18,7 @@ export const ABAS: Aba[] = [
   { rotulo: 'Alertas', previsao: { historia: 'US02', sprint: 'sprint 5' } },
   { rotulo: 'Ocorrências', previsao: { historia: 'US05', sprint: 'sprint 5' } },
   { rotulo: 'Mapa', previsao: { historia: 'US01', sprint: 'sprint 5' } },
-  { rotulo: 'Dispositivos', previsao: { historia: 'US22', sprint: 'sprint 4' } },
+  { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', previsao: { historia: 'US23', sprint: 'sprint 4' } },
   { rotulo: 'Relatórios', previsao: { historia: 'US16', sprint: 'backlog' } },
   { rotulo: 'Usuários', previsao: { historia: 'US21', sprint: 'sprint 6' } },

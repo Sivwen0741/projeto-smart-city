@@ -1,0 +1,218 @@
+.pagina {
+  display: flex;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  padding: 18px var(--espaco-4) var(--espaco-4);
+}
+
+.pagina > aside {
+  margin-top: 41px;
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.titulo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espaco-3);
+}
+
+.titulo h1 {
+  font-size: var(--texto-titulo-pagina);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-titulo-pagina);
+}
+
+.resumo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.ferramentas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.previsto,
+.filtro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--altura-controle);
+  padding: 0 var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+  color: var(--cor-parado);
+  white-space: nowrap;
+  cursor: not-allowed;
+}
+
+.previsto {
+  justify-content: space-between;
+  width: 200px;
+}
+
+.filtro {
+  font-family: var(--fonte-numero);
+}
+
+.exportar {
+  margin-left: auto;
+  font-family: var(--fonte-texto);
+}
+
+.tabela {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--cor-folha);
+  border: var(--borda);
+}
+
+.tabela table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--texto-corpo);
+}
+
+.tabela th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px var(--espaco-3);
+  background: var(--cor-folha);
+  border-bottom: var(--borda-tinta);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta-media);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabela th:first-child,
+.tabela td:first-child {
+  padding-left: var(--espaco-4);
+}
+
+.tabela td {
+  height: var(--altura-linha-tabela);
+  padding: 0 var(--espaco-3);
+  border-bottom: var(--borda);
+}
+
+.tabela tbody tr {
+  cursor: pointer;
+}
+
+.tabela tbody tr:hover,
+.selecionada {
+  background: var(--cor-folha-2);
+}
+
+.ordenar {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+th[aria-sort] .ordenar {
+  color: var(--cor-tinta);
+}
+
+.seta path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: square;
+}
+
+.previstaColuna {
+  font-weight: var(--peso-regular) !important;
+  color: var(--cor-parado) !important;
+}
+
+.estreita {
+  width: 72px;
+  white-space: normal !important;
+  line-height: 1.1;
+}
+
+.codigo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-seminegrito);
+}
+
+.abrir {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.apoio {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.situacao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-campo);
+}
+
+.situacao::before {
+  content: '';
+  width: var(--barra-gravidade);
+  height: 14px;
+}
+
+.operando::before {
+  background: var(--cor-estavel);
+}
+
+.sem_comunicacao::before {
+  background: var(--cor-parado);
+}
+
+.manutencao::before {
+  background: var(--cor-atencao);
+}
+
+.inativo::before {
+  background: transparent;
+}
+
+.inativa td {
+  color: var(--cor-tinta-suave);
+}
+
+.vazia {
+  color: var(--cor-parado);
+}
+
+.semDados {
+  color: var(--cor-tinta-media);
+  text-align: center;
+}
