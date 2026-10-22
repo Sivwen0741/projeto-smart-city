@@ -33,5 +33,8 @@ Detalhes de implementação, sem mudança de significado em relação ao DER:
 
 ## Consequências
 
-O DER em `.drawio` e `.png` é regenerado com estas tabelas e colunas antes do fim da Sprint 4,
-conforme a Definition of Done.
+O DER em `.drawio` e `.png` foi regenerado em 22/10/2026 com estas tabelas e colunas, conforme a
+Definition of Done. Entraram também `tipo_dispositivo.intervalo_leitura_segundos`
+(`2026-10-22-situacao-sem-comunicacao.md`), a ligação DISTRITO–BAIRRO e o usuário opcional na
+ligação USUARIO–LOG_ATIVIDADE. O layout anterior foi mantido; DISTRITO fica abaixo de
+HISTORICO_OCORRENCIA.
