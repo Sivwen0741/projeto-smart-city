@@ -1,0 +1,37 @@
+.mapa {
+  height: var(--altura-mapa-formulario);
+  background: var(--cor-folha-2);
+  border: var(--borda-forte);
+  cursor: crosshair;
+}
+
+.mapa :global(.leaflet-container) {
+  font-family: var(--fonte-texto);
+}
+
+.mapa :global(.leaflet-control-attribution) {
+  font-size: var(--texto-legenda);
+  background: var(--cor-folha);
+  color: var(--cor-tinta-media);
+}
+
+.mapa :global(.leaflet-bar) {
+  border: var(--borda-forte);
+  border-radius: var(--raio);
+  box-shadow: none;
+}
+
+.mapa :global(.leaflet-bar a) {
+  border-radius: var(--raio);
+  color: var(--cor-tinta);
+}
+
+.marcador {
+  width: var(--lado-marcador) !important;
+  height: var(--lado-marcador) !important;
+  margin-top: calc(var(--lado-marcador) / -2) !important;
+  margin-left: calc(var(--lado-marcador) / -2) !important;
+  background: var(--cor-tinta);
+  border: 2px solid var(--cor-folha);
+  outline: 1px solid var(--cor-tinta);
+}

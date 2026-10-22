@@ -1,11 +1,22 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
+import { readdirSync } from 'fs';
+import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../src/app.module';
 import { configurar } from '../src/configurar';
 import { opcoesBanco } from '../src/database/data-source';
 import { preparar } from '../src/database/preparar';
+
+// 1792454400001-CriaEsquemaInicial.ts vira CriaEsquemaInicial1792454400001
+const MIGRACOES_VERSIONADAS = readdirSync(join(__dirname, '../src/database/migrations'))
+  .filter((arquivo) => arquivo.endsWith('.ts'))
+  .sort()
+  .map((arquivo) => {
+    const [marca, nome] = arquivo.replace(/\.ts$/, '').split('-');
+    return `${nome}${marca}`;
+  });
 
 const TABELAS_DO_DER = [
   'orgao', 'perfil', 'permissao', 'perfil_permissao', 'usuario', 'log_atividade', 'distrito',
@@ -39,10 +50,8 @@ describe('TT01 - Subir o ambiente de desenvolvimento com Docker Compose', () => 
 
   it('TT01-2 o esquema é criado por migração versionada', async () => {
     const migracoes = await fonte.query(`SELECT name FROM migracao ORDER BY id`);
-    expect(migracoes.map((m: { name: string }) => m.name)).toEqual([
-      'HabilitaPostgis1792454400000',
-      'CriaEsquemaInicial1792454400001',
-    ]);
+    expect(MIGRACOES_VERSIONADAS.slice(0, 2)).toEqual(['HabilitaPostgis1792454400000', 'CriaEsquemaInicial1792454400001']);
+    expect(migracoes.map((m: { name: string }) => m.name)).toEqual(MIGRACOES_VERSIONADAS);
     const tabelas = await fonte.query(
       `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`,
     );
@@ -55,7 +64,7 @@ describe('TT01 - Subir o ambiente de desenvolvimento com Docker Compose', () => 
     const [{ migracoes, bairros }] = await fonte.query(
       `SELECT (SELECT count(*) FROM migracao)::int AS migracoes, (SELECT count(*) FROM bairro)::int AS bairros`,
     );
-    expect(migracoes).toBe(2);
+    expect(migracoes).toBe(MIGRACOES_VERSIONADAS.length);
     expect(bairros).toBe(16);
   });
 

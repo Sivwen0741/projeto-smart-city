@@ -5,12 +5,16 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   rotulo: string;
   erro?: string;
   grande?: boolean;
+  unidade?: string;
 }
 
-export function Campo({ rotulo, erro, grande, className, ...resto }: Props) {
+export function Campo({ rotulo, erro, grande, unidade, className, ...resto }: Props) {
   const id = useId();
   return (
-    <div className={[estilos.campo, className].filter(Boolean).join(' ')}>
+    <div
+      className={[estilos.campo, unidade && !erro && estilos.unidade, className].filter(Boolean).join(' ')}
+      data-unidade={unidade}
+    >
       <label className={estilos.rotulo} htmlFor={id}>
         {rotulo}
       </label>
