@@ -34,6 +34,7 @@ Previsão por inteligência artificial permanece no backlog, fora da entrega atu
 | [`docs/Seminario_Smart_City.pdf`](docs/Seminario_Smart_City.pdf) | Apresentação do seminário, incluindo arquitetura e telas do protótipo |
 | [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf) | Retrospectiva, backlog revisado e planejamento da Sprint 4 |
 | [`docs/Documento_de_Visao.pdf`](docs/Documento_de_Visao.pdf) | Objetivos, escopo e fora do escopo do projeto |
+| [`docs/verificacao-sprint-4.md`](docs/verificacao-sprint-4.md) | Critérios de aceite da Sprint 4 e o teste ou a evidência de cada um |
 | [`docs/decisoes/`](docs/decisoes/) | Registros das decisões de arquitetura e de modelagem |
 
 Os arquivos `.drawio` na mesma pasta são as versões editáveis dos diagramas, abertas em [diagrams.net](https://app.diagrams.net).
@@ -67,7 +68,9 @@ A plataforma consome dados reais sempre que existe fonte pública para a variáv
 
 O ambiente inteiro sobe com Docker Compose. A máquina precisa apenas do
 [Docker](https://docs.docker.com/get-docker/) com o Compose v2 (Docker Desktop já inclui) e do Git.
-Node.js e PostgreSQL não precisam estar instalados.
+Node.js e PostgreSQL não precisam estar instalados. O Docker Desktop precisa estar aberto antes dos
+comandos abaixo; no macOS, ele pode pedir a senha de administrador na primeira abertura. No Windows,
+use o PowerShell: os comandos são os mesmos.
 
 1. Clone o repositório e entre na pasta:
 
@@ -76,11 +79,25 @@ Node.js e PostgreSQL não precisam estar instalados.
    cd projeto-smart-city
    ```
 
+   Enquanto os itens da Sprint 4 estão em revisão, o código ainda não está na `main`, que só tem
+   a documentação. Para avaliar a sprint, troque para a branch que reúne todos os itens:
+
+   ```sh
+   git checkout sprint-4-us23
+   ```
+
 2. Crie o arquivo de variáveis a partir do exemplo e troque os valores, principalmente a senha
    do banco, o `JWT_SEGREDO` e a senha do administrador:
 
    ```sh
    cp .env.example .env
+   ```
+
+   O `JWT_SEGREDO` precisa ter ao menos 32 caracteres. Não use `$` nos valores, porque o Docker
+   Compose o interpreta como variável. Para gerar valores seguros:
+
+   ```sh
+   openssl rand -hex 32
    ```
 
    Na primeira subida é criado um usuário administrador com o `ADMIN_EMAIL` e a `ADMIN_SENHA`
@@ -94,14 +111,29 @@ Node.js e PostgreSQL não precisam estar instalados.
    ```
 
    A primeira subida baixa as imagens e compila a aplicação, o que leva alguns minutos. A
-   interface de programação aplica as migrações e a carga inicial de distritos e bairros antes de
-   aceitar requisições, e a interface web só sobe depois que ela responde.
+   interface de programação aplica as migrações e a carga inicial antes de aceitar requisições,
+   e a interface web só sobe depois que ela responde. O ambiente está pronto quando o log mostrar:
+
+   ```text
+   api-1  | migração aplicada: ...
+   api-1  | território carregado: 5 distritos, 16 bairros
+   api-1  | usuário administrador inicial criado: admin@pontagrossa.pr.gov.br
+   api-1  | dispositivos de exemplo carregados: 13
+   api-1  | última comunicação dos exemplos ativos renovada: 11
+   api-1  | regras de alerta de exemplo carregadas: 6
+   ```
+
+   Nas subidas seguintes, só aparecem as linhas do território e da renovação. Para deixar o
+   terminal livre, use `docker compose up --build -d` e acompanhe com `docker compose logs -f api`.
+
+4. Abra <http://localhost:8080> e entre com o `ADMIN_EMAIL` e a `ADMIN_SENHA` do `.env`. A tela
+   inicial é a de dispositivos.
 
 | Serviço | Endereço |
 |---|---|
 | Interface web | <http://localhost:8080> |
-| Interface de programação | <http://localhost:3000/api> |
-| Documentação Swagger | <http://localhost:3000/api/docs> |
+| Documentação Swagger, com todas as rotas | <http://localhost:3000/api/docs> |
+| Rotas da interface de programação | `http://localhost:3000/api/...`, por exemplo `/api/dispositivos` |
 | Verificação de saúde | <http://localhost:3000/api/health> |
 | Broker MQTT (Mosquitto) | `localhost:1883` |
 | PostgreSQL com PostGIS | `localhost:5432` |
@@ -112,6 +144,35 @@ As portas publicadas ficam restritas ao `localhost`. Se alguma já estiver em us
 Para parar, use `docker compose down`. Para apagar também o banco e recomeçar do zero, use
 `docker compose down -v`.
 
+O nome do projeto é fixo (`scoc`), então qualquer cópia do repositório na mesma máquina usa o
+mesmo banco. O PostgreSQL só aplica a senha do `.env` quando o banco é criado. Se você já subiu o
+projeto antes, ou trocou `DB_PASSWORD` depois da primeira subida, a interface de programação para
+com `password authentication failed`. Nesse caso, rode `docker compose down -v` e suba de novo.
+
+### Usar a interface de programação (Swagger ou Postman)
+
+Todas as rotas, exceto o login e a verificação de saúde, exigem token.
+
+1. Faça o login com o administrador do `.env`:
+
+   ```sh
+   curl -X POST http://localhost:3000/api/auth/login \
+     -H 'Content-Type: application/json' \
+     -d '{"email": "admin@pontagrossa.pr.gov.br", "senha": "a ADMIN_SENHA do .env"}'
+   ```
+
+   A resposta traz o campo `token`, que vale por oito horas. No Swagger, o mesmo login está em
+   `POST /api/auth/login`, com o botão "Try it out".
+
+2. No Swagger, clique em **Authorize** e cole só o valor do token, sem a palavra `Bearer`. No
+   Postman, use a aba **Authorization**, tipo **Bearer Token**.
+
+A primeira subida carrega dispositivos e regras de exemplo. A última comunicação dos dispositivos
+de exemplo é um dado de demonstração, renovado a cada subida: cerca de um minuto depois, os que
+estavam operando passam a sem comunicação, porque a ingestão de leituras só chega na Sprint 5. O
+motivo está em
+[`docs/decisoes/2026-10-22-dados-de-demonstracao.md`](docs/decisoes/2026-10-22-dados-de-demonstracao.md).
+
 ### Testes automatizados
 
 Os testes e2e rodam dentro de contêineres, contra um banco PostGIS descartável:
@@ -120,7 +181,16 @@ Os testes e2e rodam dentro de contêineres, contra um banco PostGIS descartável
 docker compose --profile teste run --rm --build api-teste
 ```
 
-Cada teste traz no nome o número do critério de aceite que verifica (por exemplo, `TT01-3`).
+Cada teste traz no nome o número do critério de aceite que verifica (por exemplo, `TT01-3`). A
+relação entre critérios e testes está em
+[`docs/verificacao-sprint-4.md`](docs/verificacao-sprint-4.md).
+
+O banco de teste continua de pé depois do comando, e uma nova rodada reaproveita os dados da
+anterior. Para rodar contra um banco vazio, apague-o antes:
+
+```sh
+docker compose --profile teste rm -sf db-teste
+```
 
 ### Base territorial
 
@@ -155,8 +225,8 @@ grandeza. Ela não é excluída, só desativada, e cada alteração fica registr
 anterior e o novo. Os motivos estão em
 [`docs/decisoes/2026-10-22-regras-de-alerta.md`](docs/decisoes/2026-10-22-regras-de-alerta.md).
 
-A primeira subida carrega dispositivos e regras de exemplo para a tela não abrir vazia. Os
-limites das regras de exemplo são ilustrativos.
+Os limites das regras de exemplo são ilustrativos e precisam ser validados com os órgãos antes de
+qualquer uso real.
 
 ## Situação
 
