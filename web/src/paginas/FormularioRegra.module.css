@@ -1,0 +1,152 @@
+.painel {
+  composes: painel from './FormularioDispositivo.module.css';
+}
+
+.cabecalho {
+  composes: cabecalho from './FormularioDispositivo.module.css';
+}
+
+.formulario {
+  composes: formulario from './FormularioDispositivo.module.css';
+}
+
+.corpo {
+  composes: corpo from './FormularioDispositivo.module.css';
+}
+
+.rodape {
+  composes: rodape from './FormularioDispositivo.module.css';
+}
+
+.nota {
+  composes: nota from './FormularioDispositivo.module.css';
+  padding: var(--espaco-2) 10px;
+  background: var(--cor-folha-2);
+  border: var(--borda);
+}
+
+.par {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+
+.antes {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.operador {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-destaque);
+}
+
+.gravidade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-campo);
+}
+
+.gravidade::before {
+  content: '';
+  width: var(--barra-gravidade);
+  height: 13px;
+}
+
+.grave::before {
+  background: var(--cor-grave);
+}
+
+.atencao::before {
+  background: var(--cor-atencao);
+}
+
+.informativo::before {
+  background: var(--cor-parado);
+}
+
+.grave[aria-pressed='true'] {
+  background: var(--cor-grave-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-grave-borda);
+  color: var(--cor-grave);
+}
+
+.atencao[aria-pressed='true'] {
+  background: var(--cor-atencao-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-atencao-borda);
+  color: var(--cor-atencao);
+}
+
+.informativo[aria-pressed='true'] {
+  background: var(--cor-parado-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-parado-borda);
+  color: var(--cor-tinta);
+}
+
+.ativa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.dica {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.historico {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-top: var(--borda);
+}
+
+.historico h3 {
+  margin-bottom: var(--espaco-1);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-seminegrito);
+}
+
+.historico ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historico li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: var(--borda);
+  font-size: var(--texto-padrao);
+}
+
+.historico li:last-child {
+  border-bottom: 0;
+}
+
+.quem {
+  flex-shrink: 0;
+  font-family: var(--fonte-numero);
+  color: var(--cor-tinta-media);
+}
+
+.pendente {
+  padding: var(--espaco-2) var(--espaco-4) 0;
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
