@@ -1,0 +1,91 @@
+/* valores de design/00-identidade.svg */
+:root {
+  --cor-papel: #eae9e3;
+  --cor-folha: #fcfcfa;
+  --cor-folha-2: #f2f1ec;
+  --cor-regua: #dad8d0;
+  --cor-regua-forte: #b6b4aa;
+  --cor-tinta-media: #585e5c;
+  --cor-tinta: #1a1d1c;
+  --cor-realce: #1f3f3c;
+  --cor-grave: #9e2b20;
+  --cor-atencao: #8a5a06;
+  --cor-estavel: #2a6142;
+  --cor-parado: #767c79;
+
+  --cor-tinta-suave: #8b918d;
+  --cor-sobre-tinta: #f3f3f0;
+  --cor-trilho: #e7e8e1;
+
+  --cor-grave-fundo: #f7edeb;
+  --cor-grave-borda: #cba39d;
+  --cor-atencao-fundo: #f7f0e2;
+  --cor-atencao-borda: #cdb58a;
+  --cor-estavel-fundo: #e9f1ec;
+  --cor-estavel-borda: #9dbca9;
+  --cor-parado-fundo: var(--cor-folha-2);
+  --cor-parado-borda: var(--cor-regua-forte);
+  --cor-perigo-borda: #c2938d;
+
+  --fonte-texto: 'Barlow', system-ui, sans-serif;
+  --fonte-numero: 'Barlow Semi Condensed', 'Barlow', system-ui, sans-serif;
+
+  --peso-regular: 400;
+  --peso-medio: 500;
+  --peso-seminegrito: 600;
+  --peso-negrito: 700;
+
+  --texto-display: 34px;
+  --texto-titulo-1: 24px;
+  --texto-titulo-2: 21px;
+  --texto-titulo-pagina: 19px;
+  --texto-titulo-3: 17px;
+  --texto-destaque: 15px;
+  --texto-botao-grande: 14.5px;
+  --texto-campo: 14px;
+  --texto-corpo: 13.5px;
+  --texto-padrao: 13px;
+  --texto-apoio: 12.5px;
+  --texto-pequeno: 12px;
+  --texto-legenda: 11px;
+  --texto-numero: 32px;
+  --texto-numero-medio: 26px;
+
+  --entrelinha-corpo: 1.42;
+
+  --espacamento-letra-display: -1px;
+  --espacamento-letra-titulo-1: -0.5px;
+  --espacamento-letra-numero: -0.4px;
+  --espacamento-letra-titulo-pagina: -0.3px;
+
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 12px;
+  --espaco-4: 16px;
+  --espaco-6: 24px;
+  --espaco-8: 32px;
+
+  --borda: 1px solid var(--cor-regua);
+  --borda-forte: 1px solid var(--cor-regua-forte);
+  --borda-tinta: 1px solid var(--cor-tinta);
+  --raio: 0;
+  --barra-gravidade: 3px;
+  --barra-aba: 3px;
+
+  /* valores das telas 01 a 05, ausentes do guia */
+  --cor-topo-texto: #e4e5e1;
+  --cor-topo-apoio: #9a9f9c;
+  --cor-topo-divisoria: #383c3a;
+
+  --cor-cena-texto: #e7eaea;
+  --cor-cena-apoio: #a7aeb0;
+  --cor-cena-rotulo: #8b9396;
+  --cor-cena-divisoria: #2a3033;
+
+  --altura-topo: 42px;
+  --altura-navegacao: 43px;
+  --altura-controle: 29px;
+  --altura-campo-grande: 42px;
+  --altura-botao-grande: 44px;
+  --lado-selecao: 15px;
+}

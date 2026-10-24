@@ -47,6 +47,10 @@ services:
       <<: *conexao
       DB_HOST: db
       MQTT_URL: mqtt://mosquitto:1883
+      JWT_SEGREDO: ${JWT_SEGREDO:?defina JWT_SEGREDO no .env}
+      ADMIN_NOME: ${ADMIN_NOME:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?defina ADMIN_EMAIL no .env}
+      ADMIN_SENHA: ${ADMIN_SENHA:?defina ADMIN_SENHA no .env}
     depends_on:
       db:
         condition: service_healthy
