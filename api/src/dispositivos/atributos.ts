@@ -14,15 +14,13 @@ export interface CampoAtributo {
 
 export interface Categoria {
   rotulo: string;
-  provisoria: boolean;
   campos: CampoAtributo[];
 }
 
-// especializações de docs/diagrama-classes.drawio; o controlador de iluminação aguarda o DT01
+// especializações de docs/diagrama-classes.drawio
 export const CATEGORIAS: Record<string, Categoria> = {
   sensor_urbano: {
     rotulo: 'Sensor urbano',
-    provisoria: false,
     campos: [
       { nome: 'tipoGrandeza', rotulo: 'Grandeza', tipo: 'grandeza', obrigatorio: true },
       { nome: 'unidadeMedida', rotulo: 'Unidade', tipo: 'texto', obrigatorio: false },
@@ -31,7 +29,6 @@ export const CATEGORIAS: Record<string, Categoria> = {
   },
   camera_monitoramento: {
     rotulo: 'Câmera de monitoramento',
-    provisoria: false,
     campos: [
       { nome: 'modelo', rotulo: 'Modelo', tipo: 'texto', obrigatorio: false },
       { nome: 'resolucao', rotulo: 'Resolução', tipo: 'texto', obrigatorio: false },
@@ -40,7 +37,6 @@ export const CATEGORIAS: Record<string, Categoria> = {
   },
   semaforo_inteligente: {
     rotulo: 'Semáforo inteligente',
-    provisoria: false,
     campos: [
       { nome: 'tempoCicloSegundos', rotulo: 'Tempo de ciclo', tipo: 'inteiro', obrigatorio: false, minimo: 1, unidade: 's' },
       { nome: 'modoOperacao', rotulo: 'Modo de operação', tipo: 'texto', obrigatorio: false },
@@ -48,7 +44,6 @@ export const CATEGORIAS: Record<string, Categoria> = {
   },
   estacao_ambiental: {
     rotulo: 'Estação ambiental',
-    provisoria: false,
     campos: [
       { nome: 'fabricante', rotulo: 'Fabricante', tipo: 'texto', obrigatorio: false },
       { nome: 'variaveisMonitoradas', rotulo: 'Variáveis monitoradas', tipo: 'lista_grandezas', obrigatorio: false },
@@ -56,8 +51,10 @@ export const CATEGORIAS: Record<string, Categoria> = {
   },
   controlador_iluminacao: {
     rotulo: 'Controlador de iluminação',
-    provisoria: true,
-    campos: [{ nome: 'quantidadePontos', rotulo: 'Pontos de luz', tipo: 'inteiro', obrigatorio: false, minimo: 1 }],
+    campos: [
+      { nome: 'quantidadePontos', rotulo: 'Pontos de luz', tipo: 'inteiro', obrigatorio: true, minimo: 1 },
+      { nome: 'intervaloLeituraSegundos', rotulo: 'Intervalo de leitura', tipo: 'inteiro', obrigatorio: false, minimo: 1, unidade: 's' },
+    ],
   },
 };
 

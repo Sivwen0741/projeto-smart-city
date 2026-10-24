@@ -8,7 +8,7 @@ const TIPOS = [
   { nome: 'Câmera', categoria: 'camera_monitoramento', intervalo: 30 },
   { nome: 'Semáforo inteligente', categoria: 'semaforo_inteligente', intervalo: 30 },
   { nome: 'Estação ambiental', categoria: 'estacao_ambiental', intervalo: 30 },
-  { nome: 'Controlador de iluminação', categoria: 'controlador_iluminacao', intervalo: null },
+  { nome: 'Controlador de iluminação', categoria: 'controlador_iluminacao', intervalo: 30 },
 ];
 
 export async function carregarTiposDispositivo(fonte: DataSource): Promise<void> {

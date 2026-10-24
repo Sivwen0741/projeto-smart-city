@@ -103,7 +103,6 @@ export class DispositivosService {
       nome: t.nome,
       categoria: t.categoria,
       rotuloCategoria: CATEGORIAS[t.categoria]?.rotulo ?? t.categoria,
-      provisoria: CATEGORIAS[t.categoria]?.provisoria ?? true,
       intervaloLeituraSegundos: t.intervalo,
       campos: CATEGORIAS[t.categoria]?.campos ?? [],
     }));

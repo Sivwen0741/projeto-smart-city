@@ -296,7 +296,6 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
           {tipo && tipo.campos.length > 0 && (
             <section className={estilos.atributos} aria-label={`Atributos de ${tipo.rotuloCategoria.toLowerCase()}`}>
               <h3>Atributos de {tipo.rotuloCategoria.toLowerCase()}</h3>
-              {tipo.provisoria && <p className={estilos.nota}>Campos provisórios até a conclusão do DT01.</p>}
               <div className={estilos.grade}>{tipo.campos.map(campoAtributo)}</div>
             </section>
           )}

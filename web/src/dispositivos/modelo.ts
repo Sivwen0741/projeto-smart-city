@@ -19,7 +19,6 @@ export interface TipoDispositivo {
   nome: string;
   categoria: string;
   rotuloCategoria: string;
-  provisoria: boolean;
   intervaloLeituraSegundos: number | null;
   campos: CampoAtributo[];
 }

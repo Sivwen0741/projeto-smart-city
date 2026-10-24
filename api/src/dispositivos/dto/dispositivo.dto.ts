@@ -133,7 +133,6 @@ export class TipoDispositivoDto {
   @ApiProperty({ example: 'Sensor de nível' }) nome: string;
   @ApiProperty({ example: 'sensor_urbano' }) categoria: string;
   @ApiProperty({ example: 'Sensor urbano' }) rotuloCategoria: string;
-  @ApiProperty({ description: 'Campos ainda dependentes do DT01' }) provisoria: boolean;
   @ApiPropertyOptional({ nullable: true, example: 30 }) intervaloLeituraSegundos: number | null;
   @ApiProperty({ description: 'Atributos próprios gravados em jsonb' }) campos: CampoAtributo[];
 }
