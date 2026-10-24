@@ -9,8 +9,17 @@ como a seção manda registrar. Serve de base para a revisão da sprint.
   [README](../README.md). Cada caso traz no nome o número do critério.
 - **Verificação manual:** feita no navegador (Chrome, macOS) contra `docker compose up` local, nos
   critérios que falam da tela ou que não têm como ser testados automaticamente.
-- **Situação:** 24 critérios verificados e 1 pendente (TT01-5). Nenhum item está concluído pela
-  Definition of Done enquanto não houver revisão de outro integrante e código na `main`.
+- **Postman:** as 16 rotas documentadas no Swagger foram executadas em 24/10/2026 com a coleção
+  [`postman/scoc-sprint-4.postman_collection.json`](postman/scoc-sprint-4.postman_collection.json),
+  contra um clone limpo da `main`: 26 requisições, 47 verificações, nenhuma falha. A execução foi
+  feita pelo Newman, o executor de linha de comando do Postman, e não no aplicativo, pelo próprio
+  autor do código. Evidência em [`postman/evidencia-2026-10-24.md`](postman/evidencia-2026-10-24.md).
+- **Situação:** 24 critérios verificados pelo autor e 1 pendente (TT01-5). Todas as verificações
+  deste documento foram feitas por quem escreveu o código. Os PRs #2, #4, #5 e #6 foram mesclados
+  na `main` em 24/10/2026 **sem a revisão de outro integrante** exigida pela Definition of Done,
+  por decisão do autor, registrada em
+  [`2026-10-24-merge-sem-revisao.md`](decisoes/2026-10-24-merge-sem-revisao.md). Por isso nenhum
+  item da Sprint 4 cumpre a Definition of Done. As pendências estão no fim deste documento.
 
 | Critério | Texto | Teste automatizado (arquivo › caso) | Verificação manual ou observação | Situação |
 |---|---|---|---|---|
@@ -18,7 +27,7 @@ como a seção manda registrar. Serve de base para a revisão da sprint.
 | **TT01-2** | O banco inicia com o esquema criado por migração versionada, sem nenhum comando manual. | `tt01.e2e-spec.ts` › o esquema é criado por migração versionada<br>`tt01.e2e-spec.ts` › uma nova subida não reaplica migrações nem duplica a carga | — | Verificado |
 | **TT01-3** | Existe carga inicial com os bairros de Ponta Grossa obtidos da API de Localidades do IBGE. | `tt01.e2e-spec.ts` › os distritos de Ponta Grossa vêm com o código da API de Localidades do IBGE<br>`tt01.e2e-spec.ts` › os dezesseis bairros do OpenStreetMap estão carregados, cada um dentro de um distrito<br>`tt01.e2e-spec.ts` › a consulta espacial resolve o bairro de um ponto | A API do IBGE não publica bairros; os distritos vêm do IBGE e os bairros do OpenStreetMap. Desvio registrado em [`2026-10-20-bairros-ibge-osm.md`](decisoes/2026-10-20-bairros-ibge-osm.md). | Verificado, com desvio registrado |
 | **TT01-4** | O arquivo de exemplo de variáveis de ambiente está no repositório e nenhuma credencial real foi versionada. | — | 22/10/2026: `git ls-files` lista só `.env.example`; `.env` está no `.gitignore` e nunca entrou no histórico (`git log --all -- .env` vazio); a busca por senha ou segredo literal no código não encontrou nada além dos valores de exemplo e de teste. | Verificado |
-| **TT01-5** | O manual de instalação no README permite que outro integrante execute o projeto em uma máquina limpa, verificado por alguém que não escreveu o manual. | — | Ensaio do autor em 22/10/2026, em clone limpo, que levou a cinco correções no README. **Falta a verificação por outro integrante** (Guilherme Sartori), exigida pelo critério. | Pendente |
+| **TT01-5** | O manual de instalação no README permite que outro integrante execute o projeto em uma máquina limpa, verificado por alguém que não escreveu o manual. | — | Ensaio do autor em 22/10/2026, em clone limpo, que levou a cinco correções no README. Novo ensaio do autor em 24/10/2026, clonando a `main` depois do merge e seguindo só o README: os quatro serviços subiram, web, `/api/health` e `/api/docs` responderam 200 e o login com o administrador do `.env` funcionou. Ensaio do próprio autor não atende ao critério. **Falta a verificação por alguém que não escreveu o manual** (DT06). | Pendente |
 | **US20-1** | O acesso exige e-mail funcional e senha, e nenhuma rota além da autenticação responde sem token válido. | `us20.e2e-spec.ts` › autentica com e-mail e senha e acessa rota protegida com o token<br>`us20.e2e-spec.ts` › toda rota documentada fora login e health responde 401 sem token<br>`us20.e2e-spec.ts` › token adulterado ou assinado com outro segredo é recusado<br>`us20.e2e-spec.ts` › a documentação Swagger é pública, como exceção registrada<br>`us20.e2e-spec.ts` › requisição de login sem senha é recusada com 400 | Login pela tela com o administrador do `.env` no ensaio de 22/10/2026. Swagger público é exceção registrada em [`2026-10-20-swagger-publico.md`](decisoes/2026-10-20-swagger-publico.md). | Verificado |
 | **US20-2** | A senha é gravada apenas como hash, nunca em texto puro, e a verificação ocorre no servidor. | `us20.e2e-spec.ts` › o banco guarda hash argon2id, nunca a senha em texto puro<br>`us20.e2e-spec.ts` › a resposta da API nunca expõe o hash da senha | — | Verificado |
 | **US20-3** | Credencial inválida retorna mensagem genérica, sem revelar se o endereço existe na base. | `us20.e2e-spec.ts` › e-mail inexistente e senha errada têm a mesma resposta | — | Verificado |
@@ -40,11 +49,15 @@ como a seção manda registrar. Serve de base para a revisão da sprint.
 | **US23-5** | A tela impede salvar regra com valor limite vazio, com operador não selecionado ou com duração negativa. | `us23.e2e-spec.ts` › cadastro recusado com mensagem para cada caso<br>`us23.e2e-spec.ts` › edição recusada nos mesmos casos, sem alterar a regra<br>`us23.e2e-spec.ts` › duração zero é aceita: dispara na primeira leitura | **Tela verificada manualmente** em 22/10/2026, evidência no [comentário do PR #6](https://github.com/Sivwen0741/projeto-smart-city/pull/6#issuecomment-6353909830) e no cartão da US23. Os testes ao lado cobrem a recusa na API. A automação da verificação de tela é o **DT05**, previsto para a Sprint 5. | Verificado, tela manual |
 | **US23-6** | Cada alteração de regra gera registro no log de atividades com o valor anterior e o novo valor. | `us23.e2e-spec.ts` › registra cadastro e cada edição com autor, antes e depois<br>`us23.e2e-spec.ts` › o histórico de alterações da regra mostra o autor e os valores<br>`us23.e2e-spec.ts` › edição sem mudança e edição recusada não geram registro | Tela verificada em 22/10/2026: o painel da regra mostrou "Valor limite 50 → 60" com autor e horário. | Verificado |
 
-## Pendências
+## Pendências registradas
 
-| Item | O que falta | Responsável |
-|---|---|---|
-| TT01-5 | Executar o projeto em máquina limpa seguindo só o README | Guilherme Sartori |
-| Todos | Revisão dos PRs #2 (TT01), #4 (US20), #5 (US22) e #6 (US23) | Guilherme Sartori |
-| Todos | Validação manual das rotas no Postman, exigida pela Definition of Done | A definir |
-| US23-5 | Automatizar a verificação de tela (DT05, Sprint 5) | Sprint 5 |
+As três primeiras não são critérios atendidos e seguem abertas no **DT06**, previsto para a
+Sprint 5.
+
+| Origem | Pendência | Situação em 24/10/2026 | Encaminhamento |
+|---|---|---|---|
+| Definition of Done, 1º item | Revisão de pelo menos um integrante além do autor | **Não aconteceu.** Os PRs #2 (TT01), #4 (US20), #5 (US22) e #6 (US23) foram mesclados na `main` sem revisão. | DT06, Sprint 5 |
+| TT01-5 | Execução do projeto em máquina limpa por alguém que não escreveu o manual | **Pendente.** Só houve ensaios do próprio autor (22/10 e 24/10/2026). | DT06, Sprint 5 |
+| AM04 | Commits de pelo menos dois integrantes e testes da Sprint 4 com autoria do responsável por qualidade | **Não cumprida.** Todos os commits da Sprint 4 são de um integrante só; o único commit de outra pessoa na `main` é o que criou o repositório. Os 68 testes e2e também são do autor do código. | DT06, Sprint 5 |
+| Definition of Done, 4º item | Validação manual no Postman | **Parcial.** A coleção cobre todas as rotas e passou sem falhas, mas foi executada pelo Newman, não no aplicativo. | Abrir a coleção no aplicativo, se a revisão da sprint exigir |
+| US23-5 | Automatizar a verificação de tela | Tela verificada manualmente | DT05, Sprint 5 |
