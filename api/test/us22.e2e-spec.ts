@@ -223,12 +223,17 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
       }
     });
 
-    it('US22-4 os tipos expõem os campos próprios e marcam o controlador de iluminação como provisório', async () => {
+    it('US22-4 os tipos expõem os campos próprios, inclusive os do controlador de iluminação definidos no DT01', async () => {
       const lista = (await autenticado(http().get('/api/tipos-dispositivo')).expect(200)).body;
       const porNome = Object.fromEntries(lista.map((t: { nome: string }) => [t.nome, t]));
       expect(porNome['Câmera'].campos.map((c: { nome: string }) => c.nome)).toEqual(['modelo', 'resolucao', 'anguloVisao']);
-      expect(porNome['Controlador de iluminação'].provisoria).toBe(true);
-      expect(porNome['Sensor de nível'].provisoria).toBe(false);
+      const controlador = porNome['Controlador de iluminação'];
+      expect(controlador.campos.map((c: { nome: string; obrigatorio: boolean }) => [c.nome, c.obrigatorio])).toEqual([
+        ['quantidadePontos', true],
+        ['intervaloLeituraSegundos', false],
+      ]);
+      expect(controlador.intervaloLeituraSegundos).toBe(30);
+      await autenticado(http().post('/api/dispositivos')).send(sensor({ tipoDispositivoId: tipos['Controlador de iluminação'], atributos: {} })).expect(400);
       const grandezas = (await autenticado(http().get('/api/grandezas')).expect(200)).body;
       expect(grandezas).toContainEqual({ codigo: 'nivel_agua', rotulo: 'Nível de água', unidade: 'm' });
     });
@@ -338,10 +343,14 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
   });
 
   it('US22-6 sem comunicação passa de duas vezes o intervalo do dispositivo, do tipo ou, sem nenhum, de 30 minutos', async () => {
+    const [{ id: semIntervalo }] = await fonte.query(
+      `INSERT INTO tipo_dispositivo (nome, categoria) VALUES ('Câmera sem intervalo de teste', 'camera_monitoramento')
+       ON CONFLICT (nome) DO UPDATE SET intervalo_leitura_segundos = NULL RETURNING id::text`,
+    );
     const casos: [Record<string, unknown>, number][] = [
       [sensor({ atributos: { tipoGrandeza: 'nivel_agua', intervaloLeituraSegundos: 10 } }), 20],
       [sensor({ atributos: { tipoGrandeza: 'nivel_agua' } }), 60],
-      [sensor({ tipoDispositivoId: tipos['Controlador de iluminação'], atributos: {} }), 1800],
+      [sensor({ tipoDispositivoId: semIntervalo, atributos: {} }), 1800],
     ];
     for (const [dados, limite] of casos) {
       const criado = await cadastrar(dados);

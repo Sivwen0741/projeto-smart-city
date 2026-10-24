@@ -2,7 +2,8 @@
 
 - **Data:** 22/10/2026
 - **Item:** US22, critérios 1 e 4; DT01
-- **Situação:** aceita, com o controlador de iluminação provisório
+- **Situação:** aceita; o controlador de iluminação deixou de ser provisório com o DT01, em
+  [`2026-10-24-dt01-controlador-iluminacao.md`](2026-10-24-dt01-controlador-iluminacao.md)
 
 ## Contexto
 
@@ -36,7 +37,7 @@ diagrama de classes. Os campos por categoria são:
 | `camera_monitoramento` | `modelo`, `resolucao`, `anguloVisao` (1 a 360) | CameraMonitoramento |
 | `semaforo_inteligente` | `tempoCicloSegundos`, `modoOperacao` | SemaforoInteligente |
 | `estacao_ambiental` | `fabricante`, `variaveisMonitoradas` (lista de grandezas) | EstacaoAmbiental |
-| `controlador_iluminacao` | `quantidadePontos` | **Provisório**, até o DT01 |
+| `controlador_iluminacao` | `quantidadePontos` (obrigatório), `intervaloLeituraSegundos` | ControladorIluminacao, desde o DT01 |
 
 Os tipos da carga inicial seguem os nomes do protótipo: Sensor de nível, Sensor de tráfego e
 Sensor de ruído (sensor urbano), Câmera, Semáforo inteligente, Estação ambiental e Controlador
@@ -54,7 +55,6 @@ com 400 um atributo de outro tipo, um valor fora da faixa ou um obrigatório aus
 
 - O vídeo das câmeras fica fora do escopo (Documento de Visão, seção 8). Por isso a câmera só
   guarda metadados.
-- Quando o DT01 for concluído, só a entrada `controlador_iluminacao` muda, sem migração, porque
-  os atributos ficam no `jsonb`. A API marca o tipo como `provisoria: true` e o formulário avisa
-  "Campos provisórios até a conclusão do DT01".
+- Com o DT01 concluído, só a entrada `controlador_iluminacao` mudou, sem migração, porque os
+  atributos ficam no `jsonb`. A marca `provisoria` e o aviso do formulário saíram junto.
 - Trocar o tipo de um dispositivo exige atributos compatíveis com o novo tipo.

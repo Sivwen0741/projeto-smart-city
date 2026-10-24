@@ -12,6 +12,7 @@ export const GRANDEZAS = {
   umidade: { rotulo: 'Umidade relativa', unidade: '%' },
   vagas_livres: { rotulo: 'Vagas livres', unidade: 'vagas' },
   consumo_energia: { rotulo: 'Consumo de energia', unidade: 'kWh' },
+  pontos_apagados: { rotulo: 'Pontos de luz apagados', unidade: 'pontos' },
 } as const;
 
 export type Grandeza = keyof typeof GRANDEZAS;

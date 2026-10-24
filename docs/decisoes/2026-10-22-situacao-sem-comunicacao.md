@@ -46,7 +46,8 @@ A situação calculada segue esta ordem:
 A carga inicial usa 30 s para todos os tipos instrumentados. A fonte é o guia de identidade
 (`design/00-identidade.svg`: "o sensor atualiza a cada trinta segundos") e o painel do
 protótipo de dispositivos, que mostra "Intervalo de leitura 30 s". O controlador de iluminação
-fica sem intervalo enquanto o DT01 não definir o tipo, e por isso cai nos 30 minutos.
+ficou sem intervalo até o DT01 e caía nos 30 minutos. Com o DT01, resolvido em 24/10/2026, ele também
+usa 30 s.
 
 "Alerta ativo", que o protótipo também mostra na coluna, depende do motor de alertas e entra na
 Sprint 5.
