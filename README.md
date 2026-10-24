@@ -160,6 +160,10 @@ Todas as rotas, exceto o login e a verificação de saúde, exigem token.
 2. No Swagger, clique em **Authorize** e cole só o valor do token, sem a palavra `Bearer`. No
    Postman, use a aba **Authorization**, tipo **Bearer Token**.
 
+Para o Postman, há uma coleção com todas as rotas e os testes de cada uma em
+[`docs/postman/`](docs/postman/). Importe a coleção, preencha a variável `senha` com a
+`ADMIN_SENHA` do `.env` e use **Run collection**: o login guarda o token para as demais.
+
 A primeira subida carrega dispositivos e regras de exemplo. A última comunicação dos dispositivos
 de exemplo é um dado de demonstração, renovado a cada subida: cerca de um minuto depois, os que
 estavam operando passam a sem comunicação, porque a ingestão de leituras só chega na Sprint 5. O
