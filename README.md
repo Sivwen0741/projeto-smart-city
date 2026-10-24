@@ -79,13 +79,6 @@ use o PowerShell: os comandos são os mesmos.
    cd projeto-smart-city
    ```
 
-   Enquanto os itens da Sprint 4 estão em revisão, o código ainda não está na `main`, que só tem
-   a documentação. Para avaliar a sprint, troque para a branch que reúne todos os itens:
-
-   ```sh
-   git checkout sprint-4-us23
-   ```
-
 2. Crie o arquivo de variáveis a partir do exemplo e troque os valores, principalmente a senha
    do banco, o `JWT_SEGREDO` e a senha do administrador:
 
