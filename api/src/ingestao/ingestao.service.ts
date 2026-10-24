@@ -1,0 +1,132 @@
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { randomUUID } from 'crypto';
+import { connect, MqttClient } from 'mqtt';
+import { DataSource } from 'typeorm';
+import { LeituraGravada, MotorAlertasService } from '../alertas/motor-alertas.service';
+import { grandezasMedidas } from '../dispositivos/atributos';
+import { CODIGOS_GRANDEZA, Grandeza, GRANDEZAS } from '../grandezas';
+
+export const TOPICO_LEITURAS = 'scoc/dispositivos/+/leituras';
+
+interface LeituraRecebida {
+  grandeza: Grandeza;
+  valor: number;
+  unidade: string;
+}
+
+interface Mensagem {
+  dataHora: Date;
+  leituras: LeituraRecebida[];
+}
+
+export class MensagemRecusada extends Error {}
+
+// formato em docs/decisoes/2026-10-24-ingestao-mqtt.md
+export function interpretar(conteudo: Buffer): Mensagem {
+  let corpo: unknown;
+  try {
+    corpo = JSON.parse(conteudo.toString('utf8'));
+  } catch {
+    throw new MensagemRecusada('conteúdo não é JSON');
+  }
+  if (typeof corpo !== 'object' || corpo === null || Array.isArray(corpo)) throw new MensagemRecusada('conteúdo não é um objeto');
+  const { dataHora, leituras = [] } = corpo as { dataHora?: unknown; leituras?: unknown };
+
+  let quando = new Date();
+  if (dataHora !== undefined) {
+    quando = new Date(typeof dataHora === 'string' ? dataHora : NaN);
+    if (Number.isNaN(quando.getTime())) throw new MensagemRecusada('dataHora inválida');
+  }
+  if (!Array.isArray(leituras)) throw new MensagemRecusada('leituras deve ser uma lista');
+
+  return {
+    dataHora: quando,
+    leituras: leituras.map((l: { grandeza?: unknown; valor?: unknown; unidade?: unknown }) => {
+      if (typeof l?.grandeza !== 'string' || !CODIGOS_GRANDEZA.includes(l.grandeza as Grandeza)) {
+        throw new MensagemRecusada(`grandeza desconhecida: ${String(l?.grandeza)}`);
+      }
+      if (typeof l.valor !== 'number' || !Number.isFinite(l.valor)) throw new MensagemRecusada(`valor inválido para ${l.grandeza}`);
+      const grandeza = l.grandeza as Grandeza;
+      return { grandeza, valor: l.valor, unidade: typeof l.unidade === 'string' ? l.unidade.slice(0, 20) : GRANDEZAS[grandeza].unidade };
+    }),
+  };
+}
+
+@Injectable()
+export class IngestaoService implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(IngestaoService.name);
+  private cliente?: MqttClient;
+  // mensagens processadas uma a uma: a duração das regras depende da ordem das leituras
+  private fila: Promise<void> = Promise.resolve();
+
+  constructor(
+    private readonly fonte: DataSource,
+    private readonly motor: MotorAlertasService,
+  ) {}
+
+  onModuleInit(): void {
+    const url = process.env.MQTT_URL;
+    if (!url) {
+      this.logger.warn('MQTT_URL não definida: ingestão de leituras desligada');
+      return;
+    }
+    this.cliente = connect(url, { clientId: `scoc-api-${randomUUID()}`, reconnectPeriod: 2000, connectTimeout: 5000 });
+    this.cliente.on('connect', () => {
+      this.logger.log(`conectado ao broker, assinando ${TOPICO_LEITURAS}`);
+      this.cliente!.subscribe(TOPICO_LEITURAS, { qos: 1 });
+    });
+    this.cliente.on('offline', () => this.logger.warn('broker indisponível, tentando reconectar'));
+    this.cliente.on('error', (erro) => this.logger.warn(`erro no cliente mqtt: ${erro.message}`));
+    this.cliente.on('message', (topico, conteudo) => {
+      this.fila = this.fila.then(() => this.receber(topico, conteudo));
+    });
+  }
+
+  async onModuleDestroy(): Promise<void> {
+    await this.cliente?.endAsync(true);
+  }
+
+  private async receber(topico: string, conteudo: Buffer): Promise<void> {
+    const codigo = topico.split('/')[2];
+    try {
+      const alertas = await this.gravar(codigo, interpretar(conteudo));
+      if (alertas.length > 0) this.logger.log(`alertas emitidos para ${codigo}: ${alertas.join(', ')}`);
+    } catch (erro) {
+      if (erro instanceof MensagemRecusada) this.logger.warn(`mensagem descartada de ${codigo}: ${erro.message}`);
+      else this.logger.error(`falha ao gravar mensagem de ${codigo}: ${(erro as Error).message}`);
+    }
+  }
+
+  async gravar(codigo: string, mensagem: Mensagem): Promise<string[]> {
+    return this.fonte.transaction(async (m) => {
+      const [dispositivo] = await m.query(
+        `SELECT d.id::text AS id, d.estado, t.categoria, d.atributos_especificos AS atributos
+           FROM dispositivo d JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
+          WHERE upper(d.identificador) = upper($1::varchar)`,
+        [codigo],
+      );
+      if (!dispositivo) throw new MensagemRecusada('dispositivo não cadastrado');
+      if (dispositivo.estado === 'inativo') throw new MensagemRecusada('dispositivo inativo');
+      const medidas = grandezasMedidas(dispositivo.categoria, dispositivo.atributos);
+      const estranha = mensagem.leituras.find((l) => !medidas.includes(l.grandeza));
+      if (estranha) throw new MensagemRecusada(`o dispositivo não mede ${estranha.grandeza}`);
+
+      const gravadas: LeituraGravada[] = [];
+      for (const l of mensagem.leituras) {
+        const [{ id }] = await m.query(
+          `INSERT INTO leitura (dispositivo_id, tipo_grandeza, valor, unidade, origem, data_hora)
+           VALUES ($1, $2, $3, $4, 'mqtt', $5) RETURNING id::text`,
+          [dispositivo.id, l.grandeza, l.valor, l.unidade, mensagem.dataHora],
+        );
+        gravadas.push({ id, dispositivoId: dispositivo.id, tipoGrandeza: l.grandeza, valor: l.valor, dataHora: mensagem.dataHora });
+      }
+      await m.query(`UPDATE dispositivo SET ultima_comunicacao = now() WHERE id = $1`, [dispositivo.id]);
+
+      // em manutenção a leitura fica no histórico, mas não gera alerta
+      if (dispositivo.estado !== 'ativo') return [];
+      const alertas: string[] = [];
+      for (const leitura of gravadas) alertas.push(...(await this.motor.avaliar(m, leitura)));
+      return alertas;
+    });
+  }
+}

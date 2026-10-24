@@ -7,6 +7,7 @@ const EXEMPLOS = [
   { nome: 'Material particulado elevado', grandeza: 'pm25', operador: '>', limite: 55, duracao: 60, criticidade: 'atencao', ativa: true },
   { nome: 'Ruído noturno acima do permitido', grandeza: 'nivel_sonoro', operador: '>', limite: 70, duracao: 15, criticidade: 'atencao', ativa: true },
   { nome: 'Tráfego lento', grandeza: 'velocidade_media', operador: '<', limite: 15, duracao: 20, criticidade: 'atencao', ativa: true },
+  { nome: 'Falha na iluminação pública', grandeza: 'pontos_apagados', operador: '>', limite: 0, duracao: 5, criticidade: 'informativo', ativa: true },
   { nome: 'Temperatura alta', grandeza: 'temperatura', operador: '>', limite: 35, duracao: 30, criticidade: 'informativo', ativa: false },
 ];
 

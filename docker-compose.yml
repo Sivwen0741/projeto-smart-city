@@ -65,6 +65,15 @@ services:
       retries: 30
       start_period: 10s
 
+  simulador:
+    build: ./simulador
+    environment:
+      MQTT_URL: mqtt://mosquitto:1883
+      SIMULADOR_INTERVALO_SEGUNDOS: ${SIMULADOR_INTERVALO_SEGUNDOS:-30}
+    depends_on:
+      api:
+        condition: service_healthy
+
   web:
     build: ./web
     depends_on:
@@ -79,6 +88,19 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
 
+  mosquitto-teste:
+    image: eclipse-mosquitto:2.0.20
+    profiles: ["teste"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    tmpfs:
+      - /mosquitto/data
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -t '$$SYS/broker/version' -C 1 -W 3"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api-teste:
     profiles: ["teste"]
     build:
@@ -87,8 +109,11 @@ services:
     environment:
       <<: *conexao
       DB_HOST: db-teste
+      MQTT_URL: mqtt://mosquitto-teste:1883
     depends_on:
       db-teste:
+        condition: service_healthy
+      mosquitto-teste:
         condition: service_healthy
 
 volumes:

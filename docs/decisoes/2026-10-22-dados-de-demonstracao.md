@@ -2,7 +2,8 @@
 
 - **Data:** 22/10/2026
 - **Item:** US22, critério 6
-- **Situação:** aceita
+- **Situação:** substituída em 24/10/2026 pela ingestão da TT02 e pelo simulador
+  ([`2026-10-24-ingestao-mqtt.md`](2026-10-24-ingestao-mqtt.md)); a renovação saiu da carga inicial
 
 ## Contexto
 
