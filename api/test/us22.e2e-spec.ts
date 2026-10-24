@@ -367,7 +367,7 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
     }
   });
 
-  it('US22-6 a cada subida os exemplos ativos voltam a ter comunicação recente, e os de manutenção e inativo não mudam', async () => {
+  it('US22-6 a subida não renova a última comunicação dos exemplos: só a ingestão a atualiza', async () => {
     await fonte.query(`UPDATE dispositivo SET ultima_comunicacao = now() - interval '1 day' WHERE identificador IN ('SN-014', 'EA-07', 'IL-118')`);
     await preparar(fonte);
     const linhas = await fonte.query(
@@ -377,12 +377,12 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
     expect(linhas).toEqual([
       { identificador: 'EA-07', recente: false },
       { identificador: 'IL-118', recente: false },
-      { identificador: 'SN-014', recente: true },
+      { identificador: 'SN-014', recente: false },
     ]);
     const situacoes = (await autenticado(http().get('/api/dispositivos')).expect(200)).body
       .filter((d: { identificador: string }) => ['SN-014', 'EA-07', 'IL-118', 'SN-019'].includes(d.identificador))
       .map((d: { identificador: string; situacao: string }) => `${d.identificador} ${d.situacao}`);
-    expect(situacoes).toEqual(['EA-07 sem_comunicacao', 'IL-118 manutencao', 'SN-014 operando', 'SN-019 inativo']);
+    expect(situacoes).toEqual(['EA-07 sem_comunicacao', 'IL-118 manutencao', 'SN-014 sem_comunicacao', 'SN-019 inativo']);
   });
 
   describe('US22-7 criação, edição e inativação geram registro no log com o autor', () => {

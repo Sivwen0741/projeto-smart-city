@@ -50,16 +50,4 @@ export async function carregarDispositivosExemplo(fonte: DataSource): Promise<vo
     inseridos += resultado.length;
   }
   if (inseridos > 0) console.log(`dispositivos de exemplo carregados: ${inseridos}`);
-
-  // dado de demonstração: sem ingestão (sprint 5), a última comunicação dos exemplos ativos é renovada a cada subida
-  let renovados = 0;
-  for (const e of EXEMPLOS) {
-    const [, linhas] = await fonte.query(
-      `UPDATE dispositivo SET ultima_comunicacao = now() - $2::int * interval '1 second'
-        WHERE upper(identificador) = upper($1::varchar) AND estado = 'ativo'`,
-      [e.identificador, e.comunicacao],
-    );
-    renovados += linhas;
-  }
-  console.log(`última comunicação dos exemplos ativos renovada: ${renovados}`);
 }

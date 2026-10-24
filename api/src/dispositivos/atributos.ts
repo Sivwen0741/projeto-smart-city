@@ -111,3 +111,17 @@ export function validarAtributos(categoria: string, entrada: unknown): { atribut
   }
   return { atributos, erros };
 }
+
+// grandezas que cada categoria envia pela ingestão; câmera e semáforo só mandam sinal de vida
+export function grandezasMedidas(categoria: string, atributos: Record<string, unknown>): string[] {
+  switch (categoria) {
+    case 'sensor_urbano':
+      return typeof atributos.tipoGrandeza === 'string' ? [atributos.tipoGrandeza] : [];
+    case 'estacao_ambiental':
+      return Array.isArray(atributos.variaveisMonitoradas) ? (atributos.variaveisMonitoradas as string[]) : [];
+    case 'controlador_iluminacao':
+      return ['pontos_apagados', 'consumo_energia'];
+    default:
+      return [];
+  }
+}

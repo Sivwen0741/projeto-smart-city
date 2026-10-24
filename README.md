@@ -112,11 +112,12 @@ use o PowerShell: os comandos são os mesmos.
    api-1  | território carregado: 5 distritos, 16 bairros
    api-1  | usuário administrador inicial criado: admin@pontagrossa.pr.gov.br
    api-1  | dispositivos de exemplo carregados: 13
-   api-1  | última comunicação dos exemplos ativos renovada: 11
-   api-1  | regras de alerta de exemplo carregadas: 6
+   api-1  | regras de alerta de exemplo carregadas: 7
+   api-1  | ... [IngestaoService] conectado ao broker, assinando scoc/dispositivos/+/leituras
+   simulador-1  | simulador conectado a mqtt://mosquitto:1883: 10 dispositivos a cada 30 s
    ```
 
-   Nas subidas seguintes, só aparecem as linhas do território e da renovação. Para deixar o
+   Nas subidas seguintes, a carga inicial só mostra a linha do território. Para deixar o
    terminal livre, use `docker compose up --build -d` e acompanhe com `docker compose logs -f api`.
 
 4. Abra <http://localhost:8080> e entre com o `ADMIN_EMAIL` e a `ADMIN_SENHA` do `.env`. A tela
@@ -164,15 +165,33 @@ Para o Postman, há uma coleção com todas as rotas e os testes de cada uma em
 [`docs/postman/`](docs/postman/). Importe a coleção, preencha a variável `senha` com a
 `ADMIN_SENHA` do `.env` e use **Run collection**: o login guarda o token para as demais.
 
-A primeira subida carrega dispositivos e regras de exemplo. A última comunicação dos dispositivos
-de exemplo é um dado de demonstração, renovado a cada subida: cerca de um minuto depois, os que
-estavam operando passam a sem comunicação, porque a ingestão de leituras só chega na Sprint 5. O
-motivo está em
-[`docs/decisoes/2026-10-22-dados-de-demonstracao.md`](docs/decisoes/2026-10-22-dados-de-demonstracao.md).
+A primeira subida carrega dispositivos e regras de exemplo.
+
+### Leituras dos dispositivos (MQTT)
+
+Os dispositivos enviam leituras ao Mosquitto, no tópico `scoc/dispositivos/{código}/leituras`. A
+interface de programação grava cada leitura, atualiza a última comunicação do dispositivo e
+avalia as regras de alerta. Uma mensagem `{}` é só sinal de vida.
+
+O serviço `simulador` publica, a cada 30 s, as leituras dos dispositivos de exemplo, com
+episódios que cruzam os limites das regras de exemplo. Cerca de 13 minutos depois da subida, a
+cheia simulada do Arroio Olarias gera o primeiro alerta grave. EA-07 e SN-027 não publicam e
+ficam sem comunicação de propósito. Os episódios estão em
+[`docs/decisoes/2026-10-24-ingestao-mqtt.md`](docs/decisoes/2026-10-24-ingestao-mqtt.md).
+
+Para publicar uma leitura à mão, com o ambiente de pé:
+
+```sh
+docker compose exec mosquitto mosquitto_pub -q 1 -t scoc/dispositivos/SN-027/leituras \
+  -m '{"leituras": [{"grandeza": "nivel_agua", "valor": 2.4}]}'
+```
+
+Mensagem de dispositivo não cadastrado ou inativo, ou com grandeza que o tipo não mede, é
+descartada e aparece no log (`docker compose logs api`) como `mensagem descartada de ...`.
 
 ### Testes automatizados
 
-Os testes e2e rodam dentro de contêineres, contra um banco PostGIS descartável:
+Os testes e2e rodam dentro de contêineres, contra um banco PostGIS e um broker MQTT descartáveis:
 
 ```sh
 docker compose --profile teste run --rm --build api-teste

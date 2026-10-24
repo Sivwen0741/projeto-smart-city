@@ -4,10 +4,11 @@ import { AuthModule } from './auth/auth.module';
 import { opcoesBanco } from './database/data-source';
 import { DispositivosModule } from './dispositivos/dispositivos.module';
 import { HealthController } from './health/health.controller';
+import { IngestaoModule } from './ingestao/ingestao.module';
 import { RegrasAlertaModule } from './regras-alerta/regras-alerta.module';
 
 @Module({
-  imports: [TypeOrmModule.forRootAsync({ useFactory: () => ({ ...opcoesBanco(), autoLoadEntities: true }) }), AuthModule, DispositivosModule, RegrasAlertaModule],
+  imports: [TypeOrmModule.forRootAsync({ useFactory: () => ({ ...opcoesBanco(), autoLoadEntities: true }) }), AuthModule, DispositivosModule, RegrasAlertaModule, IngestaoModule],
   controllers: [HealthController],
 })
 export class AppModule {}
