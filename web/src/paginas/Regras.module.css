@@ -1,0 +1,26 @@
+.cadastrar {
+  margin-left: auto;
+}
+
+.nome {
+  font-weight: var(--peso-medio);
+}
+
+.condicao {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-seminegrito);
+  white-space: nowrap;
+}
+
+.grave::before {
+  background: var(--cor-grave);
+}
+
+.atencao::before {
+  background: var(--cor-atencao);
+}
+
+.informativo::before {
+  background: var(--cor-parado);
+}
