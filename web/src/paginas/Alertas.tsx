@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medida, ResumoAlertas, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
+import { AbrirOcorrencia } from '../componentes/AbrirOcorrencia';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
@@ -12,7 +13,6 @@ import { PainelReconhecimento } from './PainelReconhecimento';
 const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
-export const ABRIR_OCORRENCIA: Previsao = { historia: 'US06', sprint: 'sprint 6' };
 const ATUALIZACAO_MS = 15_000;
 // meta citada em design/03-alertas.svg
 const META_RECONHECIMENTO_MIN = 15;
@@ -196,9 +196,7 @@ export function Alertas() {
                         Reconhecer
                       </Botao>
                     ) : (
-                      <Botao disabled title={`Previsto: ${textoPrevisao(ABRIR_OCORRENCIA)}`}>
-                        Abrir&nbsp;<Previsto previsao={ABRIR_OCORRENCIA} />
-                      </Botao>
+                      <AbrirOcorrencia alerta={a} />
                     )}
                     <Botao variante="link" onClick={() => setSelecionado(a)}>
                       Detalhes

@@ -31,6 +31,7 @@ export class TempoRealGateway implements OnGatewayInit, OnModuleDestroy {
     this.assinaturas = [
       this.eventos.eventos.subscribe(({ evento, alerta }) => servidor.emit(evento, alerta)),
       this.ocorrencias.novas.subscribe((ocorrencia) => servidor.emit('ocorrencia:nova', ocorrencia)),
+      this.ocorrencias.atualizadas.subscribe((ocorrencia) => servidor.emit('ocorrencia:atualizada', ocorrencia)),
     ];
     this.logger.log(`tempo real em ${CAMINHO_TEMPO_REAL}`);
   }

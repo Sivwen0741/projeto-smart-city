@@ -4,6 +4,8 @@ import { Alertas } from './paginas/Alertas';
 import { Dispositivos } from './paginas/Dispositivos';
 import { Login } from './paginas/Login';
 import { Mapa } from './paginas/Mapa';
+import { OcorrenciaDetalhe } from './paginas/OcorrenciaDetalhe';
+import { Ocorrencias } from './paginas/Ocorrencias';
 import { Painel } from './paginas/Painel';
 import { Regras } from './paginas/Regras';
 import { useSessao } from './sessao/sessao';
@@ -32,6 +34,8 @@ export function Rotas() {
         <Route path="painel" element={<Painel />} />
         <Route path="mapa" element={<Mapa />} />
         <Route path="alertas" element={<Alertas />} />
+        <Route path="ocorrencias" element={<Ocorrencias />} />
+        <Route path="ocorrencias/:id" element={<OcorrenciaDetalhe />} />
         <Route path="dispositivos" element={<Dispositivos />} />
         <Route path="regras" element={<Regras />} />
       </Route>
