@@ -1,0 +1,252 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--espaco-4) var(--espaco-4);
+  overflow-y: auto;
+}
+
+.titulo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espaco-3);
+  padding-top: 18px;
+}
+
+.titulo h1 {
+  font-size: var(--texto-titulo-pagina);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-titulo-pagina);
+}
+
+.resumo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.voltar {
+  margin-left: auto;
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta-media);
+  text-decoration: underline;
+  text-decoration-color: var(--cor-regua-forte);
+  text-underline-offset: 3px;
+}
+
+.voltar:hover {
+  color: var(--cor-tinta);
+}
+
+.avisoAtencao {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: var(--barra-gravidade) solid var(--cor-atencao);
+  background: var(--cor-atencao-fundo);
+  font-size: var(--texto-corpo);
+}
+
+.rios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 14px;
+}
+
+.rio {
+  display: flex;
+  flex-direction: column;
+  background: var(--cor-folha);
+  border: var(--borda);
+}
+
+.rio.grave {
+  border-color: var(--cor-grave-borda);
+}
+
+.rio.atencao {
+  border-color: var(--cor-atencao-borda);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px var(--espaco-4) var(--espaco-3);
+  border-bottom: var(--borda);
+}
+
+.cabecalho h2 {
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-seminegrito);
+}
+
+.apoio {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.etiqueta {
+  align-self: center;
+  margin-left: auto;
+  padding: 1px var(--espaco-2);
+  border: 1px solid;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-seminegrito);
+  white-space: nowrap;
+}
+
+.etiqueta.grave {
+  background: var(--cor-grave-fundo);
+  border-color: var(--cor-grave-borda);
+  color: var(--cor-grave);
+}
+
+.etiqueta.atencao {
+  background: var(--cor-atencao-fundo);
+  border-color: var(--cor-atencao-borda);
+  color: var(--cor-atencao);
+}
+
+.etiqueta.parado {
+  background: var(--cor-parado-fundo);
+  border-color: var(--cor-parado-borda);
+  color: var(--cor-tinta-media);
+}
+
+.medidas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: var(--borda);
+}
+
+.medidas > div {
+  padding: 14px var(--espaco-4);
+}
+
+.medidas > div + div {
+  border-left: var(--borda);
+}
+
+.rotulo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.codigo {
+  color: var(--cor-tinta);
+}
+
+.valor {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: var(--espaco-1);
+}
+
+.valor b {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-numero);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-numero);
+  line-height: 1.1;
+}
+
+.valor i {
+  font-style: normal;
+  font-family: var(--fonte-numero);
+  color: var(--cor-tinta-media);
+}
+
+.valor.acima b {
+  color: var(--cor-grave);
+}
+
+.valor.vazio b {
+  color: var(--cor-parado);
+}
+
+.trilho {
+  position: relative;
+  height: 4px;
+  margin-top: 10px;
+  background: var(--cor-trilho);
+}
+
+.cheio,
+.cheioAcima,
+.vazao {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.cheio {
+  background: var(--cor-estavel);
+}
+
+.cheioAcima {
+  background: var(--cor-grave);
+}
+
+.vazao {
+  background: var(--cor-realce);
+}
+
+.cota {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 1px;
+  background: var(--cor-tinta);
+}
+
+.nota {
+  margin-top: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.nota.acima {
+  color: var(--cor-grave);
+}
+
+.grafico {
+  padding: var(--espaco-3) var(--espaco-4) 6px;
+}
+
+.legendaGrafico {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--espaco-1);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.semGrafico {
+  padding: var(--espaco-4) 0;
+  color: var(--cor-tinta-media);
+}
+
+.rodape {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 10px var(--espaco-4);
+  border-top: var(--borda);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.atribuicao {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  color: var(--cor-tinta-suave);
+}

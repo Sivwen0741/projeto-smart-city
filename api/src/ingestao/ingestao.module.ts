@@ -5,5 +5,6 @@ import { IngestaoService } from './ingestao.service';
 @Module({
   imports: [AlertasModule],
   providers: [IngestaoService],
+  exports: [IngestaoService],
 })
 export class IngestaoModule {}

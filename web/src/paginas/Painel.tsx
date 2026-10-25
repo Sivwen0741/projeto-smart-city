@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { FilaAlertas } from '../componentes/FilaAlertas';
 import { MapaCidade } from '../componentes/MapaCidade';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
@@ -12,13 +13,24 @@ export function Painel() {
   return (
     <div className={estilos.painel}>
       <ul className={estilos.faixa} aria-label="Indicadores da cidade" title={`Previsto: ${textoPrevisao(INDICADORES)}`}>
-        {SERVICOS.map((s) => (
-          <li key={s} className={estilos.servico} aria-disabled="true">
-            <span className={estilos.nome}>{s}</span>
-            <span className={estilos.valor}>–</span>
-            <Previsto previsao={INDICADORES} />
-          </li>
-        ))}
+        {SERVICOS.map((s) =>
+          // a tela de rios (us09) abre pelo indicador, sem aba nova no menu
+          s === 'Nível dos rios' ? (
+            <li key={s} className={estilos.servico}>
+              <Link className={estilos.abrirRios} to="/rios" title="Abrir a tela de rios">
+                <span className={estilos.nome}>{s}</span>
+                <span className={estilos.valor}>–</span>
+                <Previsto previsao={INDICADORES} />
+              </Link>
+            </li>
+          ) : (
+            <li key={s} className={estilos.servico} aria-disabled="true">
+              <span className={estilos.nome}>{s}</span>
+              <span className={estilos.valor}>–</span>
+              <Previsto previsao={INDICADORES} />
+            </li>
+          ),
+        )}
       </ul>
 
       <div className={estilos.mapa}>

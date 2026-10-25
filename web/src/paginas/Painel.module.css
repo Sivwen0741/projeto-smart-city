@@ -83,3 +83,24 @@
   grid-row: 2 / 4;
   min-height: 0;
 }
+
+.servico:has(.abrirRios) {
+  padding: 0;
+  cursor: pointer;
+}
+
+.abrirRios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  height: 100%;
+  padding: var(--espaco-4) 20px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.abrirRios:hover .nome {
+  color: var(--cor-tinta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

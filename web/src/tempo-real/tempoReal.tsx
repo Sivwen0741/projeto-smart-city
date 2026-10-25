@@ -8,6 +8,7 @@ type Ouvinte = (alerta: Alerta | null) => void;
 interface ContextoTempoReal {
   conectado: boolean;
   ouvir(ouvinte: Ouvinte): () => void;
+  ouvirEvento(evento: string, ouvinte: (dados: unknown) => void): () => void;
 }
 
 const Contexto = createContext<ContextoTempoReal | null>(null);
@@ -16,6 +17,8 @@ const Contexto = createContext<ContextoTempoReal | null>(null);
 export function ProvedorTempoReal({ children }: { children: ReactNode }) {
   const { token } = useSessao();
   const ouvintes = useRef(new Set<Ouvinte>());
+  // eventos frequentes (leituras) só chegam a quem pediu, para não recarregar todas as telas
+  const porEvento = useRef(new Map<string, Set<(dados: unknown) => void>>());
   const [conectado, setConectado] = useState(false);
 
   useEffect(() => {
@@ -31,6 +34,7 @@ export function ProvedorTempoReal({ children }: { children: ReactNode }) {
     socket.on('alerta:atualizado', avisar);
     socket.on('ocorrencia:nova', () => avisar(null));
     socket.on('ocorrencia:atualizada', () => avisar(null));
+    socket.onAny((evento: string, dados: unknown) => porEvento.current.get(evento)?.forEach((o) => o(dados)));
     return () => {
       socket.disconnect();
       setConectado(false);
@@ -42,6 +46,12 @@ export function ProvedorTempoReal({ children }: { children: ReactNode }) {
     ouvir(ouvinte) {
       ouvintes.current.add(ouvinte);
       return () => ouvintes.current.delete(ouvinte);
+    },
+    ouvirEvento(evento, ouvinte) {
+      const conjunto = porEvento.current.get(evento) ?? new Set();
+      conjunto.add(ouvinte);
+      porEvento.current.set(evento, conjunto);
+      return () => conjunto.delete(ouvinte);
     },
   });
   valor.current = { ...valor.current, conectado };
@@ -55,4 +65,11 @@ export function useAlertasAoVivo(aoMudar: Ouvinte): boolean {
   atual.current = aoMudar;
   useEffect(() => contexto?.ouvir((a) => atual.current(a)), [contexto]);
   return contexto?.conectado ?? false;
+}
+
+export function useEventoAoVivo(evento: string, aoReceber: (dados: unknown) => void): void {
+  const contexto = useContext(Contexto);
+  const atual = useRef(aoReceber);
+  atual.current = aoReceber;
+  useEffect(() => contexto?.ouvirEvento(evento, (d) => atual.current(d)), [contexto, evento]);
 }

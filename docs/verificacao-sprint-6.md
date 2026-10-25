@@ -49,3 +49,17 @@ num banco de teste recriado. Decisão em
 | **US07-2** | há no máximo um alerta de sem comunicação ativo por dispositivo | Também garantido pelo índice único `alerta_ativo_uq`. | Verificado |
 | **US07-3** | o sinal de vida encerra o alerta aberto<br>alerta já reconhecido continua em atendimento | — | Verificado |
 | **US07-4** | dispositivo em manutenção ou inativo não gera o alerta | — | Verificado |
+
+## US09 - Nível e vazão dos rios em tempo real
+
+Branch `sprint-6-us09`, sobre a da US07, PR aberto para revisão. Suíte completa: 157 testes passando
+num banco de teste recriado. Decisão em
+[`2026-10-25-coleta-open-meteo.md`](decisoes/2026-10-25-coleta-open-meteo.md). Os testes usam
+respostas simuladas da Flood API.
+
+| Critério | Teste automatizado (`us09.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US09-1** | a rotina é agendada a cada 60 min quando nada é configurado<br>grava a vazão diária até hoje como leitura e os dias seguintes como previsão, sem duplicar<br>a vazão externa não muda a última comunicação nem a última leitura do sensor | 25/10/2026, ambiente de desenvolvimento com acesso à internet: a primeira coleta real gravou a vazão de hoje e a previsão de 3 dias dos três sensores de nível. | Verificado |
+| **US09-2** | cada ponto traz o nível atual, a tendência da última hora, a série de 6 h e a vazão de hoje<br>a cota vem da menor regra ativa de nível acima de um limite<br>sensor inativo continua como ponto, sem nível, e com a vazão do Open-Meteo | Cópia isolada da branch (`docker compose -p ensaio-us09`): o indicador "Nível dos rios" abre a tela; Arroio Olarias com o nível simulado de SN-014, cota de 3,50 m e vazão real; Ronda sem comunicação e Pilão de Pedra inativo só com a vazão. | Verificado |
+| **US09-3** | leitura de nível nova e coleta concluída chegam às telas em tempo real | Na cópia isolada, o nível de SN-014 mudou na tela sem recarregar. | Verificado |
+| **US09-4** | erro de rede ou HTTP é registrado, a rotina não lança e a última coleta boa continua | O aviso de falha da tela foi conferido só pelo teste da interface de programação. | Verificado |

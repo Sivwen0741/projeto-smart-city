@@ -4,7 +4,9 @@ import { Subscription } from 'rxjs';
 import { Server } from 'socket.io';
 import { EventosAlertasService } from '../alertas/eventos-alertas.service';
 import { AuthService } from '../auth/auth.service';
+import { IngestaoService } from '../ingestao/ingestao.service';
 import { OcorrenciasService } from '../ocorrencias/ocorrencias.service';
+import { ColetaOpenMeteoService } from '../rios/coleta-open-meteo.service';
 
 export const CAMINHO_TEMPO_REAL = '/api/tempo-real';
 
@@ -18,6 +20,8 @@ export class TempoRealGateway implements OnGatewayInit, OnModuleDestroy {
     private readonly auth: AuthService,
     private readonly eventos: EventosAlertasService,
     private readonly ocorrencias: OcorrenciasService,
+    private readonly ingestao: IngestaoService,
+    private readonly coleta: ColetaOpenMeteoService,
   ) {}
 
   afterInit(servidor: Server): void {
@@ -32,6 +36,8 @@ export class TempoRealGateway implements OnGatewayInit, OnModuleDestroy {
       this.eventos.eventos.subscribe(({ evento, alerta }) => servidor.emit(evento, alerta)),
       this.ocorrencias.novas.subscribe((ocorrencia) => servidor.emit('ocorrencia:nova', ocorrencia)),
       this.ocorrencias.atualizadas.subscribe((ocorrencia) => servidor.emit('ocorrencia:atualizada', ocorrencia)),
+      this.ingestao.leituras.subscribe((leitura) => servidor.emit('leitura:nova', leitura)),
+      this.coleta.coletas.subscribe(() => servidor.emit('coleta:open-meteo')),
     ];
     this.logger.log(`tempo real em ${CAMINHO_TEMPO_REAL}`);
   }

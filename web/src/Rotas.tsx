@@ -8,6 +8,7 @@ import { OcorrenciaDetalhe } from './paginas/OcorrenciaDetalhe';
 import { Ocorrencias } from './paginas/Ocorrencias';
 import { Painel } from './paginas/Painel';
 import { Regras } from './paginas/Regras';
+import { Rios } from './paginas/Rios';
 import { useSessao } from './sessao/sessao';
 import { ProvedorRegistroOcorrencia } from './ocorrencias/registro';
 import { ProvedorTempoReal } from './tempo-real/tempoReal';
@@ -38,6 +39,7 @@ export function Rotas() {
         <Route path="ocorrencias/:id" element={<OcorrenciaDetalhe />} />
         <Route path="dispositivos" element={<Dispositivos />} />
         <Route path="regras" element={<Regras />} />
+        <Route path="rios" element={<Rios />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
