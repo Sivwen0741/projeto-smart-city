@@ -2,6 +2,7 @@ import { FormEvent, useId, useState } from 'react';
 import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medida, SITUACOES_ALERTA } from '../alertas/modelo';
 import { Botao } from '../componentes/Botao';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
+import { Simulado } from '../componentes/Simulado';
 import { tempoDesde } from '../dispositivos/modelo';
 import { useRegistroOcorrencia } from '../ocorrencias/registro';
 import { ErroApi } from '../sessao/api';
@@ -65,6 +66,7 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
       <dt>Dispositivo</dt>
       <dd>
         {alerta.dispositivo} · {alerta.tipoDispositivo.toLowerCase()}
+        {alerta.simulado && <Simulado />}
       </dd>
       <dt>Local</dt>
       <dd>{lugar(alerta) || '–'}</dd>

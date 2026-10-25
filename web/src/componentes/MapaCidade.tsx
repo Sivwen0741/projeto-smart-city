@@ -8,6 +8,7 @@ import { Ocorrencia, ocorrenciasApi, SITUACOES_OCORRENCIA } from '../ocorrencias
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './MapaCidade.module.css';
 import { Previsao, Previsto, textoPrevisao } from './Previsto';
+import { TITULO_SIMULADO } from './Simulado';
 
 const CENTRO_PONTA_GROSSA: L.LatLngTuple = [-25.0945, -50.1633];
 const ATUALIZACAO_MS = 15_000;
@@ -41,7 +42,8 @@ function resumoDispositivo(d: Dispositivo, agora: number): string {
   // câmera e semáforo só mandam sinal de vida
   const leitura = d.ultimaLeitura ? `${numero.format(d.ultimaLeitura.valor)} ${d.ultimaLeitura.unidade ?? ''}`.trim() : null;
   const situacao = d.alertaAtivo ? `Alerta ${GRAVIDADES[d.alertaAtivo].toLowerCase()}` : SITUACOES[d.situacao];
-  return `<strong>${escapar(d.identificador)} · ${escapar(d.tipo.toLowerCase())}</strong>
+  const simulado = d.simulado ? ` <em class="${estilos.simulado}" title="${escapar(TITULO_SIMULADO)}">simulado</em>` : '';
+  return `<strong>${escapar(d.identificador)} · ${escapar(d.tipo.toLowerCase())}${simulado}</strong>
     <span>${escapar([lugar, leitura].filter(Boolean).join(' · '))}</span>
     <span>${escapar(situacao)} · comunicação ${escapar(tempoDesde(d.ultimaComunicacao, agora))}</span>`;
 }
