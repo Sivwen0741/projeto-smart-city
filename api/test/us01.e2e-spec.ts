@@ -72,7 +72,7 @@ describe('US01 mapa interativo com dispositivos e ocorrências', () => {
       expect((await lerDispositivo(d.id)).alertaAtivo).toBe('atencao');
       const grave = await alerta(d.id, 'grave');
       expect((await lerDispositivo(d.id)).alertaAtivo).toBe('grave');
-      await fonte.query(`UPDATE alerta SET situacao = 'encerrado' WHERE id = $1`, [grave]);
+      await fonte.query(`UPDATE alerta SET situacao = 'encerrado', data_encerramento = now() WHERE id = $1`, [grave]);
       expect((await lerDispositivo(d.id)).alertaAtivo).toBe('atencao');
     });
 

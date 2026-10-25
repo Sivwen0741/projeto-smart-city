@@ -1,0 +1,66 @@
+import type { Criticidade } from '../dispositivos/modelo';
+import { api } from '../sessao/api';
+
+export type SituacaoAlerta = 'aberto' | 'em_atendimento' | 'encerrado';
+export type Visao = 'ativos' | 'em_atendimento' | 'encerrados_hoje';
+
+export interface Alerta {
+  id: string;
+  regraId: string;
+  regra: string;
+  tipoGrandeza: string;
+  unidade: string | null;
+  dispositivoId: string;
+  dispositivo: string;
+  tipoDispositivo: string;
+  endereco: string | null;
+  bairro: string | null;
+  valorObservado: number;
+  operador: string;
+  valorLimite: number;
+  criticidade: Criticidade;
+  situacao: SituacaoAlerta;
+  dataHora: string;
+  dataReconhecimento: string | null;
+  reconhecidoPor: string | null;
+  providencia: string | null;
+  dataEncerramento: string | null;
+  orgao: string | null;
+  ocorrenciaId: string | null;
+}
+
+export interface ResumoAlertas {
+  ativos: number;
+  gravesSemReconhecimento: number;
+  emAtendimento: number;
+  encerradosHoje: number;
+  tempoMedioReconhecimentoMinutos: number | null;
+  ultimas24h: number;
+  encerradosUltimas24h: number;
+  semComunicacao: number;
+  semComunicacaoPorTipo: { tipo: string; quantidade: number }[];
+}
+
+export const GRAVIDADES: Record<Criticidade, string> = { grave: 'Grave', atencao: 'Atenção', informativo: 'Informativo' };
+
+export const SITUACOES_ALERTA: Record<SituacaoAlerta, string> = {
+  aberto: 'Aberto',
+  em_atendimento: 'Em atendimento',
+  encerrado: 'Encerrado',
+};
+
+const casasDe = (valor: number) => Math.min(2, (String(valor).split('.')[1] ?? '').length);
+
+// o limite usa as mesmas casas da medição, como "3,81 m, limite 3,50 m" no protótipo
+export const medida = (valor: number, unidade: string | null, casas = casasDe(valor)) =>
+  `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
+
+export const limite = (a: Pick<Alerta, 'valorObservado' | 'valorLimite' | 'unidade'>) =>
+  medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado), casasDe(a.valorLimite)));
+
+export const lugar = (a: Pick<Alerta, 'endereco' | 'bairro'>) => [a.endereco, a.bairro].filter(Boolean).join(' · ');
+
+export const alertasApi = {
+  listar: (visao: Visao = 'ativos') => api<Alerta[]>(`/alertas?visao=${visao}`),
+  resumo: () => api<ResumoAlertas>('/alertas/resumo'),
+};

@@ -25,7 +25,7 @@ export const LIMITE_SEM_INTERVALO_SEGUNDOS = 30 * 60;
 
 const LIMITE_COMUNICACAO = `COALESCE(2 * COALESCE((d.atributos_especificos->>'intervaloLeituraSegundos')::int, t.intervalo_leitura_segundos), ${LIMITE_SEM_INTERVALO_SEGUNDOS})`;
 
-const SITUACAO = `CASE
+export const SITUACAO = `CASE
     WHEN d.estado = 'inativo' THEN 'inativo'
     WHEN d.estado = 'manutencao' THEN 'manutencao'
     WHEN d.ultima_comunicacao IS NULL

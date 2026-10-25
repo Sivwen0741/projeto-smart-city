@@ -1,0 +1,239 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--espaco-4) var(--espaco-4);
+}
+
+.visoes {
+  display: flex;
+  gap: var(--espaco-8);
+  height: 62px;
+  align-items: center;
+}
+
+.visao {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espaco-2);
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta-media);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.visao:hover,
+.atual {
+  color: var(--cor-tinta);
+}
+
+.atual {
+  font-weight: var(--peso-seminegrito);
+}
+
+.contagem {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.atual .contagem {
+  font-weight: var(--peso-seminegrito);
+}
+
+.contagem.grave {
+  color: var(--cor-grave);
+}
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  background: var(--cor-folha);
+  border: var(--borda);
+}
+
+.resumo > div {
+  padding: var(--espaco-4) var(--espaco-4) 14px;
+}
+
+.resumo > div + div {
+  border-left: var(--borda);
+}
+
+.resumo dt {
+  font-size: var(--texto-numero-medio);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-numero);
+}
+
+.resumo dd {
+  margin: 0;
+  color: var(--cor-tinta-media);
+}
+
+.apoio {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.ferramentas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.busca,
+.filtro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--altura-controle);
+  padding: 0 var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+  color: var(--cor-parado);
+  white-space: nowrap;
+  cursor: not-allowed;
+}
+
+.busca {
+  justify-content: space-between;
+  width: 190px;
+}
+
+.filtro {
+  font-family: var(--fonte-numero);
+}
+
+.exportar {
+  margin-left: auto;
+  font-family: var(--fonte-texto);
+}
+
+.novaRegra {
+  display: flex;
+  align-items: center;
+  height: var(--altura-controle);
+  padding: 0 var(--espaco-3);
+  background: var(--cor-folha);
+  border: var(--borda-forte);
+  font-weight: var(--peso-medio);
+  color: var(--cor-tinta);
+  text-decoration: none;
+}
+
+.tabela {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--cor-folha);
+  border: var(--borda);
+}
+
+.tabela table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--texto-corpo);
+}
+
+.tabela th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px var(--espaco-3);
+  background: var(--cor-folha);
+  border-bottom: var(--borda-tinta);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta-media);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabela th:first-child,
+.tabela td:first-child {
+  padding-left: var(--espaco-4);
+}
+
+.tabela td {
+  height: var(--altura-linha-tabela);
+  padding: 0 var(--espaco-3);
+  border-bottom: var(--borda);
+}
+
+.gravidade {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-weight: var(--peso-medio);
+}
+
+.gravidade::before {
+  content: '';
+  width: var(--barra-gravidade);
+  height: 14px;
+}
+
+.gravidade.grave::before {
+  background: var(--cor-grave);
+}
+
+.gravidade.atencao::before {
+  background: var(--cor-atencao);
+}
+
+.gravidade.informativo::before {
+  background: var(--cor-estavel);
+}
+
+.nome {
+  font-weight: var(--peso-negrito);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 1px var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-seminegrito);
+  white-space: nowrap;
+}
+
+.aberto {
+  background: var(--cor-grave-fundo);
+  color: var(--cor-grave);
+}
+
+.em_atendimento {
+  background: var(--cor-atencao-fundo);
+  color: var(--cor-atencao);
+}
+
+.encerrado {
+  background: var(--cor-estavel-fundo);
+  color: var(--cor-estavel);
+}
+
+.acoes {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.acoes > * + * {
+  margin-left: var(--espaco-3);
+}
+
+.semDados {
+  color: var(--cor-tinta-media);
+  text-align: center;
+}

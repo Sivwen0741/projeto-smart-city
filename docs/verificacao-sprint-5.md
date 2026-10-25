@@ -47,3 +47,17 @@ de atenção e uma ocorrência inseridos só nesse banco.
 | **US01-6** | — | Tela: o alerta inserido no banco mudou a cor do SN-014 e a legenda em até 15 s, sem recarregar. | Verificado, só manual |
 
 A automação das verificações de tela continua no DT05.
+
+## US02 - Lista de alertas ativos ordenados por gravidade
+
+Mesclada em 24/10/2026. Suíte completa: 93 testes passando. Decisões em
+[`2026-10-24-lista-de-alertas.md`](decisoes/2026-10-24-lista-de-alertas.md). A verificação de tela
+foi feita no Chrome, numa cópia isolada da branch com quatro alertas e uma ocorrência inseridos só
+nesse banco.
+
+| Critério | Teste automatizado (`us02.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US02-1** | cada alerta traz gravidade, regra, dispositivo, bairro, medição com limite, detecção, órgão e situação<br>o órgão vem da ocorrência vinculada ao alerta<br>as visões separam ativos, em atendimento e encerrados hoje | Tela: colunas do protótipo; "Meio Ambiente" no alerta vinculado à ocorrência; "–" nos demais. | Verificado, tela manual |
+| **US02-2** | a ordem é grave, atenção e informativo, e o mais recente primeiro na mesma gravidade | Tela: grave no topo, atenção em seguida, do mais recente ao mais antigo. | Verificado |
+| **US02-3** | os indicadores contam ativos, graves sem reconhecimento, em atendimento, encerrados, tempo até o reconhecimento e 24 h<br>os dispositivos sem comunicação são contados por tipo | Tela: "3 alertas ativos agora, 1 grave sem reconhecimento", "12 min", "4 alertas nas últimas 24 h, 1 já encerrado", "2 dispositivos sem comunicação, 1 estação ambiental e 1 sensor de nível". | Verificado, tela manual |
+| **US02-4** | — (o painel usa a mesma rota da tela de alertas) | Tela: a fila do painel mostrou os mesmos três alertas na mesma ordem, com "3 · 1 grave". | Verificado, só manual |
