@@ -15,8 +15,11 @@ interface LeituraRecebida {
   unidade: string;
 }
 
+export const ORIGENS = ['mqtt', 'simulador'] as const;
+
 interface Mensagem {
   dataHora: Date;
+  origem: (typeof ORIGENS)[number];
   leituras: LeituraRecebida[];
 }
 
@@ -31,7 +34,8 @@ export function interpretar(conteudo: Buffer): Mensagem {
     throw new MensagemRecusada('conteúdo não é JSON');
   }
   if (typeof corpo !== 'object' || corpo === null || Array.isArray(corpo)) throw new MensagemRecusada('conteúdo não é um objeto');
-  const { dataHora, leituras = [] } = corpo as { dataHora?: unknown; leituras?: unknown };
+  const { dataHora, origem = 'mqtt', leituras = [] } = corpo as { dataHora?: unknown; origem?: unknown; leituras?: unknown };
+  if (!ORIGENS.includes(origem as never)) throw new MensagemRecusada(`origem desconhecida: ${String(origem)}`);
 
   let quando = new Date();
   if (dataHora !== undefined) {
@@ -42,6 +46,7 @@ export function interpretar(conteudo: Buffer): Mensagem {
 
   return {
     dataHora: quando,
+    origem: origem as Mensagem['origem'],
     leituras: leituras.map((l: { grandeza?: unknown; valor?: unknown; unidade?: unknown }) => {
       if (typeof l?.grandeza !== 'string' || !CODIGOS_GRANDEZA.includes(l.grandeza as Grandeza)) {
         throw new MensagemRecusada(`grandeza desconhecida: ${String(l?.grandeza)}`);
@@ -121,12 +126,12 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
       for (const l of mensagem.leituras) {
         const [{ id }] = await m.query(
           `INSERT INTO leitura (dispositivo_id, tipo_grandeza, valor, unidade, origem, data_hora)
-           VALUES ($1, $2, $3, $4, 'mqtt', $5) RETURNING id::text`,
-          [dispositivo.id, l.grandeza, l.valor, l.unidade, mensagem.dataHora],
+           VALUES ($1, $2, $3, $4, $5, $6) RETURNING id::text`,
+          [dispositivo.id, l.grandeza, l.valor, l.unidade, mensagem.origem, mensagem.dataHora],
         );
         gravadas.push({ id, dispositivoId: dispositivo.id, tipoGrandeza: l.grandeza, valor: l.valor, dataHora: mensagem.dataHora });
       }
-      await m.query(`UPDATE dispositivo SET ultima_comunicacao = now() WHERE id = $1`, [dispositivo.id]);
+      await m.query(`UPDATE dispositivo SET ultima_comunicacao = now(), origem_comunicacao = $2 WHERE id = $1`, [dispositivo.id, mensagem.origem]);
 
       // em manutenção a leitura fica no histórico, mas não gera alerta
       const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };

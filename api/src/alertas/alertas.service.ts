@@ -14,7 +14,8 @@ const CONSULTA = `
          a.valor_observado::float8 AS "valorObservado", a.operador, a.valor_limite::float8 AS "valorLimite",
          a.criticidade, a.situacao, a.data_hora AS "dataHora", a.data_reconhecimento AS "dataReconhecimento",
          u.nome AS "reconhecidoPor", a.providencia, a.data_encerramento AS "dataEncerramento",
-         og.nome AS orgao, a.ocorrencia_id::text AS "ocorrenciaId"
+         og.nome AS orgao, a.ocorrencia_id::text AS "ocorrenciaId",
+         COALESCE(l.origem = 'simulador', false) AS simulado
     FROM alerta a
     JOIN regra_alerta r ON r.id = a.regra_alerta_id
     JOIN dispositivo d ON d.id = a.dispositivo_id
@@ -22,7 +23,8 @@ const CONSULTA = `
     LEFT JOIN bairro b ON b.id = d.bairro_id
     LEFT JOIN usuario u ON u.id = a.usuario_reconhecimento_id
     LEFT JOIN ocorrencia o ON o.id = a.ocorrencia_id
-    LEFT JOIN orgao og ON og.id = o.orgao_id`;
+    LEFT JOIN orgao og ON og.id = o.orgao_id
+    LEFT JOIN leitura l ON l.id = a.leitura_id`;
 
 const FILTRO: Record<Visao, string> = {
   ativos: `a.situacao IN ('aberto', 'em_atendimento')`,

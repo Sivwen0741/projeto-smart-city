@@ -56,7 +56,8 @@ const CONSULTA = `
            WHERE a.dispositivo_id = d.id AND a.situacao IN ('aberto', 'em_atendimento')
            ORDER BY array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)
            LIMIT 1)                                AS "alertaAtivo",
-         ul.leitura                                AS "ultimaLeitura"
+         ul.leitura                                AS "ultimaLeitura",
+         COALESCE(d.origem_comunicacao = 'simulador', false) AS simulado
     FROM dispositivo d
     JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
     LEFT JOIN bairro b ON b.id = d.bairro_id
@@ -64,7 +65,7 @@ const CONSULTA = `
       SELECT nome FROM distrito WHERE ST_Contains(area, d.localizacao::geometry) ORDER BY id LIMIT 1
     ) di ON true
     LEFT JOIN LATERAL (
-      SELECT json_build_object('grandeza', tipo_grandeza, 'valor', valor::float8, 'unidade', unidade, 'dataHora', data_hora) AS leitura
+      SELECT json_build_object('grandeza', tipo_grandeza, 'valor', valor::float8, 'unidade', unidade, 'dataHora', data_hora, 'origem', origem) AS leitura
         FROM leitura WHERE dispositivo_id = d.id ORDER BY data_hora DESC LIMIT 1
     ) ul ON true`;
 

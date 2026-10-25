@@ -37,6 +37,7 @@ export class AlertaDto {
   @ApiPropertyOptional({ nullable: true }) dataEncerramento: string | null;
   @ApiPropertyOptional({ nullable: true, description: 'Órgão da ocorrência vinculada' }) orgao: string | null;
   @ApiPropertyOptional({ nullable: true }) ocorrenciaId: string | null;
+  @ApiProperty({ description: 'A leitura que disparou o alerta veio do simulador' }) simulado: boolean;
 }
 
 export class SemComunicacaoPorTipoDto {

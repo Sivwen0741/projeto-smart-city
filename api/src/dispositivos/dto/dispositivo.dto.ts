@@ -167,6 +167,7 @@ export class DispositivoDto {
   @ApiPropertyOptional({ enum: CRITICIDADES, nullable: true, description: 'Maior gravidade entre os alertas ativos do dispositivo' })
   alertaAtivo: (typeof CRITICIDADES)[number] | null;
   @ApiPropertyOptional({ type: () => UltimaLeituraDto, nullable: true }) ultimaLeitura: UltimaLeituraDto | null;
+  @ApiProperty({ description: 'A última comunicação veio do simulador da equipe (documento de visão, 9.2)' }) simulado: boolean;
 }
 
 export class UltimaLeituraDto {
@@ -174,6 +175,7 @@ export class UltimaLeituraDto {
   @ApiProperty({ example: 3.81 }) valor: number;
   @ApiPropertyOptional({ nullable: true, example: 'm' }) unidade: string | null;
   @ApiProperty() dataHora: string;
+  @ApiProperty({ example: 'simulador', enum: ['mqtt', 'simulador', 'open-meteo'] }) origem: string;
 }
 
 export class LeituraDto {
