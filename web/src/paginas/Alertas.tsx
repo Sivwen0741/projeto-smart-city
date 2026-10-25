@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medida, ResumoAlertas, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medida, ResumoAlertas, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
@@ -171,6 +171,7 @@ export function Alertas() {
                 <td>{a.orgao ?? '–'}</td>
                 <td>
                   <span className={`${estilos.etiqueta} ${estilos[a.situacao]}`}>{SITUACOES_ALERTA[a.situacao]}</span>
+                  {fixoAteReconhecer(a) && <span className={estilos.fixo}>fixo até reconhecer</span>}
                 </td>
                 <td className={estilos.acoes}>
                   {a.situacao === 'aberto' ? (

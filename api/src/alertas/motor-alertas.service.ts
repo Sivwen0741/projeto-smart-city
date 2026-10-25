@@ -39,17 +39,25 @@ export function foraDoLimite(valor: number, operador: string, limite: number): b
   }
 }
 
+export interface ResultadoAvaliacao {
+  novos: string[];
+  encerrados: string[];
+}
+
 @Injectable()
 export class MotorAlertasService {
-  async avaliar(m: EntityManager, leitura: LeituraGravada): Promise<string[]> {
+  async avaliar(m: EntityManager, leitura: LeituraGravada): Promise<ResultadoAvaliacao> {
     const regras: Regra[] = await m.query(
       `SELECT id::text AS id, operador, valor_limite::float8 AS "valorLimite", duracao_minutos AS "duracaoMinutos", criticidade
          FROM regra_alerta WHERE ativa AND tipo_grandeza = $1`,
       [leitura.tipoGrandeza],
     );
-    const emitidos: string[] = [];
+    const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
     for (const regra of regras) {
-      if (!foraDoLimite(leitura.valor, regra.operador, regra.valorLimite)) continue;
+      if (!foraDoLimite(leitura.valor, regra.operador, regra.valorLimite)) {
+        resultado.encerrados.push(...(await this.encerrarNormalizados(m, leitura, regra.id)));
+        continue;
+      }
       if (!(await this.duracaoCumprida(m, leitura, regra))) continue;
       const [alerta] = await m.query(
         `INSERT INTO alerta (regra_alerta_id, dispositivo_id, leitura_id, valor_observado, operador, valor_limite, criticidade, situacao)
@@ -58,9 +66,30 @@ export class MotorAlertasService {
          RETURNING id::text`,
         [regra.id, leitura.dispositivoId, leitura.id, leitura.valor, regra.operador, regra.valorLimite, regra.criticidade],
       );
-      if (alerta) emitidos.push(alerta.id);
+      if (alerta) resultado.novos.push(alerta.id);
     }
-    return emitidos;
+    return resultado;
+  }
+
+  // us28: sem reconhecimento, só o grave continua ativo quando a leitura volta ao normal.
+  // a condição é a copiada no disparo, para a edição da regra não mudar o destino do alerta
+  private async encerrarNormalizados(m: EntityManager, leitura: LeituraGravada, regraId: string): Promise<string[]> {
+    // em update, o driver do postgres devolve [linhas, quantidade]
+    const [encerrados]: [{ id: string }[], number] = await m.query(
+      `UPDATE alerta SET situacao = 'encerrado', data_encerramento = now()
+        WHERE regra_alerta_id = $1 AND dispositivo_id = $2 AND situacao = 'aberto' AND criticidade <> 'grave'
+          AND NOT CASE operador
+                WHEN '>' THEN $3::numeric > valor_limite
+                WHEN '>=' THEN $3::numeric >= valor_limite
+                WHEN '<' THEN $3::numeric < valor_limite
+                WHEN '<=' THEN $3::numeric <= valor_limite
+                WHEN '=' THEN $3::numeric = valor_limite
+                ELSE $3::numeric <> valor_limite
+              END
+       RETURNING id::text`,
+      [regraId, leitura.dispositivoId, leitura.valor],
+    );
+    return encerrados.map((a) => a.id);
   }
 
   // a condição conta desde a primeira leitura da sequência ininterrupta fora do limite

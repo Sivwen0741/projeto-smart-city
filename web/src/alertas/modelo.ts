@@ -37,6 +37,7 @@ export interface ResumoAlertas {
   tempoMedioReconhecimentoMinutos: number | null;
   ultimas24h: number;
   encerradosUltimas24h: number;
+  graveMaisAntigo: Alerta | null;
   semComunicacao: number;
   semComunicacaoPorTipo: { tipo: string; quantidade: number }[];
 }
@@ -57,6 +58,8 @@ export const medida = (valor: number, unidade: string | null, casas = casasDe(va
 
 export const limite = (a: Pick<Alerta, 'valorObservado' | 'valorLimite' | 'unidade'>) =>
   medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado), casasDe(a.valorLimite)));
+
+export const fixoAteReconhecer = (a: Pick<Alerta, 'criticidade' | 'situacao'>) => a.criticidade === 'grave' && a.situacao === 'aberto';
 
 export const lugar = (a: Pick<Alerta, 'endereco' | 'bairro'>) => [a.endereco, a.bairro].filter(Boolean).join(' · ');
 

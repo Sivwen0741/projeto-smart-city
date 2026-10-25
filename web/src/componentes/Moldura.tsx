@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { alertasApi } from '../alertas/modelo';
+import { alertasApi, ResumoAlertas } from '../alertas/modelo';
+import { FaixaGrave } from './FaixaGrave';
 import { useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
@@ -29,13 +30,13 @@ export const ABAS: Aba[] = [
 const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
 const REGISTRAR_OCORRENCIA: Previsao = { historia: 'US05', sprint: 'sprint 5' };
 
-function useAlertasAtivos() {
-  const [ativos, setAtivos] = useState<number | null>(null);
+function useResumoAlertas() {
+  const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
   const carregar = useCallback(
     () =>
       alertasApi
         .resumo()
-        .then((r) => setAtivos(r.ativos))
+        .then(setResumo)
         .catch(() => undefined),
     [],
   );
@@ -45,7 +46,7 @@ function useAlertasAtivos() {
     const intervalo = setInterval(carregar, 15_000);
     return () => clearInterval(intervalo);
   }, [carregar]);
-  return ativos;
+  return resumo;
 }
 
 function useAgora() {
@@ -60,7 +61,8 @@ function useAgora() {
 export function Moldura() {
   const { usuario, sair } = useSessao();
   const agora = useAgora();
-  const alertasAtivos = useAlertasAtivos();
+  const resumo = useResumoAlertas();
+  const alertasAtivos = resumo?.ativos ?? null;
   const data = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
     .format(agora)
     .replace(/[.,]/g, '')
@@ -127,6 +129,10 @@ export function Moldura() {
           </Botao>
         </div>
       </nav>
+
+      {resumo && resumo.gravesSemReconhecimento > 0 && resumo.graveMaisAntigo && (
+        <FaixaGrave quantidade={resumo.gravesSemReconhecimento} maisAntigo={resumo.graveMaisAntigo} />
+      )}
 
       <main className={estilos.conteudo}>
         <Outlet />

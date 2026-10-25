@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { connect, MqttClient } from 'mqtt';
 import { DataSource } from 'typeorm';
 import { EventosAlertasService } from '../alertas/eventos-alertas.service';
-import { LeituraGravada, MotorAlertasService } from '../alertas/motor-alertas.service';
+import { LeituraGravada, MotorAlertasService, ResultadoAvaliacao } from '../alertas/motor-alertas.service';
 import { grandezasMedidas } from '../dispositivos/atributos';
 import { CODIGOS_GRANDEZA, Grandeza, GRANDEZAS } from '../grandezas';
 
@@ -91,18 +91,19 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
   private async receber(topico: string, conteudo: Buffer): Promise<void> {
     const codigo = topico.split('/')[2];
     try {
-      const alertas = await this.gravar(codigo, interpretar(conteudo));
-      if (alertas.length > 0) {
-        this.logger.log(`alertas emitidos para ${codigo}: ${alertas.join(', ')}`);
-        await this.eventos.novos(alertas).catch((erro) => this.logger.error(`falha ao avisar as telas: ${erro.message}`));
-      }
+      const { novos, encerrados } = await this.gravar(codigo, interpretar(conteudo));
+      if (novos.length > 0) this.logger.log(`alertas emitidos para ${codigo}: ${novos.join(', ')}`);
+      if (encerrados.length > 0) this.logger.log(`alertas encerrados por normalização em ${codigo}: ${encerrados.join(', ')}`);
+      await Promise.all([this.eventos.novos(novos), ...encerrados.map((id) => this.eventos.atualizado(id))]).catch((erro) =>
+        this.logger.error(`falha ao avisar as telas: ${erro.message}`),
+      );
     } catch (erro) {
       if (erro instanceof MensagemRecusada) this.logger.warn(`mensagem descartada de ${codigo}: ${erro.message}`);
       else this.logger.error(`falha ao gravar mensagem de ${codigo}: ${(erro as Error).message}`);
     }
   }
 
-  async gravar(codigo: string, mensagem: Mensagem): Promise<string[]> {
+  async gravar(codigo: string, mensagem: Mensagem): Promise<ResultadoAvaliacao> {
     return this.fonte.transaction(async (m) => {
       const [dispositivo] = await m.query(
         `SELECT d.id::text AS id, d.estado, t.categoria, d.atributos_especificos AS atributos
@@ -128,10 +129,14 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
       await m.query(`UPDATE dispositivo SET ultima_comunicacao = now() WHERE id = $1`, [dispositivo.id]);
 
       // em manutenção a leitura fica no histórico, mas não gera alerta
-      if (dispositivo.estado !== 'ativo') return [];
-      const alertas: string[] = [];
-      for (const leitura of gravadas) alertas.push(...(await this.motor.avaliar(m, leitura)));
-      return alertas;
+      const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
+      if (dispositivo.estado !== 'ativo') return resultado;
+      for (const leitura of gravadas) {
+        const { novos, encerrados } = await this.motor.avaliar(m, leitura);
+        resultado.novos.push(...novos);
+        resultado.encerrados.push(...encerrados);
+      }
+      return resultado;
     });
   }
 }

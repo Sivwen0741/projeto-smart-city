@@ -104,3 +104,7 @@
   padding: var(--espaco-4);
   color: var(--cor-tinta-media);
 }
+
+.fixo {
+  color: var(--cor-grave);
+}

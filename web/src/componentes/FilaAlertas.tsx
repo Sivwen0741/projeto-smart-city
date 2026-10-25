@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, alertasApi, limite, lugar, medida } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medida } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
 import { ABRIR_OCORRENCIA, RECONHECER } from '../paginas/Alertas';
 import { Botao } from './Botao';
@@ -53,7 +53,10 @@ export function FilaAlertas() {
           <li key={a.id} className={`${estilos.item} ${estilos[a.criticidade]}`}>
             <div className={estilos.linha}>
               <span className={estilos.nome}>{a.regra}</span>
-              <span className={estilos.quando}>{tempoDesde(a.dataHora, agora)}</span>
+              <span className={estilos.quando}>
+                {fixoAteReconhecer(a) && <span className={estilos.fixo}>fixo · </span>}
+                {tempoDesde(a.dataHora, agora)}
+              </span>
             </div>
             <div className={estilos.lugar}>{lugar(a) || a.dispositivo}</div>
             <div className={estilos.linha}>

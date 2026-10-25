@@ -27,7 +27,15 @@ const FILTRO: Record<Visao, string> = {
   encerrados_hoje: `a.situacao = 'encerrado' AND a.data_encerramento >= date_trunc('day', now())`,
 };
 
+// us28: o grave sem reconhecimento fica acima de tudo, inclusive de um grave já em atendimento
+const GRAVE_SEM_RECONHECIMENTO = `(a.criticidade = 'grave' AND a.situacao = 'aberto')`;
+
 export const ORDEM_GRAVIDADE = `array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)`;
+
+const comUnidade = (a: Omit<AlertaDto, 'unidade'>): AlertaDto => ({
+  ...a,
+  unidade: GRANDEZAS[a.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null,
+});
 
 @Injectable()
 export class AlertasService {
@@ -35,14 +43,14 @@ export class AlertasService {
 
   async listar(visao: Visao = 'ativos'): Promise<AlertaDto[]> {
     const alertas: Omit<AlertaDto, 'unidade'>[] = await this.fonte.query(
-      `${CONSULTA} WHERE ${FILTRO[visao]} ORDER BY ${ORDEM_GRAVIDADE}, a.data_hora DESC, a.id DESC`,
+      `${CONSULTA} WHERE ${FILTRO[visao]} ORDER BY ${GRAVE_SEM_RECONHECIMENTO} DESC, ${ORDEM_GRAVIDADE}, a.data_hora DESC, a.id DESC`,
     );
-    return alertas.map((a) => ({ ...a, unidade: GRANDEZAS[a.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null }));
+    return alertas.map(comUnidade);
   }
 
   async buscar(id: string): Promise<AlertaDto | null> {
     const [alerta] = await this.fonte.query(`${CONSULTA} WHERE a.id = $1`, [id]);
-    return alerta ? { ...alerta, unidade: GRANDEZAS[alerta.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null } : null;
+    return alerta ? comUnidade(alerta) : null;
   }
 
   async resumo(): Promise<ResumoAlertasDto> {
@@ -64,8 +72,12 @@ export class AlertasService {
         WHERE ${SITUACAO} = 'sem_comunicacao'
         GROUP BY t.nome ORDER BY count(*) DESC, t.nome`,
     );
+    const [maisAntigo] = await this.fonte.query(
+      `${CONSULTA} WHERE ${GRAVE_SEM_RECONHECIMENTO} ORDER BY a.data_hora, a.id LIMIT 1`,
+    );
     return {
       ...contagens,
+      graveMaisAntigo: maisAntigo ? comUnidade(maisAntigo) : null,
       semComunicacao: porTipo.reduce((soma, p) => soma + p.quantidade, 0),
       semComunicacaoPorTipo: porTipo,
     };
