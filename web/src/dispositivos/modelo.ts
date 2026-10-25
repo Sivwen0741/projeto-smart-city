@@ -50,7 +50,8 @@ export interface Dispositivo {
   limiteComunicacaoSegundos: number;
   atributos: Record<string, unknown>;
   alertaAtivo: Criticidade | null;
-  ultimaLeitura: { grandeza: string; valor: number; unidade: string | null; dataHora: string } | null;
+  ultimaLeitura: { grandeza: string; valor: number; unidade: string | null; dataHora: string; origem: string } | null;
+  simulado: boolean;
 }
 
 export type Criticidade = 'grave' | 'atencao' | 'informativo';

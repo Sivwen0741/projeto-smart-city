@@ -7,6 +7,7 @@ import { Botao } from './Botao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './FilaAlertas.module.css';
 import { Previsto, textoPrevisao } from './Previsto';
+import { Simulado } from './Simulado';
 
 const ATUALIZACAO_MS = 15_000;
 
@@ -58,7 +59,10 @@ export function FilaAlertas() {
                 {tempoDesde(a.dataHora, agora)}
               </span>
             </div>
-            <div className={estilos.lugar}>{lugar(a) || a.dispositivo}</div>
+            <div className={estilos.lugar}>
+              {lugar(a) || a.dispositivo}
+              {a.simulado && <Simulado />}
+            </div>
             <div className={estilos.linha}>
               <span className={`${estilos.medicao} numero`}>
                 {medida(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>

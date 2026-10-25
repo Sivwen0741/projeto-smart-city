@@ -1,0 +1,19 @@
+.simulado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-1);
+  margin-left: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-media);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.simulado::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border: 1px dashed var(--cor-tinta-media);
+}

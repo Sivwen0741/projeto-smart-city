@@ -241,3 +241,12 @@
   border: 2px solid var(--cor-tinta);
   border-radius: 50%;
 }
+
+.simulado {
+  margin-left: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-style: normal;
+  font-weight: var(--peso-regular);
+  color: var(--cor-cena-apoio);
+}

@@ -29,6 +29,7 @@ export interface Alerta {
   dataEncerramento: string | null;
   orgao: string | null;
   ocorrenciaId: string | null;
+  simulado: boolean;
 }
 
 export interface ResumoAlertas {

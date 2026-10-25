@@ -73,7 +73,7 @@ async function publicar(): Promise<void> {
   const dataHora = new Date().toISOString();
   for (const s of SIMULADOS) {
     const leituras = Object.entries(s.leituras).map(([grandeza, gerar]) => ({ grandeza, valor: gerar(minuto) }));
-    await cliente.publishAsync(`scoc/dispositivos/${s.codigo}/leituras`, JSON.stringify({ dataHora, leituras }), { qos: 1 });
+    await cliente.publishAsync(`scoc/dispositivos/${s.codigo}/leituras`, JSON.stringify({ dataHora, origem: 'simulador', leituras }), { qos: 1 });
   }
 }
 

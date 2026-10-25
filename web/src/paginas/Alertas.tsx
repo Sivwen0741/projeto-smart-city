@@ -4,6 +4,7 @@ import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medid
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
+import { Simulado } from '../componentes/Simulado';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './Alertas.module.css';
 import { PainelReconhecimento } from './PainelReconhecimento';
@@ -175,7 +176,10 @@ export function Alertas() {
                     <div className={estilos.nome}>{a.regra}</div>
                     <div className={estilos.apoio}>{lugar(a)}</div>
                   </td>
-                  <td>{a.dispositivo}</td>
+                  <td>
+                    {a.dispositivo}
+                    {a.simulado && <Simulado />}
+                  </td>
                   <td className="numero">
                     <strong>{medida(a.valorObservado, a.unidade)}</strong>{' '}
                     <span className={estilos.apoio}>limite {limite(a)}</span>

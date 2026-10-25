@@ -265,6 +265,29 @@ describe('TT02 camada de ingestão e motor de alertas', () => {
     expect((await alertas(regraId, sensor.id)).map((a: { situacao: string }) => a.situacao)).toEqual(['encerrado', 'aberto']);
   });
 
+  it('TT02-9 a leitura do simulador é gravada com origem simulador e o dispositivo e o alerta aparecem como simulados', async () => {
+    const regraId = await regra({ valorLimite: 100 });
+    const sensor = await dispositivo('Sensor de nível', { tipoGrandeza: 'vazao' });
+    const real = await dispositivo('Sensor de nível', { tipoGrandeza: 'vazao' });
+    await publicar(sensor.codigo, { origem: 'simulador', leituras: [{ grandeza: 'vazao', valor: 150 }] });
+    await publicar(real.codigo, { leituras: [{ grandeza: 'vazao', valor: 150 }] });
+    await aguardarProcessamento();
+    expect((await leituras(sensor.id))[0].origem).toBe('simulador');
+    expect((await leituras(real.id))[0].origem).toBe('mqtt');
+    const lerDispositivo = async (id: string) => (await autenticado(http().get(`/api/dispositivos/${id}`)).expect(200)).body;
+    expect(await lerDispositivo(sensor.id)).toMatchObject({ simulado: true, ultimaLeitura: { origem: 'simulador' } });
+    expect((await lerDispositivo(real.id)).simulado).toBe(false);
+    const ativos = (await autenticado(http().get('/api/alertas')).expect(200)).body;
+    const doRegra = (id: string) => ativos.find((a: { regraId: string; dispositivoId: string }) => a.regraId === regraId && a.dispositivoId === id);
+    expect(doRegra(sensor.id).simulado).toBe(true);
+    expect(doRegra(real.id).simulado).toBe(false);
+
+    const avisos = jest.spyOn(Logger.prototype, 'warn');
+    await publicar(sensor.codigo, { origem: 'outra', leituras: [] });
+    await aguardarProcessamento();
+    expect(avisos.mock.calls.map(([m]) => String(m))).toContain(`mensagem descartada de ${sensor.codigo}: origem desconhecida: outra`);
+  });
+
   it('TT02-7 depois de uma queda da conexão com o broker, reconecta sozinho e volta a gravar', async () => {
     const ingestao = app.get(IngestaoService) as unknown as { cliente: MqttClient };
     const sensor = await dispositivo('Sensor de nível', { tipoGrandeza: 'vazao' });

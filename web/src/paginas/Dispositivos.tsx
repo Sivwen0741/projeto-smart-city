@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
+import { Simulado } from '../componentes/Simulado';
 import {
   Dispositivo,
   dispositivosApi,
@@ -161,6 +162,7 @@ export function Dispositivos() {
                     <button type="button" className={estilos.abrir} onClick={() => setPainel({ modo: 'edicao', dispositivo: d })}>
                       {d.identificador}
                     </button>
+                    {d.simulado && <Simulado />}
                   </td>
                   <td>{d.tipo}</td>
                   <td>

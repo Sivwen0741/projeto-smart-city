@@ -35,6 +35,7 @@ Previsão por inteligência artificial permanece no backlog, fora da entrega atu
 | [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf) | Retrospectiva, backlog revisado e planejamento da Sprint 4 |
 | [`docs/Documento_de_Visao.pdf`](docs/Documento_de_Visao.pdf) | Objetivos, escopo e fora do escopo do projeto |
 | [`docs/verificacao-sprint-4.md`](docs/verificacao-sprint-4.md) | Critérios de aceite da Sprint 4 e o teste ou a evidência de cada um |
+| [`docs/verificacao-sprint-5.md`](docs/verificacao-sprint-5.md), [`docs/verificacao-sprint-6.md`](docs/verificacao-sprint-6.md) | O mesmo para as Sprints 5 e 6 |
 | [`docs/decisoes/`](docs/decisoes/) | Registros das decisões de arquitetura e de modelagem |
 
 Os arquivos `.drawio` na mesma pasta são as versões editáveis dos diagramas, abertas em [diagrams.net](https://app.diagrams.net).
@@ -176,7 +177,8 @@ avalia as regras de alerta. Uma mensagem `{}` é só sinal de vida.
 O serviço `simulador` publica, a cada 30 s, as leituras dos dispositivos de exemplo, com
 episódios que cruzam os limites das regras de exemplo. Cerca de 13 minutos depois da subida, a
 cheia simulada do Arroio Olarias gera o primeiro alerta grave. EA-07 e SN-027 não publicam e
-ficam sem comunicação de propósito. Os episódios estão em
+ficam sem comunicação de propósito. As mensagens levam `"origem": "simulador"`, e a tela marca
+esses dispositivos e os alertas que eles disparam como "simulado". Os episódios estão em
 [`docs/decisoes/2026-10-24-ingestao-mqtt.md`](docs/decisoes/2026-10-24-ingestao-mqtt.md).
 
 Para publicar uma leitura à mão, com o ambiente de pé:
@@ -199,7 +201,7 @@ docker compose --profile teste run --rm --build api-teste
 
 Cada teste traz no nome o número do critério de aceite que verifica (por exemplo, `TT01-3`). A
 relação entre critérios e testes está em
-[`docs/verificacao-sprint-4.md`](docs/verificacao-sprint-4.md).
+[`docs/verificacao-sprint-4.md`](docs/verificacao-sprint-4.md) e nos arquivos das sprints seguintes.
 
 O banco de teste continua de pé depois do comando, e uma nova rodada reaproveita os dados da
 anterior. Para rodar contra um banco vazio, apague-o antes:
