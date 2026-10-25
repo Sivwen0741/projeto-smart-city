@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { alertasApi } from '../alertas/modelo';
 import { useSessao } from '../sessao/sessao';
+import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
 import { Marca } from './Marca';
 import estilos from './Moldura.module.css';
@@ -30,20 +31,20 @@ const REGISTRAR_OCORRENCIA: Previsao = { historia: 'US05', sprint: 'sprint 5' };
 
 function useAlertasAtivos() {
   const [ativos, setAtivos] = useState<number | null>(null);
-  useEffect(() => {
-    let vivo = true;
-    const carregar = () =>
+  const carregar = useCallback(
+    () =>
       alertasApi
         .resumo()
-        .then((r) => vivo && setAtivos(r.ativos))
-        .catch(() => undefined);
+        .then((r) => setAtivos(r.ativos))
+        .catch(() => undefined),
+    [],
+  );
+  useAlertasAoVivo(carregar);
+  useEffect(() => {
     carregar();
     const intervalo = setInterval(carregar, 15_000);
-    return () => {
-      vivo = false;
-      clearInterval(intervalo);
-    };
-  }, []);
+    return () => clearInterval(intervalo);
+  }, [carregar]);
   return ativos;
 }
 

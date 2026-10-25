@@ -7,10 +7,17 @@ import { Mapa } from './paginas/Mapa';
 import { Painel } from './paginas/Painel';
 import { Regras } from './paginas/Regras';
 import { useSessao } from './sessao/sessao';
+import { ProvedorTempoReal } from './tempo-real/tempoReal';
 
 function Protegida() {
   const { usuario } = useSessao();
-  return usuario ? <Moldura /> : <Navigate to="/entrar" replace />;
+  return usuario ? (
+    <ProvedorTempoReal>
+      <Moldura />
+    </ProvedorTempoReal>
+  ) : (
+    <Navigate to="/entrar" replace />
+  );
 }
 
 export function Rotas() {
