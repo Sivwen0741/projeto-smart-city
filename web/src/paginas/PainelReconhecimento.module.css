@@ -1,0 +1,166 @@
+.painel {
+  composes: painel from './FormularioDispositivo.module.css';
+}
+
+.cabecalho {
+  composes: cabecalho from './FormularioDispositivo.module.css';
+}
+
+.formulario {
+  composes: formulario from './FormularioDispositivo.module.css';
+}
+
+.corpo {
+  composes: corpo from './FormularioDispositivo.module.css';
+  align-items: flex-start;
+}
+
+.corpo > * {
+  align-self: stretch;
+}
+
+.rodape {
+  composes: rodape from './FormularioDispositivo.module.css';
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.nome {
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-negrito);
+}
+
+.gravidade {
+  display: inline-flex !important;
+  align-self: flex-start !important;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-weight: var(--peso-medio);
+}
+
+.gravidade::before {
+  content: '';
+  width: var(--barra-gravidade);
+  height: 14px;
+}
+
+.gravidade.grave::before {
+  background: var(--cor-grave);
+}
+
+.gravidade.atencao::before {
+  background: var(--cor-atencao);
+}
+
+.gravidade.informativo::before {
+  background: var(--cor-estavel);
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 6px 10px;
+  margin: 0;
+  padding: 10px var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+}
+
+.ficha dt {
+  font-family: var(--fonte-numero);
+  color: var(--cor-tinta-media);
+}
+
+.ficha dd {
+  margin: 0;
+}
+
+.medida {
+  font-size: var(--texto-campo);
+  font-weight: var(--peso-seminegrito);
+}
+
+.apoio {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.area {
+  min-height: 84px;
+  padding: 7px 9px;
+  background: var(--cor-folha);
+  border: var(--borda-forte);
+  border-radius: var(--raio);
+  font-size: var(--texto-padrao);
+  line-height: var(--entrelinha-corpo);
+  resize: vertical;
+}
+
+.area[aria-invalid='true'] {
+  border-color: var(--cor-grave);
+}
+
+.erro {
+  font-size: var(--texto-apoio);
+  color: var(--cor-grave);
+}
+
+.previsto {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.nota {
+  padding: var(--espaco-2) 10px;
+  background: var(--cor-folha-2);
+  border: var(--borda);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.recusa {
+  padding: var(--espaco-2) 10px;
+  background: var(--cor-grave-fundo);
+  border: 1px solid var(--cor-grave-borda);
+  font-size: var(--texto-apoio);
+  color: var(--cor-grave);
+}
+
+.etiqueta {
+  align-self: flex-start !important;
+  padding: 1px var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-seminegrito);
+}
+
+.em_atendimento {
+  background: var(--cor-atencao-fundo);
+  color: var(--cor-atencao);
+}
+
+.encerrado {
+  background: var(--cor-estavel-fundo);
+  color: var(--cor-estavel);
+}
+
+.aberto {
+  background: var(--cor-grave-fundo);
+  color: var(--cor-grave);
+}

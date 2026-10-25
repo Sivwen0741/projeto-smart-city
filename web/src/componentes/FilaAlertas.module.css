@@ -108,3 +108,15 @@
 .fixo {
   color: var(--cor-grave);
 }
+
+.reconhecer {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 var(--espaco-3);
+  background: var(--cor-tinta);
+  color: var(--cor-sobre-tinta);
+  font-size: var(--texto-pequeno);
+  font-weight: var(--peso-medio);
+  text-decoration: none;
+}

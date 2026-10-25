@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { Autor } from '../dispositivos/dispositivos.service';
+import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { SITUACAO } from '../dispositivos/dispositivos.service';
 import { GRANDEZAS } from '../grandezas';
 import { AlertaDto, ResumoAlertasDto, Visao } from './dto/alerta.dto';
@@ -32,6 +34,11 @@ const GRAVE_SEM_RECONHECIMENTO = `(a.criticidade = 'grave' AND a.situacao = 'abe
 
 export const ORDEM_GRAVIDADE = `array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)`;
 
+const hora = (instante: string | Date | null) =>
+  instante
+    ? new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }).format(new Date(instante))
+    : '';
+
 const comUnidade = (a: Omit<AlertaDto, 'unidade'>): AlertaDto => ({
   ...a,
   unidade: GRANDEZAS[a.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null,
@@ -39,7 +46,10 @@ const comUnidade = (a: Omit<AlertaDto, 'unidade'>): AlertaDto => ({
 
 @Injectable()
 export class AlertasService {
-  constructor(private readonly fonte: DataSource) {}
+  constructor(
+    private readonly fonte: DataSource,
+    private readonly log: LogAtividadeService,
+  ) {}
 
   async listar(visao: Visao = 'ativos'): Promise<AlertaDto[]> {
     const alertas: Omit<AlertaDto, 'unidade'>[] = await this.fonte.query(
@@ -51,6 +61,43 @@ export class AlertasService {
   async buscar(id: string): Promise<AlertaDto | null> {
     const [alerta] = await this.fonte.query(`${CONSULTA} WHERE a.id = $1`, [id]);
     return alerta ? comUnidade(alerta) : null;
+  }
+
+  // o update condicional garante um só reconhecimento, mesmo com dois operadores ao mesmo tempo
+  async reconhecer(id: string, providencia: string, autor: Autor): Promise<AlertaDto> {
+    if (!/^\d+$/.test(id)) throw new NotFoundException('Alerta não encontrado.');
+    const reconhecido = await this.fonte.transaction(async (m) => {
+      const [linhas]: [{ id: string }[], number] = await m.query(
+        `UPDATE alerta
+            SET situacao = 'em_atendimento', usuario_reconhecimento_id = $2, data_reconhecimento = now(), providencia = $3
+          WHERE id = $1 AND situacao = 'aberto'
+          RETURNING id::text`,
+        [id, autor.usuarioId, providencia],
+      );
+      if (linhas.length === 0) return false;
+      await this.log.registrar(
+        {
+          usuarioId: autor.usuarioId,
+          acao: 'reconhecimento_alerta',
+          entidadeAfetada: 'alerta',
+          entidadeId: id,
+          detalhes: { providencia },
+          enderecoIp: autor.enderecoIp,
+        },
+        m,
+      );
+      return true;
+    });
+    const alerta = await this.buscar(id);
+    if (!alerta) throw new NotFoundException('Alerta não encontrado.');
+    if (!reconhecido) {
+      const mensagem =
+        alerta.situacao === 'encerrado'
+          ? 'Este alerta já foi encerrado. A sua providência não foi gravada.'
+          : `Este alerta já foi reconhecido por ${alerta.reconhecidoPor ?? 'outro operador'} às ${hora(alerta.dataReconhecimento)}. A sua providência não foi gravada.`;
+      throw new ConflictException({ statusCode: 409, error: 'Conflict', message: mensagem, alerta });
+    }
+    return alerta;
   }
 
   async resumo(): Promise<ResumoAlertasDto> {

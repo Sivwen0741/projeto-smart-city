@@ -2,6 +2,7 @@ export class ErroApi extends Error {
   constructor(
     readonly status: number,
     mensagem: string,
+    readonly corpo?: unknown,
   ) {
     super(mensagem);
   }
@@ -26,7 +27,7 @@ export async function api<T>(caminho: string, opcoes: RequestInit = {}): Promise
   if (!resposta.ok) {
     if (resposta.status === 401 && tokenAtual) aoExpirar?.();
     const mensagem = Array.isArray(corpo?.message) ? corpo.message[0] : corpo?.message;
-    throw new ErroApi(resposta.status, mensagem ?? 'Não foi possível falar com o servidor. Tente de novo.');
+    throw new ErroApi(resposta.status, mensagem ?? 'Não foi possível falar com o servidor. Tente de novo.', corpo);
   }
   return corpo as T;
 }
