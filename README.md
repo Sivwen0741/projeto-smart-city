@@ -162,7 +162,7 @@ Todas as rotas, exceto o login e a verificação de saúde, exigem token.
    Postman, use a aba **Authorization**, tipo **Bearer Token**.
 
 Para o Postman, há uma coleção com todas as rotas e os testes de cada uma em
-[`docs/postman/`](docs/postman/). Importe a coleção, preencha a variável `senha` com a
+[`docs/postman/scoc.postman_collection.json`](docs/postman/scoc.postman_collection.json). Importe a coleção, preencha a variável `senha` com a
 `ADMIN_SENHA` do `.env` e use **Run collection**: o login guarda o token para as demais.
 
 A primeira subida carrega dispositivos e regras de exemplo.

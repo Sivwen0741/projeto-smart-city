@@ -116,3 +116,28 @@ Chrome, numa cópia isolada da branch, com o simulador parado.
 | **US05-4** | sem categoria, sem gravidade ou sem localização é recusado com mensagem<br>ponto fora do município é recusado<br>órgão e descrição são opcionais | Tela: envio vazio marcou "Escolha a categoria.", "Escolha a gravidade." e "Marque a localização no mapa." | Verificado, tela manual |
 | **US05-5** | o alerta fica vinculado e a origem é alerta<br>alerta já vinculado ou inexistente não abre outra ocorrência | Tela: reconhecimento com "Abrir ocorrência com este alerta" abriu o formulário preenchido; registrado como 2026-10-0002, "Origem: Alerta de EA-02", e a linha do alerta passou a mostrar "Defesa Civil". | Verificado, tela manual |
 | **US05-6** | o registro gera entrada no log de atividades<br>a ocorrência nova chega às telas e aparece na lista do mapa | Tela: o anel da ocorrência apareceu no mapa do painel ao registrar, com a contagem na barra; o plural errado ("1 ocorrências abertas") foi corrigido antes do merge. | Verificado, tela manual |
+
+## Fechamento da Sprint 5 (24/10/2026)
+
+- **Ensaio da `main`:** clone limpo depois do merge da US05 (commit `9433ef5`), subido numa cópia
+  isolada: as seis migrações rodaram, a carga inicial saiu como no README, web, `/api/health` e
+  `/api/docs` responderam 200, o tempo real e a ingestão conectaram, e o simulador gerou o
+  primeiro alerta grave 2 min depois da subida.
+- **Postman:** a coleção acumulada (`docs/postman/scoc.postman_collection.json`, 38 requisições,
+  70 verificações) passou sem falhas contra esse clone. Execução pelo Newman, não no aplicativo.
+  Evidência em [`postman/evidencia-2026-10-24-sprint-5.md`](postman/evidencia-2026-10-24-sprint-5.md).
+- **DER:** `docs/diagrama-der.drawio` e `.png` regenerados com `ocorrencia.endereco`,
+  `ocorrencia.origem` e `alerta.data_encerramento` (os índices e as restrições estão em
+  [`2026-10-24-ajustes-der-sprint-5.md`](decisoes/2026-10-24-ajustes-der-sprint-5.md)). O PNG
+  saiu em escala 1, como o diagrama de classes no DT01.
+- **Suíte completa:** 124 testes e2e passando (68 da Sprint 4 e 56 da Sprint 5).
+
+## Pendências da Sprint 5
+
+| Origem | Pendência | Encaminhamento |
+|---|---|---|
+| Definition of Done, 1º item | Nenhum item da Sprint 5 teve revisão de outro integrante. | DT06 |
+| Definition of Done, 4º item | Validação no Postman feita pelo Newman, não no aplicativo. | Abrir a coleção no aplicativo, se a revisão exigir |
+| Verificações de tela | Os critérios de tela foram verificados manualmente pelo autor. | DT05 |
+| Modelo de dados | `leitura` continua sem particionamento por período. | Quando houver volume real |
+| `Modelagem_Estrutural_e_de_Dados.pdf` | Sem as colunas e a especialização novas das Sprints 4 e 5. | Responsável pelo documento |
