@@ -110,6 +110,8 @@ services:
       <<: *conexao
       DB_HOST: db-teste
       MQTT_URL: mqtt://mosquitto-teste:1883
+      # os testes disparam a verificação da us07 por conta própria
+      VERIFICACAO_COMUNICACAO_SEGUNDOS: "0"
     depends_on:
       db-teste:
         condition: service_healthy

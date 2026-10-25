@@ -5,7 +5,7 @@ import { DataSource } from 'typeorm';
 import { EventosAlertasService } from '../alertas/eventos-alertas.service';
 import { LeituraGravada, MotorAlertasService, ResultadoAvaliacao } from '../alertas/motor-alertas.service';
 import { grandezasMedidas } from '../dispositivos/atributos';
-import { CODIGOS_GRANDEZA, Grandeza, GRANDEZAS } from '../grandezas';
+import { CODIGOS_GRANDEZA, SEM_COMUNICACAO, Grandeza, GRANDEZAS } from '../grandezas';
 
 export const TOPICO_LEITURAS = 'scoc/dispositivos/+/leituras';
 
@@ -133,8 +133,17 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
       }
       await m.query(`UPDATE dispositivo SET ultima_comunicacao = now(), origem_comunicacao = $2 WHERE id = $1`, [dispositivo.id, mensagem.origem]);
 
+      // us07-3: voltou a comunicar, o alerta de sem comunicação ainda não reconhecido se encerra
+      const [religados]: [{ id: string }[], number] = await m.query(
+        `UPDATE alerta SET situacao = 'encerrado', data_encerramento = now()
+          WHERE dispositivo_id = $1 AND situacao = 'aberto'
+            AND regra_alerta_id IN (SELECT id FROM regra_alerta WHERE sistema AND tipo_grandeza = $2)
+        RETURNING id::text`,
+        [dispositivo.id, SEM_COMUNICACAO],
+      );
+
       // em manutenção a leitura fica no histórico, mas não gera alerta
-      const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
+      const resultado: ResultadoAvaliacao = { novos: [], encerrados: religados.map((a) => a.id) };
       if (dispositivo.estado !== 'ativo') return resultado;
       for (const leitura of gravadas) {
         const { novos, encerrados } = await this.motor.avaliar(m, leitura);

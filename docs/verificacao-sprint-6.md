@@ -36,3 +36,16 @@ teste recriado. Decisões de tela em
 
 O botão "Abrir" da tela de alertas e da fila do painel, antes marcado como previsto para a US06,
 abre a ocorrência vinculada ou, sem vínculo, o registro da US05 com o alerta.
+
+## US07 - Aviso quando um dispositivo parar de enviar dados
+
+Branch `sprint-6-us07`, sobre a da US06, PR aberto para revisão. Suíte completa: 148 testes passando
+num banco de teste recriado. Decisão em
+[`2026-10-25-alerta-sem-comunicacao.md`](decisoes/2026-10-25-alerta-sem-comunicacao.md).
+
+| Critério | Teste automatizado (`us07.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US07-1** | a rotina é agendada a cada 60 s quando nada é configurado<br>dispositivo ativo além do limite da US22 recebe o alerta, com o tempo e o limite em minutos<br>dispositivo dentro do limite não recebe alerta<br>a regra de sistema não aparece na tela de regras<br>o alerta não muda a cor do dispositivo, que continua sem comunicação | 25/10/2026, ambiente de desenvolvimento: um minuto depois da subida, a rotina emitiu o alerta para EA-07 e SN-027, que não publicam de propósito; a tela de alertas mostra "23 h 15 min, limite 1 min" e "955 dias" para SN-027, que nunca comunicou e conta desde a instalação. | Verificado |
+| **US07-2** | há no máximo um alerta de sem comunicação ativo por dispositivo | Também garantido pelo índice único `alerta_ativo_uq`. | Verificado |
+| **US07-3** | o sinal de vida encerra o alerta aberto<br>alerta já reconhecido continua em atendimento | — | Verificado |
+| **US07-4** | dispositivo em manutenção ou inativo não gera o alerta | — | Verificado |

@@ -23,7 +23,7 @@ import {
 // último recurso quando nem o dispositivo nem o tipo informam intervalo (docs/decisoes/2026-10-22-situacao-sem-comunicacao.md)
 export const LIMITE_SEM_INTERVALO_SEGUNDOS = 30 * 60;
 
-const LIMITE_COMUNICACAO = `COALESCE(2 * COALESCE((d.atributos_especificos->>'intervaloLeituraSegundos')::int, t.intervalo_leitura_segundos), ${LIMITE_SEM_INTERVALO_SEGUNDOS})`;
+export const LIMITE_COMUNICACAO = `COALESCE(2 * COALESCE((d.atributos_especificos->>'intervaloLeituraSegundos')::int, t.intervalo_leitura_segundos), ${LIMITE_SEM_INTERVALO_SEGUNDOS})`;
 
 export const SITUACAO = `CASE
     WHEN d.estado = 'inativo' THEN 'inativo'
@@ -54,6 +54,8 @@ const CONSULTA = `
          d.atributos_especificos                   AS atributos,
          (SELECT a.criticidade FROM alerta a
            WHERE a.dispositivo_id = d.id AND a.situacao IN ('aberto', 'em_atendimento')
+             -- o alerta de sem comunicação não pinta o dispositivo: ele já aparece como sem comunicação
+             AND a.regra_alerta_id NOT IN (SELECT id FROM regra_alerta WHERE sistema)
            ORDER BY array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)
            LIMIT 1)                                AS "alertaAtivo",
          ul.leitura                                AS "ultimaLeitura",

@@ -9,7 +9,8 @@ const CONSULTA = `
          r.valor_limite::float8 AS "valorLimite", r.duracao_minutos AS "duracaoMinutos",
          r.criticidade, r.ativa,
          (SELECT count(*) FROM alerta a WHERE a.regra_alerta_id = r.id)::int AS alertas
-    FROM regra_alerta r`;
+    FROM regra_alerta r
+   WHERE NOT r.sistema`;
 
 const MENSAGEM_VAZIO: Record<string, string> = {
   nome: 'Informe o nome da regra.',
@@ -36,7 +37,7 @@ export class RegrasAlertaService {
 
   async buscar(id: string, manager: EntityManager = this.fonte.manager): Promise<RegraAlertaDto> {
     if (!/^\d+$/.test(id)) throw new NotFoundException('Regra de alerta não encontrada.');
-    const [regra] = await manager.query(`${CONSULTA} WHERE r.id = $1`, [id]);
+    const [regra] = await manager.query(`${CONSULTA} AND r.id = $1`, [id]);
     if (!regra) throw new NotFoundException('Regra de alerta não encontrada.');
     return regra;
   }

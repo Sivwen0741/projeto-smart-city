@@ -55,9 +55,20 @@ export const SITUACOES_ALERTA: Record<SituacaoAlerta, string> = {
 
 const casasDe = (valor: number) => Math.min(2, (String(valor).split('.')[1] ?? '').length);
 
+// tempo sem comunicação da us07, que pode passar de dias
+function duracao(minutos: number): string {
+  const inteiros = Math.round(minutos);
+  if (inteiros < 60) return `${inteiros} min`;
+  const horas = Math.floor(inteiros / 60);
+  if (horas < 48) return `${horas} h ${String(inteiros % 60).padStart(2, '0')} min`;
+  return `${new Intl.NumberFormat('pt-BR').format(Math.floor(horas / 24))} dias`;
+}
+
 // o limite usa as mesmas casas da medição, como "3,81 m, limite 3,50 m" no protótipo
 export const medida = (valor: number, unidade: string | null, casas = casasDe(valor)) =>
-  `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
+  unidade === 'min'
+    ? duracao(valor)
+    : `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
 
 export const limite = (a: Pick<Alerta, 'valorObservado' | 'valorLimite' | 'unidade'>) =>
   medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado), casasDe(a.valorLimite)));
