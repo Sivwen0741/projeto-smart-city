@@ -16,6 +16,7 @@ import { Usuario } from '../usuarios/usuario.entity';
 import { DispositivosService } from './dispositivos.service';
 import {
   AtualizarDispositivoDto,
+  ColecaoBairrosDto,
   CriarDispositivoDto,
   DispositivoDto,
   GrandezaDto,
@@ -53,6 +54,13 @@ export class DispositivosController {
   @ApiUnprocessableEntityResponse({ description: 'Coordenada fora do município' })
   localizar(@Query() { latitude, longitude }: LocalizarDto): Promise<LocalDto> {
     return this.dispositivos.localizar(latitude, longitude);
+  }
+
+  @Get('territorio/bairros')
+  @ApiOperation({ summary: 'Limites dos bairros em GeoJSON, simplificados para o mapa' })
+  @ApiOkResponse({ type: ColecaoBairrosDto })
+  bairros(): Promise<ColecaoBairrosDto> {
+    return this.dispositivos.bairros();
   }
 
   @Get('dispositivos')

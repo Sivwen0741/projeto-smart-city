@@ -29,3 +29,21 @@ de teste recriado. Decisões em [`2026-10-24-ingestao-mqtt.md`](decisoes/2026-10
 O teste da US22-6 que verificava a renovação a cada subida foi trocado pelo comportamento novo,
 como previa [`2026-10-22-dados-de-demonstracao.md`](decisoes/2026-10-22-dados-de-demonstracao.md).
 A Sprint 4 continua com 68 testes.
+
+## US01 - Mapa interativo com dispositivos e ocorrências
+
+Mesclada em 24/10/2026. Suíte completa: 87 testes passando. Decisões em
+[`2026-10-24-mapa-da-cidade.md`](decisoes/2026-10-24-mapa-da-cidade.md). A verificação de tela foi
+feita no Chrome (macOS), numa cópia isolada da branch com o simulador ligado, um alerta grave, um
+de atenção e uma ocorrência inseridos só nesse banco.
+
+| Critério | Teste automatizado (`us01.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US01-1** | a cor do marcador sai da maior gravidade entre os alertas ativos<br>a listagem informa o estado, para o mapa deixar de fora os inativos | Tela: 12 marcadores (o inativo fora), SN-014 vermelho com halo, legenda "Grave · 1, Atenção · 1, Normal · 7, Sem comunicação ou manutenção · 3". | Verificado, tela manual |
+| **US01-2** | lista as não encerradas, com coordenada, e deixa de fora as encerradas<br>a listagem de ocorrências exige token | Tela: a ocorrência aparece como anel vermelho no Centro, acima dos dispositivos. | Verificado, tela manual |
+| **US01-3** | o dispositivo traz código, tipo, bairro, situação e a última leitura<br>a ocorrência traz protocolo, categoria, gravidade e situação | Tela: clique na CAM-08 mostrou "CAM-08 · câmera / Av. Carlos Cavalcanti, 4748, Uvaranas / Operando · comunicação há 22 s". | Verificado, tela manual |
+| **US01-4** | os limites dos bairros vêm da base territorial, com o ponto do rótulo dentro de cada um | Tela: contornos tracejados e nomes em caixa alta. | Verificado, tela manual |
+| **US01-5** | — | Tela: marcadores próximos do Centro agrupados em "3" e no sul em "2"; grave e atenção ficam fora dos grupos. | Verificado, só manual |
+| **US01-6** | — | Tela: o alerta inserido no banco mudou a cor do SN-014 e a legenda em até 15 s, sem recarregar. | Verificado, só manual |
+
+A automação das verificações de tela continua no DT05.

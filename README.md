@@ -121,7 +121,7 @@ use o PowerShell: os comandos são os mesmos.
    terminal livre, use `docker compose up --build -d` e acompanhe com `docker compose logs -f api`.
 
 4. Abra <http://localhost:8080> e entre com o `ADMIN_EMAIL` e a `ADMIN_SENHA` do `.env`. A tela
-   inicial é a de dispositivos.
+   inicial é o painel, com o mapa da cidade.
 
 | Serviço | Endereço |
 |---|---|

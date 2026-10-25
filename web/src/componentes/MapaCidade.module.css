@@ -1,0 +1,243 @@
+.caixa {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--cor-trilho);
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  height: var(--altura-barra-mapa);
+  padding: 0 var(--espaco-3);
+  background: var(--cor-folha);
+  border-bottom: var(--borda-forte);
+}
+
+.titulo {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-seminegrito);
+}
+
+.contagem {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-suave);
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  margin-left: auto;
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-medio);
+  color: var(--cor-tinta-media);
+}
+
+.acao {
+  color: var(--cor-tinta-media);
+  text-decoration: none;
+}
+
+.acao:hover {
+  color: var(--cor-tinta);
+}
+
+.previsto {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.camadas {
+  height: 25px;
+  padding: 0 var(--espaco-2) 0 var(--espaco-3);
+  background: var(--cor-folha);
+  border: var(--borda-forte);
+}
+
+.mapa {
+  flex: 1;
+  min-height: 0;
+  background: var(--cor-trilho);
+}
+
+.mapa :global(.leaflet-container) {
+  font-family: var(--fonte-texto);
+}
+
+.mapa :global(.leaflet-control-attribution) {
+  font-size: var(--texto-legenda);
+  background: var(--cor-folha);
+  color: var(--cor-tinta-media);
+}
+
+.mapa :global(.leaflet-bar) {
+  border: var(--borda-forte);
+  border-radius: var(--raio);
+  box-shadow: none;
+}
+
+.mapa :global(.leaflet-bar a) {
+  border-radius: var(--raio);
+  color: var(--cor-tinta);
+}
+
+/* base do osm esmaecida para ficar perto do mapa de papel do protótipo */
+.base {
+  filter: grayscale(1) contrast(0.8) brightness(1.08);
+  opacity: 0.75;
+}
+
+.bairro {
+  fill: none;
+  stroke: var(--cor-regua-forte);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+}
+
+.nomeBairro {
+  pointer-events: none;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  letter-spacing: var(--espacamento-letra-bairro);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cor-tinta-suave);
+  translate: -50% -50%;
+}
+
+.marcador {
+  width: var(--lado-marcador) !important;
+  height: var(--lado-marcador) !important;
+  margin-top: calc(var(--lado-marcador) / -2) !important;
+  margin-left: calc(var(--lado-marcador) / -2) !important;
+  border: 2px solid var(--cor-folha);
+}
+
+.normal {
+  background: var(--cor-estavel);
+}
+
+.atencao {
+  background: var(--cor-atencao);
+}
+
+.parado {
+  background: var(--cor-parado);
+}
+
+.grave {
+  background: var(--cor-grave);
+}
+
+.marcador.grave {
+  outline: 1px solid var(--cor-grave);
+  outline-offset: 8px;
+  box-shadow: 0 0 0 17px var(--cor-grave-fundo), 0 0 0 18px var(--cor-grave-borda);
+}
+
+.grupo {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 24px !important;
+  height: 24px !important;
+  margin-top: -12px !important;
+  margin-left: -12px !important;
+  background: var(--cor-realce);
+  border: 2px solid var(--cor-folha);
+  outline: 1px solid var(--cor-realce);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-pequeno);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-sobre-tinta);
+}
+
+.ocorrencia {
+  width: var(--lado-marcador-ocorrencia) !important;
+  height: var(--lado-marcador-ocorrencia) !important;
+  margin-top: calc(var(--lado-marcador-ocorrencia) / -2) !important;
+  margin-left: calc(var(--lado-marcador-ocorrencia) / -2) !important;
+  background: var(--cor-folha);
+  border: 3px solid var(--cor-tinta);
+  border-radius: 50%;
+  outline: 2px solid var(--cor-folha);
+}
+
+.ocorrencia.grave {
+  background: var(--cor-folha);
+  border-color: var(--cor-grave);
+}
+
+.ocorrencia.atencao {
+  background: var(--cor-folha);
+  border-color: var(--cor-atencao);
+}
+
+.chamada :global(.leaflet-popup-content-wrapper),
+.chamada :global(.leaflet-popup-tip) {
+  background: var(--cor-tinta);
+  color: var(--cor-sobre-tinta);
+  border-radius: var(--raio);
+  box-shadow: none;
+}
+
+.chamada :global(.leaflet-popup-content) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 9px var(--espaco-3);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  line-height: var(--entrelinha-corpo);
+  color: var(--cor-cena-apoio);
+}
+
+.chamada :global(.leaflet-popup-content strong) {
+  font-family: var(--fonte-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-sobre-tinta);
+}
+
+.legenda {
+  position: absolute;
+  bottom: var(--espaco-3);
+  left: var(--espaco-3);
+  z-index: 500;
+  display: flex;
+  gap: var(--espaco-4);
+  margin: 0;
+  padding: var(--espaco-1) var(--espaco-2);
+  list-style: none;
+  background: var(--cor-folha);
+  border: var(--borda);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quadro {
+  width: 9px;
+  height: 9px;
+}
+
+.quadroOcorrencia {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--cor-tinta);
+  border-radius: 50%;
+}

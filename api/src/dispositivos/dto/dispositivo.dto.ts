@@ -13,6 +13,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
+import { CRITICIDADES } from '../../regras-alerta/dto/regra-alerta.dto';
 import { CampoAtributo } from '../atributos';
 
 export const ESTADOS = ['ativo', 'manutencao', 'inativo'] as const;
@@ -122,6 +123,12 @@ export class LocalDto {
   @ApiProperty({ example: 'Ponta Grossa' }) distrito: string;
 }
 
+export class ColecaoBairrosDto {
+  @ApiProperty({ example: 'FeatureCollection' }) type: string;
+  @ApiProperty({ description: 'Um Feature por bairro, com nome e ponto do rótulo (longitude, latitude) nas propriedades' })
+  features: Record<string, unknown>[];
+}
+
 export class GrandezaDto {
   @ApiProperty({ example: 'nivel_agua' }) codigo: string;
   @ApiProperty({ example: 'Nível de água' }) rotulo: string;
@@ -157,6 +164,16 @@ export class DispositivoDto {
   @ApiProperty({ description: 'Limite em segundos a partir do qual o dispositivo fica sem comunicação' })
   limiteComunicacaoSegundos: number;
   @ApiProperty() atributos: Record<string, unknown>;
+  @ApiPropertyOptional({ enum: CRITICIDADES, nullable: true, description: 'Maior gravidade entre os alertas ativos do dispositivo' })
+  alertaAtivo: (typeof CRITICIDADES)[number] | null;
+  @ApiPropertyOptional({ type: () => UltimaLeituraDto, nullable: true }) ultimaLeitura: UltimaLeituraDto | null;
+}
+
+export class UltimaLeituraDto {
+  @ApiProperty({ example: 'nivel_agua' }) grandeza: string;
+  @ApiProperty({ example: 3.81 }) valor: number;
+  @ApiPropertyOptional({ nullable: true, example: 'm' }) unidade: string | null;
+  @ApiProperty() dataHora: string;
 }
 
 export class LeituraDto {

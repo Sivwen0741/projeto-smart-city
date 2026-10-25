@@ -10,6 +10,7 @@ import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { CATEGORIAS, validarAtributos } from './atributos';
 import {
   AtualizarDispositivoDto,
+  ColecaoBairrosDto,
   CriarDispositivoDto,
   DispositivoDto,
   Estado,
@@ -50,13 +51,22 @@ const CONSULTA = `
          ${SITUACAO}                               AS situacao,
          d.ultima_comunicacao                      AS "ultimaComunicacao",
          ${LIMITE_COMUNICACAO}                     AS "limiteComunicacaoSegundos",
-         d.atributos_especificos                   AS atributos
+         d.atributos_especificos                   AS atributos,
+         (SELECT a.criticidade FROM alerta a
+           WHERE a.dispositivo_id = d.id AND a.situacao IN ('aberto', 'em_atendimento')
+           ORDER BY array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)
+           LIMIT 1)                                AS "alertaAtivo",
+         ul.leitura                                AS "ultimaLeitura"
     FROM dispositivo d
     JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
     LEFT JOIN bairro b ON b.id = d.bairro_id
     LEFT JOIN LATERAL (
       SELECT nome FROM distrito WHERE ST_Contains(area, d.localizacao::geometry) ORDER BY id LIMIT 1
-    ) di ON true`;
+    ) di ON true
+    LEFT JOIN LATERAL (
+      SELECT json_build_object('grandeza', tipo_grandeza, 'valor', valor::float8, 'unidade', unidade, 'dataHora', data_hora) AS leitura
+        FROM leitura WHERE dispositivo_id = d.id ORDER BY data_hora DESC LIMIT 1
+    ) ul ON true`;
 
 const ORDEM_SITUACAO = `array_position(ARRAY['operando', 'sem_comunicacao', 'manutencao', 'inativo'], ${SITUACAO})`;
 
@@ -131,6 +141,21 @@ export class DispositivosService {
     );
     if (!local) throw new UnprocessableEntityException('A coordenada está fora do município de Ponta Grossa.');
     return local;
+  }
+
+  async bairros(): Promise<ColecaoBairrosDto> {
+    // simplificação de cerca de 10 m: suficiente para o desenho do mapa e bem mais leve que a camada do osm
+    const [{ colecao }] = await this.fonte.query(
+      `SELECT json_build_object('type', 'FeatureCollection', 'features', COALESCE(json_agg(json_build_object(
+                'type', 'Feature',
+                'id', b.id::text,
+                'properties', json_build_object('nome', b.nome, 'rotulo', json_build_array(
+                  round(ST_X(ST_PointOnSurface(b.area))::numeric, 6), round(ST_Y(ST_PointOnSurface(b.area))::numeric, 6))),
+                'geometry', ST_AsGeoJSON(ST_SimplifyPreserveTopology(b.area, 0.0001), 6)::json
+              ) ORDER BY b.nome), '[]'::json)) AS colecao
+         FROM bairro b`,
+    );
+    return colecao;
   }
 
   async criar(dados: CriarDispositivoDto, autor: Autor): Promise<DispositivoDto> {
