@@ -1,10 +1,22 @@
 .pagina {
   display: flex;
-  flex-direction: column;
   gap: 14px;
   flex: 1;
   min-height: 0;
   padding: 0 var(--espaco-4) var(--espaco-4);
+}
+
+.pagina > aside {
+  margin-top: var(--espaco-4);
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
 }
 
 .visoes {
@@ -254,4 +266,13 @@
   width: 7px;
   height: 7px;
   background: var(--cor-grave);
+}
+
+.tabela tbody tr {
+  cursor: pointer;
+}
+
+.tabela tbody tr:hover,
+.selecionada {
+  background: var(--cor-folha-2);
 }

@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsIn, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsIn, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export const VISOES = ['ativos', 'em_atendimento', 'encerrados_hoje'] as const;
 export type Visao = (typeof VISOES)[number];
@@ -54,4 +55,13 @@ export class ResumoAlertasDto {
   graveMaisAntigo: AlertaDto | null;
   @ApiProperty() semComunicacao: number;
   @ApiProperty({ type: [SemComunicacaoPorTipoDto] }) semComunicacaoPorTipo: SemComunicacaoPorTipoDto[];
+}
+
+export class ReconhecerAlertaDto {
+  @ApiProperty({ example: 'Confirmado com a câmera CAM-22; Defesa Civil acionada por telefone.' })
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @IsString({ message: 'Informe a providência adotada.' })
+  @IsNotEmpty({ message: 'Informe a providência adotada.' })
+  @MaxLength(2000, { message: 'A providência tem no máximo 2000 caracteres.' })
+  providencia: string;
 }

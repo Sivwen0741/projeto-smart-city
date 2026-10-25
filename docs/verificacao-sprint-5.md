@@ -71,7 +71,7 @@ numa cópia isolada da branch, com o simulador parado para controlar as leituras
 | Critério | Teste automatizado (`us03.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
 |---|---|---|---|
 | **US03-1** | o alerta novo chega à tela em até 2 segundos depois da leitura que o disparou | Tela: `mosquitto_pub` de 62 mm no EA-02 com a tela de alertas aberta; "Chuva forte acumulada" apareceu 0,2 s depois do fim da publicação, sem recarregar, e o contador do menu foi para 1. | Verificado, tela manual |
-| **US03-2** | a mudança de situação feita por outro operador também chega em tempo real | O teste emite a mudança pelo serviço de eventos. As ações que mudam a situação (reconhecer, encerrar) são da US04 e da US28 e terão teste próprio da emissão. | Verificado, parcial até a US04 |
+| **US03-2** | a mudança de situação feita por outro operador também chega em tempo real | O teste emite a mudança pelo serviço de eventos. As ações que mudam a situação (reconhecer, encerrar) são da US04 e da US28 e terão teste próprio da emissão. | Verificado; o teste da emissão pelo reconhecimento real entrou com a US04 |
 | **US03-3** | sem token, com token adulterado ou de usuário inativo, a conexão é recusada<br>com token válido, a conexão é aceita | — | Verificado |
 | **US03-4** | o alerta emitido com a tela desconectada está na lista consultada ao reconectar | Tela: API parada, alerta criado no banco, API de volta; o alerta apareceu até 1 s depois de a API responder, com a lista da página e o contador do menu consultados juntos, o que indica a consulta disparada pela reconexão. A consulta de 15 s também teria trazido o alerta, mais tarde. | Verificado, tela manual |
 
@@ -87,3 +87,17 @@ verificada no Chrome, numa cópia isolada da branch, com o simulador parado.
 | **US28-2** | o resumo informa a quantidade e o grave sem reconhecimento mais antigo, para a faixa | Tela: "1 alerta grave sem reconhecimento · há 23 s · Chuva forte acumulada · EA-02 · Olarias · 62 mm", sem botão de fechar, na tela de alertas e na de dispositivos. | Verificado, tela manual |
 | **US28-3** | a faixa vem do servidor: outro usuário, com outro login, vê o mesmo alerta grave | Tela: a faixa continuou depois de recarregar a página em outra tela. | Verificado, tela manual |
 | **US28-4** | o grave sem reconhecimento fica no topo, acima até de um grave mais recente já em atendimento | Tela: marca "fixo até reconhecer" no grave aberto. | Verificado, tela manual |
+
+## US04 - Reconhecer um alerta e registrar a providência
+
+Mesclada em 24/10/2026. Suíte completa: 112 testes passando. Decisões em
+[`2026-10-24-reconhecimento-de-alerta.md`](decisoes/2026-10-24-reconhecimento-de-alerta.md). Tela
+verificada no Chrome, numa cópia isolada da branch, com o simulador parado.
+
+| Critério | Teste automatizado (`us04.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US04-1** | o reconhecimento exige a providência adotada | Tela: "Confirmar reconhecimento" sem texto marcou o campo com "Informe a providência adotada." | Verificado, tela manual |
+| **US04-2** | grava o usuário, a data e a hora e a providência, e o alerta passa a em atendimento | Tela: aberto pela faixa ("Ver alerta"), reconhecido com texto; o painel passou a "Alerta reconhecido · Administrador · 22:04", a linha a "Em atendimento" e a faixa sumiu. | Verificado, tela manual |
+| **US04-3** | a segunda tentativa é recusada com a mensagem de quem reconheceu e quando<br>duas tentativas simultâneas: só uma é aceita<br>alerta encerrado ou inexistente não é reconhecido | Tela: com o painel aberto e texto digitado, o alerta foi reconhecido por fora (API); o painel avisou "foi reconhecido por Administrador às 22:05 enquanto você escrevia. A sua providência não foi gravada." e mostrou a providência que valeu. O ensaio mostrou que, antes do ajuste, o texto digitado era descartado sem aviso. | Verificado, tela manual |
+| **US04-4** | o reconhecimento gera registro no log de atividades | — | Verificado |
+| **US03-2** | `us04.e2e-spec.ts` › US03-2 o reconhecimento feito por um operador chega aos outros em tempo real | Completa o critério que estava parcial na US03. | Verificado |

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medida } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
-import { ABRIR_OCORRENCIA, RECONHECER } from '../paginas/Alertas';
+import { ABRIR_OCORRENCIA } from '../paginas/Alertas';
 import { Botao } from './Botao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './FilaAlertas.module.css';
@@ -64,9 +64,9 @@ export function FilaAlertas() {
                 {medida(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>
               </span>
               {a.situacao === 'aberto' ? (
-                <Botao variante="primario" disabled title={`Previsto: ${textoPrevisao(RECONHECER)}`}>
-                  Reconhecer&nbsp;<Previsto previsao={RECONHECER} />
-                </Botao>
+                <Link className={estilos.reconhecer} to={`/alertas?alerta=${a.id}`}>
+                  Reconhecer
+                </Link>
               ) : (
                 <Botao disabled title={`Previsto: ${textoPrevisao(ABRIR_OCORRENCIA)}`}>
                   Abrir&nbsp;<Previsto previsao={ABRIR_OCORRENCIA} />

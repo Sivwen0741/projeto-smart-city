@@ -66,4 +66,6 @@ export const lugar = (a: Pick<Alerta, 'endereco' | 'bairro'>) => [a.endereco, a.
 export const alertasApi = {
   listar: (visao: Visao = 'ativos') => api<Alerta[]>(`/alertas?visao=${visao}`),
   resumo: () => api<ResumoAlertas>('/alertas/resumo'),
+  reconhecer: (id: string, providencia: string) =>
+    api<Alerta>(`/alertas/${id}/reconhecimento`, { method: 'POST', body: JSON.stringify({ providencia }) }),
 };
