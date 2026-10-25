@@ -14,10 +14,10 @@ interface Aba {
 
 // previsões conforme a seção 2.5 do replanejamento da sprint 4
 export const ABAS: Aba[] = [
-  { rotulo: 'Painel', previsao: { historia: 'US12', sprint: 'sprint 6' } },
+  { rotulo: 'Painel', caminho: '/painel' },
   { rotulo: 'Alertas', previsao: { historia: 'US02', sprint: 'sprint 5' } },
   { rotulo: 'Ocorrências', previsao: { historia: 'US05', sprint: 'sprint 5' } },
-  { rotulo: 'Mapa', previsao: { historia: 'US01', sprint: 'sprint 5' } },
+  { rotulo: 'Mapa', caminho: '/mapa' },
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', caminho: '/regras' },
   { rotulo: 'Relatórios', previsao: { historia: 'US16', sprint: 'backlog' } },

@@ -1,0 +1,88 @@
+.painel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--largura-fila);
+  grid-template-rows: var(--altura-faixa-indicadores) minmax(0, 1fr) var(--altura-tira-graficos);
+  flex: 1;
+  min-height: 0;
+}
+
+.faixa {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--cor-folha);
+  border-bottom: var(--borda);
+}
+
+.servico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  padding: var(--espaco-4) 20px;
+  border-right: var(--borda);
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.servico:last-child {
+  border-right: 0;
+}
+
+.nome {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+}
+
+.valor {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-numero-medio);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-regua-forte);
+}
+
+.mapa {
+  min-height: 0;
+  border-right: var(--borda-forte);
+}
+
+.tira {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--cor-folha);
+  border-top: var(--borda-forte);
+  border-right: var(--borda-forte);
+  cursor: not-allowed;
+}
+
+.grafico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  padding: 20px;
+}
+
+.grafico + .grafico {
+  border-left: var(--borda);
+}
+
+.grafico h2,
+.fila h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta-media);
+}
+
+.fila {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  padding: var(--espaco-3) var(--espaco-4);
+  background: var(--cor-folha);
+  cursor: not-allowed;
+}

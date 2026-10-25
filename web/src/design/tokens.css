@@ -92,4 +92,10 @@
   --largura-painel: 352px;
   --altura-mapa-formulario: 150px;
   --lado-marcador: 11px;
+  --lado-marcador-ocorrencia: 13px;
+  --largura-fila: 344px;
+  --altura-faixa-indicadores: 124px;
+  --altura-barra-mapa: 37px;
+  --altura-tira-graficos: 184px;
+  --espacamento-letra-bairro: 0.6px;
 }

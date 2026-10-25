@@ -1,3 +1,4 @@
+import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import { api } from '../sessao/api';
 
 export type Estado = 'ativo' | 'manutencao' | 'inativo';
@@ -48,7 +49,11 @@ export interface Dispositivo {
   ultimaComunicacao: string | null;
   limiteComunicacaoSegundos: number;
   atributos: Record<string, unknown>;
+  alertaAtivo: Criticidade | null;
+  ultimaLeitura: { grandeza: string; valor: number; unidade: string | null; dataHora: string } | null;
 }
+
+export type Criticidade = 'grave' | 'atencao' | 'informativo';
 
 export interface Local {
   bairroId: string | null;
@@ -78,6 +83,7 @@ export const dispositivosApi = {
   listar: (ordem: Ordenacao, direcao: 'asc' | 'desc') =>
     api<Dispositivo[]>(`/dispositivos?ordem=${ordem}&direcao=${direcao}`),
   tipos: () => api<TipoDispositivo[]>('/tipos-dispositivo'),
+  bairros: () => api<FeatureCollection<Polygon | MultiPolygon, { nome: string; rotulo: [number, number] }>>('/territorio/bairros'),
   grandezas: () => api<Grandeza[]>('/grandezas'),
   localizar: (latitude: number, longitude: number) =>
     api<Local>(`/territorio/localizar?latitude=${latitude}&longitude=${longitude}`),
