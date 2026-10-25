@@ -50,6 +50,8 @@ export class ResumoAlertasDto {
   tempoMedioReconhecimentoMinutos: number | null;
   @ApiProperty() ultimas24h: number;
   @ApiProperty() encerradosUltimas24h: number;
+  @ApiPropertyOptional({ type: () => AlertaDto, nullable: true, description: 'Grave sem reconhecimento mais antigo, para a faixa fixa' })
+  graveMaisAntigo: AlertaDto | null;
   @ApiProperty() semComunicacao: number;
   @ApiProperty({ type: [SemComunicacaoPorTipoDto] }) semComunicacaoPorTipo: SemComunicacaoPorTipoDto[];
 }

@@ -1,0 +1,49 @@
+.faixa {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  height: var(--altura-faixa-grave);
+  flex-shrink: 0;
+  padding: 0 22px;
+  background: var(--cor-grave);
+  color: var(--cor-sobre-tinta);
+}
+
+.quantidade {
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-seminegrito);
+}
+
+.titulo {
+  margin-left: calc(var(--espaco-2) - var(--espaco-4));
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-seminegrito);
+}
+
+.separador {
+  width: 1px;
+  height: 18px;
+  background: var(--cor-grave-borda);
+}
+
+.detalhe {
+  overflow: hidden;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ver {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 27px;
+  margin-left: auto;
+  padding: 0 var(--espaco-3);
+  background: var(--cor-folha);
+  color: var(--cor-grave);
+  font-size: var(--texto-padrao);
+  font-weight: var(--peso-seminegrito);
+  text-decoration: none;
+}

@@ -237,3 +237,21 @@
   color: var(--cor-tinta-media);
   text-align: center;
 }
+
+.fixo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-1);
+  margin-left: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  color: var(--cor-grave);
+  white-space: nowrap;
+}
+
+.fixo::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--cor-grave);
+}

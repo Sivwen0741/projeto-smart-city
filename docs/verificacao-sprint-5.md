@@ -74,3 +74,16 @@ numa cópia isolada da branch, com o simulador parado para controlar as leituras
 | **US03-2** | a mudança de situação feita por outro operador também chega em tempo real | O teste emite a mudança pelo serviço de eventos. As ações que mudam a situação (reconhecer, encerrar) são da US04 e da US28 e terão teste próprio da emissão. | Verificado, parcial até a US04 |
 | **US03-3** | sem token, com token adulterado ou de usuário inativo, a conexão é recusada<br>com token válido, a conexão é aceita | — | Verificado |
 | **US03-4** | o alerta emitido com a tela desconectada está na lista consultada ao reconectar | Tela: API parada, alerta criado no banco, API de volta; o alerta apareceu até 1 s depois de a API responder, com a lista da página e o contador do menu consultados juntos, o que indica a consulta disparada pela reconexão. A consulta de 15 s também teria trazido o alerta, mais tarde. | Verificado, tela manual |
+
+## US28 - Alerta grave visível até ser reconhecido
+
+Mesclada em 24/10/2026. Suíte completa: 105 testes passando. Decisões em
+[`2026-10-24-alerta-grave-persistente.md`](decisoes/2026-10-24-alerta-grave-persistente.md). Tela
+verificada no Chrome, numa cópia isolada da branch, com o simulador parado.
+
+| Critério | Teste automatizado (`us28.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US28-1** | atenção e informativo sem reconhecimento são encerrados quando a leitura volta ao normal<br>o alerta grave sem reconhecimento nunca é encerrado automaticamente<br>o alerta já reconhecido não é encerrado pela normalização<br>a normalização usa o limite copiado no disparo, não o da regra editada | Tela: leitura de 38 km/h no SN-031 tirou "Tráfego lento" da lista 0,1 s depois da publicação; 2 mm no EA-02 não tirou "Chuva forte acumulada". O ensaio achou um defeito (o encerramento avisava a tela com identificador vazio), corrigido antes do merge, com o teste reforçado para verificar o identificador. | Verificado, tela manual |
+| **US28-2** | o resumo informa a quantidade e o grave sem reconhecimento mais antigo, para a faixa | Tela: "1 alerta grave sem reconhecimento · há 23 s · Chuva forte acumulada · EA-02 · Olarias · 62 mm", sem botão de fechar, na tela de alertas e na de dispositivos. | Verificado, tela manual |
+| **US28-3** | a faixa vem do servidor: outro usuário, com outro login, vê o mesmo alerta grave | Tela: a faixa continuou depois de recarregar a página em outra tela. | Verificado, tela manual |
+| **US28-4** | o grave sem reconhecimento fica no topo, acima até de um grave mais recente já em atendimento | Tela: marca "fixo até reconhecer" no grave aberto. | Verificado, tela manual |
