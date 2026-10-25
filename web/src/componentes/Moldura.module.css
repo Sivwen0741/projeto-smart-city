@@ -142,6 +142,7 @@ a.aba:hover {
 }
 
 .conteudo {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -153,4 +154,13 @@ a.aba:hover {
   font-size: var(--texto-apoio);
   font-weight: var(--peso-regular);
   color: var(--cor-tinta-suave);
+}
+
+.sobreposto {
+  position: absolute;
+  top: 14px;
+  right: var(--espaco-4);
+  bottom: var(--espaco-4);
+  z-index: 900;
+  display: flex;
 }

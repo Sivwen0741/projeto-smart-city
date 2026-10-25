@@ -199,7 +199,7 @@ export function MapaCidade({ cheia = false }: Props) {
             ? 'não foi possível atualizar'
             : segundos === null
               ? 'carregando'
-              : `${dispositivos.length} dispositivos${ocorrencias.length ? `, ${ocorrencias.length} ocorrências abertas` : ''}, atualizado há ${segundos} s`}
+              : `${dispositivos.length} dispositivos${ocorrencias.length ? `, ${ocorrencias.length} ${ocorrencias.length === 1 ? 'ocorrência aberta' : 'ocorrências abertas'}` : ''}, atualizado há ${segundos} s`}
         </span>
         <div className={estilos.acoes}>
           <span className={estilos.previsto} aria-disabled="true" title={`Previsto: ${textoPrevisao(FILTRAR)}`}>

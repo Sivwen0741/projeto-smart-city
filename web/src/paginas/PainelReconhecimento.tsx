@@ -1,12 +1,12 @@
 import { FormEvent, useId, useState } from 'react';
 import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medida, SITUACOES_ALERTA } from '../alertas/modelo';
 import { Botao } from '../componentes/Botao';
-import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
+import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { tempoDesde } from '../dispositivos/modelo';
+import { useRegistroOcorrencia } from '../ocorrencias/registro';
 import { ErroApi } from '../sessao/api';
 import estilos from './PainelReconhecimento.module.css';
 
-const ABRIR_OCORRENCIA: Previsao = { historia: 'US05', sprint: 'sprint 5' };
 
 const quando = (instante: string) =>
   new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(new Date(instante));
@@ -25,6 +25,8 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
   const [recusa, setRecusa] = useState<{ mensagem: string; alerta: Alerta | null } | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [gravado, setGravado] = useState(false);
+  const [abrirOcorrencia, setAbrirOcorrencia] = useState(false);
+  const registro = useRegistroOcorrencia();
 
   const vazia = providencia.trim() === '';
   // outro operador reconheceu pelo tempo real enquanto este escrevia
@@ -47,6 +49,7 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
       const reconhecido = await alertasApi.reconhecer(alerta.id, providencia);
       setGravado(true);
       aoReconhecer(reconhecido);
+      if (abrirOcorrencia) registro.abrir(reconhecido);
     } catch (e) {
       if (e instanceof ErroApi && e.status === 409) {
         setRecusa({ mensagem: e.message, alerta: (e.corpo as { alerta?: Alerta })?.alerta ?? null });
@@ -111,6 +114,9 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
           <h3 className={estilos.nome}>{alerta.regra}</h3>
           {reconhecimento}
           {ficha}
+          {atual.situacao === 'em_atendimento' && !atual.ocorrenciaId && (
+            <Botao onClick={() => registro.abrir(atual)}>Abrir ocorrência com este alerta</Botao>
+          )}
         </div>
       </aside>
     );
@@ -149,9 +155,12 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
               </span>
             )}
           </div>
-          <label className={estilos.previsto} aria-disabled="true" title={`Previsto: ${textoPrevisao(ABRIR_OCORRENCIA)}`}>
-            <input type="checkbox" disabled /> Abrir ocorrência com este alerta <Previsto previsao={ABRIR_OCORRENCIA} />
-          </label>
+          <CaixaSelecao
+            rotulo="Abrir ocorrência com este alerta"
+            checked={abrirOcorrencia}
+            disabled={Boolean(alerta.ocorrenciaId)}
+            onChange={(e) => setAbrirOcorrencia(e.target.checked)}
+          />
           <p className={estilos.nota}>Só um operador reconhece cada alerta. O reconhecimento fica no log de atividades com o seu nome.</p>
           {erro && (
             <p className={estilos.erro} role="alert">
