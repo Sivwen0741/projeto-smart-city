@@ -147,3 +147,10 @@ a.aba:hover {
   flex: 1;
   min-height: 0;
 }
+
+.contador {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-suave);
+}

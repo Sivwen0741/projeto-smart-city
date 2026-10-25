@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Moldura } from './componentes/Moldura';
+import { Alertas } from './paginas/Alertas';
 import { Dispositivos } from './paginas/Dispositivos';
 import { Login } from './paginas/Login';
 import { Mapa } from './paginas/Mapa';
@@ -20,6 +21,7 @@ export function Rotas() {
         <Route index element={<Navigate to="/painel" replace />} />
         <Route path="painel" element={<Painel />} />
         <Route path="mapa" element={<Mapa />} />
+        <Route path="alertas" element={<Alertas />} />
         <Route path="dispositivos" element={<Dispositivos />} />
         <Route path="regras" element={<Regras />} />
       </Route>

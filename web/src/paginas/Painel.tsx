@@ -1,9 +1,9 @@
+import { FilaAlertas } from '../componentes/FilaAlertas';
 import { MapaCidade } from '../componentes/MapaCidade';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import estilos from './Painel.module.css';
 
 const INDICADORES: Previsao = { historia: 'US12', sprint: 'sprint 6' };
-const ALERTAS: Previsao = { historia: 'US02', sprint: 'sprint 5' };
 
 // indicadores de 02-painel.svg
 const SERVICOS = ['Nível dos rios', 'Fluxo de veículos', 'Qualidade do ar', 'Iluminação pública', 'Ruído urbano', 'Vagas públicas'];
@@ -34,11 +34,9 @@ export function Painel() {
         ))}
       </div>
 
-      <section className={estilos.fila} aria-disabled="true" title={`Previsto: ${textoPrevisao(ALERTAS)}`}>
-        <h2>
-          Alertas ativos <Previsto previsao={ALERTAS} />
-        </h2>
-      </section>
+      <div className={estilos.fila}>
+        <FilaAlertas />
+      </div>
     </div>
   );
 }

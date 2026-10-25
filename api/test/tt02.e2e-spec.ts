@@ -259,7 +259,7 @@ describe('TT02 camada de ingestão e motor de alertas', () => {
       ),
     ).rejects.toThrow(/alerta_ativo_uq/);
 
-    await fonte.query(`UPDATE alerta SET situacao = 'encerrado' WHERE regra_alerta_id = $1`, [regraId]);
+    await fonte.query(`UPDATE alerta SET situacao = 'encerrado', data_encerramento = now() WHERE regra_alerta_id = $1`, [regraId]);
     await publicar(sensor.codigo, fora);
     await aguardarProcessamento();
     expect((await alertas(regraId, sensor.id)).map((a: { situacao: string }) => a.situacao)).toEqual(['encerrado', 'aberto']);

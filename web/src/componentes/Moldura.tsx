@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import { alertasApi } from '../alertas/modelo';
 import { useSessao } from '../sessao/sessao';
 import { Botao } from './Botao';
 import { Marca } from './Marca';
@@ -15,7 +16,7 @@ interface Aba {
 // previsões conforme a seção 2.5 do replanejamento da sprint 4
 export const ABAS: Aba[] = [
   { rotulo: 'Painel', caminho: '/painel' },
-  { rotulo: 'Alertas', previsao: { historia: 'US02', sprint: 'sprint 5' } },
+  { rotulo: 'Alertas', caminho: '/alertas' },
   { rotulo: 'Ocorrências', previsao: { historia: 'US05', sprint: 'sprint 5' } },
   { rotulo: 'Mapa', caminho: '/mapa' },
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
@@ -26,6 +27,25 @@ export const ABAS: Aba[] = [
 
 const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
 const REGISTRAR_OCORRENCIA: Previsao = { historia: 'US05', sprint: 'sprint 5' };
+
+function useAlertasAtivos() {
+  const [ativos, setAtivos] = useState<number | null>(null);
+  useEffect(() => {
+    let vivo = true;
+    const carregar = () =>
+      alertasApi
+        .resumo()
+        .then((r) => vivo && setAtivos(r.ativos))
+        .catch(() => undefined);
+    carregar();
+    const intervalo = setInterval(carregar, 15_000);
+    return () => {
+      vivo = false;
+      clearInterval(intervalo);
+    };
+  }, []);
+  return ativos;
+}
 
 function useAgora() {
   const [agora, setAgora] = useState(() => new Date());
@@ -39,6 +59,7 @@ function useAgora() {
 export function Moldura() {
   const { usuario, sair } = useSessao();
   const agora = useAgora();
+  const alertasAtivos = useAlertasAtivos();
   const data = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
     .format(agora)
     .replace(/[.,]/g, '')
@@ -79,6 +100,7 @@ export function Moldura() {
                   className={({ isActive }) => [estilos.aba, isActive && estilos.ativa].filter(Boolean).join(' ')}
                 >
                   {aba.rotulo}
+                  {aba.caminho === '/alertas' && alertasAtivos !== null && <span className={estilos.contador}>{alertasAtivos}</span>}
                 </NavLink>
               ) : (
                 <span
