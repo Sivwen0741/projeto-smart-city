@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { alertasApi, ResumoAlertas } from '../alertas/modelo';
 import { FaixaGrave } from './FaixaGrave';
+import { useRegistroOcorrencia } from '../ocorrencias/registro';
+import { FormularioOcorrencia } from '../paginas/FormularioOcorrencia';
 import { useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
@@ -19,7 +21,7 @@ interface Aba {
 export const ABAS: Aba[] = [
   { rotulo: 'Painel', caminho: '/painel' },
   { rotulo: 'Alertas', caminho: '/alertas' },
-  { rotulo: 'Ocorrências', previsao: { historia: 'US05', sprint: 'sprint 5' } },
+  { rotulo: 'Ocorrências', previsao: { historia: 'US06', sprint: 'sprint 6' } },
   { rotulo: 'Mapa', caminho: '/mapa' },
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', caminho: '/regras' },
@@ -28,7 +30,6 @@ export const ABAS: Aba[] = [
 ];
 
 const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
-const REGISTRAR_OCORRENCIA: Previsao = { historia: 'US05', sprint: 'sprint 5' };
 
 function useResumoAlertas() {
   const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
@@ -62,6 +63,7 @@ export function Moldura() {
   const { usuario, sair } = useSessao();
   const agora = useAgora();
   const resumo = useResumoAlertas();
+  const registro = useRegistroOcorrencia();
   const alertasAtivos = resumo?.ativos ?? null;
   const data = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
     .format(agora)
@@ -123,9 +125,8 @@ export function Moldura() {
             Buscar ocorrência
             <Previsto previsao={BUSCA} />
           </span>
-          <Botao variante="primario" disabled title={`Previsto: ${textoPrevisao(REGISTRAR_OCORRENCIA)}`}>
-            Registrar ocorrência&nbsp;
-            <Previsto previsao={REGISTRAR_OCORRENCIA} />
+          <Botao variante="primario" onClick={() => registro.abrir()}>
+            Registrar ocorrência
           </Botao>
         </div>
       </nav>
@@ -136,6 +137,11 @@ export function Moldura() {
 
       <main className={estilos.conteudo}>
         <Outlet />
+        {registro.aberto && (
+          <div className={estilos.sobreposto}>
+            <FormularioOcorrencia key={registro.alerta?.id ?? 'telefone'} />
+          </div>
+        )}
       </main>
     </div>
   );

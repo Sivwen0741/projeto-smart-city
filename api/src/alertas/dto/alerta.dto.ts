@@ -23,6 +23,8 @@ export class AlertaDto {
   @ApiProperty({ example: 'Sensor de nível' }) tipoDispositivo: string;
   @ApiPropertyOptional({ nullable: true }) endereco: string | null;
   @ApiPropertyOptional({ nullable: true, example: 'Olarias' }) bairro: string | null;
+  @ApiProperty({ description: 'Posição do dispositivo' }) latitude: number;
+  @ApiProperty({ description: 'Posição do dispositivo' }) longitude: number;
   @ApiProperty({ example: 3.81 }) valorObservado: number;
   @ApiProperty({ example: '>' }) operador: string;
   @ApiProperty({ example: 3.5 }) valorLimite: number;

@@ -1,0 +1,112 @@
+.painel {
+  composes: painel from './FormularioDispositivo.module.css';
+}
+
+.cabecalho {
+  composes: cabecalho from './FormularioDispositivo.module.css';
+}
+
+.formulario {
+  composes: formulario from './FormularioDispositivo.module.css';
+}
+
+.corpo {
+  composes: corpo from './FormularioDispositivo.module.css';
+}
+
+.rodape {
+  composes: rodape from './FormularioDispositivo.module.css';
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.localizacao {
+  composes: localizacao from './FormularioDispositivo.module.css';
+}
+
+.rotulo {
+  composes: rotulo from './FormularioDispositivo.module.css';
+}
+
+.dica {
+  composes: dica from './FormularioDispositivo.module.css';
+}
+
+.distrito {
+  composes: distrito from './FormularioDispositivo.module.css';
+}
+
+.bairro {
+  composes: bairro from './FormularioDispositivo.module.css';
+}
+
+.erro {
+  composes: erro from './FormularioDispositivo.module.css';
+}
+
+.gravidade {
+  composes: gravidade from './FormularioRegra.module.css';
+}
+
+.grave {
+  composes: grave from './FormularioRegra.module.css';
+}
+
+.atencao {
+  composes: atencao from './FormularioRegra.module.css';
+}
+
+.informativo {
+  composes: informativo from './FormularioRegra.module.css';
+}
+
+.nota {
+  composes: nota from './FormularioRegra.module.css';
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.area {
+  min-height: 64px;
+  padding: 7px 9px;
+  background: var(--cor-folha);
+  border: var(--borda-forte);
+  border-radius: var(--raio);
+  font-size: var(--texto-padrao);
+  line-height: var(--entrelinha-corpo);
+  resize: vertical;
+}
+
+.protocolo {
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta-media);
+}
+
+.protocolo strong {
+  display: block;
+  font-size: var(--texto-numero-medio);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta);
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 6px 10px;
+  margin: 0;
+  padding: 10px var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+}
+
+.ficha dt {
+  font-family: var(--fonte-numero);
+  color: var(--cor-tinta-media);
+}
+
+.ficha dd {
+  margin: 0;
+}

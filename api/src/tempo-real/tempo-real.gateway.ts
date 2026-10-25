@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Server } from 'socket.io';
 import { EventosAlertasService } from '../alertas/eventos-alertas.service';
 import { AuthService } from '../auth/auth.service';
+import { OcorrenciasService } from '../ocorrencias/ocorrencias.service';
 
 export const CAMINHO_TEMPO_REAL = '/api/tempo-real';
 
@@ -11,11 +12,12 @@ export const CAMINHO_TEMPO_REAL = '/api/tempo-real';
 @WebSocketGateway({ path: CAMINHO_TEMPO_REAL })
 export class TempoRealGateway implements OnGatewayInit, OnModuleDestroy {
   private readonly logger = new Logger(TempoRealGateway.name);
-  private assinatura?: Subscription;
+  private assinaturas: Subscription[] = [];
 
   constructor(
     private readonly auth: AuthService,
     private readonly eventos: EventosAlertasService,
+    private readonly ocorrencias: OcorrenciasService,
   ) {}
 
   afterInit(servidor: Server): void {
@@ -26,11 +28,14 @@ export class TempoRealGateway implements OnGatewayInit, OnModuleDestroy {
       socket.data.usuarioId = usuario.id;
       seguir();
     });
-    this.assinatura = this.eventos.eventos.subscribe(({ evento, alerta }) => servidor.emit(evento, alerta));
+    this.assinaturas = [
+      this.eventos.eventos.subscribe(({ evento, alerta }) => servidor.emit(evento, alerta)),
+      this.ocorrencias.novas.subscribe((ocorrencia) => servidor.emit('ocorrencia:nova', ocorrencia)),
+    ];
     this.logger.log(`tempo real em ${CAMINHO_TEMPO_REAL}`);
   }
 
   onModuleDestroy(): void {
-    this.assinatura?.unsubscribe();
+    this.assinaturas.forEach((a) => a.unsubscribe());
   }
 }

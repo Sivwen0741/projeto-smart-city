@@ -101,3 +101,18 @@ verificada no Chrome, numa cópia isolada da branch, com o simulador parado.
 | **US04-3** | a segunda tentativa é recusada com a mensagem de quem reconheceu e quando<br>duas tentativas simultâneas: só uma é aceita<br>alerta encerrado ou inexistente não é reconhecido | Tela: com o painel aberto e texto digitado, o alerta foi reconhecido por fora (API); o painel avisou "foi reconhecido por Administrador às 22:05 enquanto você escrevia. A sua providência não foi gravada." e mostrou a providência que valeu. O ensaio mostrou que, antes do ajuste, o texto digitado era descartado sem aviso. | Verificado, tela manual |
 | **US04-4** | o reconhecimento gera registro no log de atividades | — | Verificado |
 | **US03-2** | `us04.e2e-spec.ts` › US03-2 o reconhecimento feito por um operador chega aos outros em tempo real | Completa o critério que estava parcial na US03. | Verificado |
+
+## US05 - Registrar manualmente uma ocorrência informada por telefone
+
+Mesclada em 24/10/2026. Suíte completa: 124 testes passando. Decisões em
+[`2026-10-24-ocorrencia-manual.md`](decisoes/2026-10-24-ocorrencia-manual.md). Tela verificada no
+Chrome, numa cópia isolada da branch, com o simulador parado.
+
+| Critério | Teste automatizado (`us05.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US05-1** | grava os campos e calcula o bairro pela localização<br>as listas de categorias e de órgãos vêm da interface de programação<br>ponto na zona rural fica sem bairro | Tela: formulário aberto pelo menu sobre o painel; ponto marcado no mapa mostrou o bairro. | Verificado, tela manual |
+| **US05-2** | o protocolo segue o formato do protótipo e é único, mesmo com registros simultâneos | Tela: "Protocolo 2026-10-0001". | Verificado, tela manual |
+| **US05-3** | grava quem registrou, a origem telefone, a situação aberta e o primeiro registro do histórico | Tela: "Origem: Telefone". | Verificado |
+| **US05-4** | sem categoria, sem gravidade ou sem localização é recusado com mensagem<br>ponto fora do município é recusado<br>órgão e descrição são opcionais | Tela: envio vazio marcou "Escolha a categoria.", "Escolha a gravidade." e "Marque a localização no mapa." | Verificado, tela manual |
+| **US05-5** | o alerta fica vinculado e a origem é alerta<br>alerta já vinculado ou inexistente não abre outra ocorrência | Tela: reconhecimento com "Abrir ocorrência com este alerta" abriu o formulário preenchido; registrado como 2026-10-0002, "Origem: Alerta de EA-02", e a linha do alerta passou a mostrar "Defesa Civil". | Verificado, tela manual |
+| **US05-6** | o registro gera entrada no log de atividades<br>a ocorrência nova chega às telas e aparece na lista do mapa | Tela: o anel da ocorrência apareceu no mapa do painel ao registrar, com a contagem na barra; o plural errado ("1 ocorrências abertas") foi corrigido antes do merge. | Verificado, tela manual |

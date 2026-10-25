@@ -7,5 +7,6 @@ import { DispositivosService } from './dispositivos.service';
   imports: [LogAtividadeModule],
   controllers: [DispositivosController],
   providers: [DispositivosService],
+  exports: [DispositivosService],
 })
 export class DispositivosModule {}

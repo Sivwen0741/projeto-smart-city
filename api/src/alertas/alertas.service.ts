@@ -10,6 +10,7 @@ const CONSULTA = `
   SELECT a.id::text AS id, r.id::text AS "regraId", r.nome AS regra, r.tipo_grandeza AS "tipoGrandeza",
          d.id::text AS "dispositivoId", d.identificador AS dispositivo, t.nome AS "tipoDispositivo",
          d.endereco, b.nome AS bairro,
+         ST_Y(d.localizacao::geometry) AS latitude, ST_X(d.localizacao::geometry) AS longitude,
          a.valor_observado::float8 AS "valorObservado", a.operador, a.valor_limite::float8 AS "valorLimite",
          a.criticidade, a.situacao, a.data_hora AS "dataHora", a.data_reconhecimento AS "dataReconhecimento",
          u.nome AS "reconhecidoPor", a.providencia, a.data_encerramento AS "dataEncerramento",

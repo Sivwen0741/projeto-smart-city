@@ -15,6 +15,8 @@ export interface Alerta {
   tipoDispositivo: string;
   endereco: string | null;
   bairro: string | null;
+  latitude: number;
+  longitude: number;
   valorObservado: number;
   operador: string;
   valorLimite: number;
