@@ -17,7 +17,7 @@ export interface Alerta {
   bairro: string | null;
   latitude: number;
   longitude: number;
-  valorObservado: number;
+  valorObservado: number | null;
   operador: string;
   valorLimite: number;
   criticidade: Criticidade;
@@ -70,8 +70,11 @@ export const medida = (valor: number, unidade: string | null, casas = casasDe(va
     ? duracao(valor)
     : `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
 
+// us07: sem valor é o dispositivo que nunca se comunicou
+export const medicao = (valor: number | null, unidade: string | null) => (valor === null ? 'nunca se comunicou' : medida(valor, unidade));
+
 export const limite = (a: Pick<Alerta, 'valorObservado' | 'valorLimite' | 'unidade'>) =>
-  medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado), casasDe(a.valorLimite)));
+  medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado ?? 0), casasDe(a.valorLimite)));
 
 export const fixoAteReconhecer = (a: Pick<Alerta, 'criticidade' | 'situacao'>) => a.criticidade === 'grave' && a.situacao === 'aberto';
 

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
 import { Autor } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
@@ -7,10 +7,9 @@ import { AlteracaoRegraDto, AtualizarRegraAlertaDto, CriarRegraAlertaDto, RegraA
 const CONSULTA = `
   SELECT r.id::text AS id, r.nome, r.tipo_grandeza AS "tipoGrandeza", r.operador,
          r.valor_limite::float8 AS "valorLimite", r.duracao_minutos AS "duracaoMinutos",
-         r.criticidade, r.ativa,
+         r.criticidade, r.ativa, r.sistema,
          (SELECT count(*) FROM alerta a WHERE a.regra_alerta_id = r.id)::int AS alertas
-    FROM regra_alerta r
-   WHERE NOT r.sistema`;
+    FROM regra_alerta r`;
 
 const MENSAGEM_VAZIO: Record<string, string> = {
   nome: 'Informe o nome da regra.',
@@ -37,7 +36,7 @@ export class RegrasAlertaService {
 
   async buscar(id: string, manager: EntityManager = this.fonte.manager): Promise<RegraAlertaDto> {
     if (!/^\d+$/.test(id)) throw new NotFoundException('Regra de alerta não encontrada.');
-    const [regra] = await manager.query(`${CONSULTA} AND r.id = $1`, [id]);
+    const [regra] = await manager.query(`${CONSULTA} WHERE r.id = $1`, [id]);
     if (!regra) throw new NotFoundException('Regra de alerta não encontrada.');
     return regra;
   }
@@ -70,6 +69,8 @@ export class RegrasAlertaService {
     const vazios = Object.entries(dados).filter(([, v]) => v === null).map(([campo]) => MENSAGEM_VAZIO[campo]);
     if (vazios.length > 0) throw new BadRequestException(vazios);
     const atual = await this.buscar(id);
+    // a regra da us07 usa o limite de cada dispositivo; editar ou desativar não tem efeito previsível
+    if (atual.sistema) throw new ConflictException('A regra do sistema não pode ser alterada.');
     const novo = { ...this.auditavel(atual), ...Object.fromEntries(Object.entries(dados).filter(([, v]) => v !== undefined)) };
 
     return this.fonte.transaction(async (m) => {

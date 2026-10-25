@@ -30,7 +30,7 @@ export interface RegistroHistorico {
   observacao: string | null;
   autor: string | null;
   orgaoAutor: string | null;
-  alerta: { regra: string; dispositivo: string; valorObservado: number; valorLimite: number; operador: string; unidade: string | null } | null;
+  alerta: { regra: string; dispositivo: string; valorObservado: number | null; valorLimite: number; operador: string; unidade: string | null } | null;
 }
 
 export interface AlertaVinculado {
@@ -39,7 +39,7 @@ export interface AlertaVinculado {
   dispositivo: string;
   criticidade: Criticidade;
   situacao: string;
-  valorObservado: number;
+  valorObservado: number | null;
   unidade: string | null;
   dataHora: string;
 }

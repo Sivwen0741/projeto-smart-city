@@ -80,17 +80,31 @@ describe('US07 aviso quando um dispositivo parar de enviar dados', () => {
       expect(lista.find((a: { id: string }) => a.id === alerta.id)).toMatchObject({ unidade: 'min', regra: 'Dispositivo sem comunicação' });
     });
 
+    it('US07-1 dispositivo que nunca se comunicou recebe o alerta sem valor, e não uma contagem desde a instalação', async () => {
+      const nunca = await dispositivo('ativo', null);
+      await verificacao.verificar();
+      const [alerta] = await alertasDe(nunca.id);
+      expect(alerta).toMatchObject({ situacao: 'aberto', valor: null, limite: 1 });
+      const lista = (await autenticado(http().get('/api/alertas')).expect(200)).body;
+      expect(lista.find((a: { id: string }) => a.id === alerta.id).valorObservado).toBeNull();
+    });
+
     it('US07-1 dispositivo dentro do limite não recebe alerta', async () => {
       const ativo = await dispositivo('ativo', 'now()');
       await verificacao.verificar();
       expect(await alertasDe(ativo.id)).toEqual([]);
     });
 
-    it('US07-1 a regra de sistema não aparece na tela de regras', async () => {
+    it('US07-1 a regra de sistema aparece na tela de regras, marcada, e não pode ser editada nem desativada', async () => {
       const regras = (await autenticado(http().get('/api/regras-alerta')).expect(200)).body;
-      expect(regras.map((r: { nome: string }) => r.nome)).not.toContain('Dispositivo sem comunicação');
-      const [{ id }] = await fonte.query(`SELECT id::text FROM regra_alerta WHERE sistema`);
-      await autenticado(http().patch(`/api/regras-alerta/${id}`)).send({ valorLimite: 5 }).expect(404);
+      const sistema = regras.find((r: { nome: string }) => r.nome === 'Dispositivo sem comunicação');
+      expect(sistema).toMatchObject({ sistema: true, ativa: true, criticidade: 'atencao', tipoGrandeza: 'sem_comunicacao' });
+      expect(regras.filter((r: { sistema: boolean }) => !r.sistema).length).toBe(regras.length - 1);
+      for (const alteracao of [{ valorLimite: 5 }, { ativa: false }]) {
+        const resposta = await autenticado(http().patch(`/api/regras-alerta/${sistema.id}`)).send(alteracao).expect(409);
+        expect(resposta.body.message).toBe('A regra do sistema não pode ser alterada.');
+      }
+      expect((await autenticado(http().get(`/api/regras-alerta/${sistema.id}`)).expect(200)).body).toMatchObject({ ativa: true, valorLimite: 0 });
     });
   });
 

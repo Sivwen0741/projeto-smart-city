@@ -43,11 +43,11 @@ export class VerificacaoComunicacaoService implements OnModuleInit, OnModuleDest
   }
 
   async verificar(): Promise<string[]> {
-    // valores em minutos; quem nunca comunicou conta desde a instalação, ou fica no próprio limite
+    // valores em minutos; quem nunca se comunicou fica sem valor
     const novos: { id: string }[] = await this.fonte.query(
       `INSERT INTO alerta (regra_alerta_id, dispositivo_id, valor_observado, operador, valor_limite, criticidade, situacao)
        SELECT r.id, d.id,
-              round((EXTRACT(EPOCH FROM now() - COALESCE(d.ultima_comunicacao, d.data_instalacao::timestamptz, now() - ${LIMITE_COMUNICACAO} * interval '1 second')) / 60)::numeric, 1),
+              round((EXTRACT(EPOCH FROM now() - d.ultima_comunicacao) / 60)::numeric, 1),
               r.operador, round(${LIMITE_COMUNICACAO} / 60.0, 1), r.criticidade, 'aberto'
          FROM dispositivo d
          JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id

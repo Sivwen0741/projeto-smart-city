@@ -17,20 +17,23 @@ toda. O limite de comunicação, porém, é de cada dispositivo.
    obriga todas as consultas de alerta a tratar a regra ausente.
 2. **Uma regra comum na tela de regras.** O operador poderia mudar o limite ou a grandeza de uma
    regra que não usa nenhum dos dois.
-3. **Uma regra de sistema, criada por migração e escondida da tela de regras** (escolhida). O alerta
+3. **Uma regra de sistema, criada por migração e mostrada na tela de regras só para leitura** (escolhida). O alerta
    continua ligado a uma regra, e o índice único de alerta ativo por regra e dispositivo (TT02-6) já
    garante a US07-2.
 
 ## Decisão
 
 - Coluna nova `regra_alerta.sistema` e a regra "Dispositivo sem comunicação" (grandeza
-  `sem_comunicacao`, atenção), criadas na migração `AlertaSemComunicacao`. A tela e as rotas de regras
-  não listam nem editam regra de sistema.
+  `sem_comunicacao`, atenção), criadas na migração `AlertaSemComunicacao`. A tela de regras mostra a
+  regra apagada, com a marca "regra do sistema", sem abrir o formulário; a rota de edição responde 409.
+  Assim a tela continua mostrando tudo o que gera alerta.
 - Rotina na interface de programação a cada 60 s (`VERIFICACAO_COMUNICACAO_SEGUNDOS`, zero desliga),
   sem biblioteca nova. Ela usa a mesma situação calculada da US22, então dispositivo em manutenção ou
   inativo não entra.
-- O valor do alerta é o tempo sem comunicação e o limite é o da US22, os dois em minutos. Quem nunca
-  comunicou conta desde a data de instalação.
+- O valor do alerta é o tempo sem comunicação e o limite é o da US22, os dois em minutos. Para quem
+  nunca se comunicou o valor fica vazio (migração `AlertaNuncaComunicou`; só alerta sem leitura de
+  origem pode ficar sem valor), e a tela mostra "nunca se comunicou" em vez de uma contagem desde a
+  instalação, que parecia defeito.
 - A ingestão encerra o alerta ainda aberto quando chega qualquer mensagem do dispositivo, inclusive
   o sinal de vida. Alerta reconhecido segue em atendimento até a ocorrência ser encerrada.
 - Esse alerta não muda a cor do dispositivo no mapa nem na lista: ele já aparece como "sem
@@ -38,6 +41,6 @@ toda. O limite de comunicação, porém, é de cada dispositivo.
 
 ## Consequências
 
-- O DER ganha `regra_alerta.sistema`; entra na regeneração do diagrama no fechamento da Sprint 6.
+- O DER ganha `regra_alerta.sistema` e `alerta.valor_observado` passa a aceitar nulo; entra na regeneração do diagrama no fechamento da Sprint 6.
 - No ambiente de demonstração, EA-07 e SN-027, que não publicam de propósito, geram o alerta no
   primeiro minuto depois da subida.

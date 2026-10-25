@@ -1,6 +1,6 @@
 import { FormEvent, useCallback, useEffect, useId, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { GRAVIDADES, medida } from '../alertas/modelo';
+import { GRAVIDADES, medicao, medida } from '../alertas/modelo';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { MapaPonto } from '../componentes/MapaPonto';
@@ -31,6 +31,7 @@ function tituloDoRegistro(r: RegistroHistorico): string {
 function textoDoRegistro(r: RegistroHistorico): string | null {
   if (r.tipo === 'alerta_gerado' && r.alerta) {
     const { dispositivo, valorObservado, valorLimite, operador, unidade } = r.alerta;
+    if (valorObservado === null) return `${dispositivo} nunca se comunicou.`;
     const sentido = operador.startsWith('<') ? 'abaixo' : 'acima';
     return `${dispositivo} registrou ${medida(valorObservado, unidade)}, ${sentido} do limite de ${medida(valorLimite, unidade)}.`;
   }
@@ -278,7 +279,7 @@ export function OcorrenciaDetalhe() {
                       <time className="numero">{hora(a.dataHora)}</time>
                     </div>
                     <span className={estilos.autor}>
-                      {a.dispositivo} · {medida(a.valorObservado, a.unidade)}
+                      {a.dispositivo} · {medicao(a.valorObservado, a.unidade)}
                     </span>
                   </li>
                 ))}

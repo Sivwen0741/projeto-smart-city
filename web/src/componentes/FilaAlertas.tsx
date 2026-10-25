@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medida } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medicao } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
 import { AbrirOcorrencia } from './AbrirOcorrencia';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
@@ -63,7 +63,7 @@ export function FilaAlertas() {
             </div>
             <div className={estilos.linha}>
               <span className={`${estilos.medicao} numero`}>
-                {medida(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>
+                {medicao(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>
               </span>
               {a.situacao === 'aberto' ? (
                 <Link className={estilos.reconhecer} to={`/alertas?alerta=${a.id}`}>

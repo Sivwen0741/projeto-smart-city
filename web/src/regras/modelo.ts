@@ -14,9 +14,10 @@ export interface RegraAlerta {
   criticidade: Criticidade;
   ativa: boolean;
   alertas: number;
+  sistema: boolean;
 }
 
-export type DadosRegra = Omit<RegraAlerta, 'id' | 'alertas'>;
+export type DadosRegra = Omit<RegraAlerta, 'id' | 'alertas' | 'sistema'>;
 
 export interface Alteracao {
   acao: string;
