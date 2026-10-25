@@ -17,6 +17,7 @@ interface Sessao {
 
 interface ContextoSessao {
   usuario: UsuarioSessao | null;
+  token: string | null;
   entrar(email: string, senha: string, manterConectado: boolean): Promise<void>;
   sair(): void;
 }
@@ -69,7 +70,7 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
     setSessao(nova);
   }, []);
 
-  const valor = useMemo(() => ({ usuario: sessao?.usuario ?? null, entrar, sair }), [sessao, entrar, sair]);
+  const valor = useMemo(() => ({ usuario: sessao?.usuario ?? null, token: sessao?.token ?? null, entrar, sair }), [sessao, entrar, sair]);
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;
 }
 

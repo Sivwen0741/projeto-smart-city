@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/commo
 import { randomUUID } from 'crypto';
 import { connect, MqttClient } from 'mqtt';
 import { DataSource } from 'typeorm';
+import { EventosAlertasService } from '../alertas/eventos-alertas.service';
 import { LeituraGravada, MotorAlertasService } from '../alertas/motor-alertas.service';
 import { grandezasMedidas } from '../dispositivos/atributos';
 import { CODIGOS_GRANDEZA, Grandeza, GRANDEZAS } from '../grandezas';
@@ -62,6 +63,7 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly fonte: DataSource,
     private readonly motor: MotorAlertasService,
+    private readonly eventos: EventosAlertasService,
   ) {}
 
   onModuleInit(): void {
@@ -90,7 +92,10 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
     const codigo = topico.split('/')[2];
     try {
       const alertas = await this.gravar(codigo, interpretar(conteudo));
-      if (alertas.length > 0) this.logger.log(`alertas emitidos para ${codigo}: ${alertas.join(', ')}`);
+      if (alertas.length > 0) {
+        this.logger.log(`alertas emitidos para ${codigo}: ${alertas.join(', ')}`);
+        await this.eventos.novos(alertas).catch((erro) => this.logger.error(`falha ao avisar as telas: ${erro.message}`));
+      }
     } catch (erro) {
       if (erro instanceof MensagemRecusada) this.logger.warn(`mensagem descartada de ${codigo}: ${erro.message}`);
       else this.logger.error(`falha ao gravar mensagem de ${codigo}: ${(erro as Error).message}`);

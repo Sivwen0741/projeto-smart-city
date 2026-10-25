@@ -61,3 +61,16 @@ nesse banco.
 | **US02-2** | a ordem é grave, atenção e informativo, e o mais recente primeiro na mesma gravidade | Tela: grave no topo, atenção em seguida, do mais recente ao mais antigo. | Verificado |
 | **US02-3** | os indicadores contam ativos, graves sem reconhecimento, em atendimento, encerrados, tempo até o reconhecimento e 24 h<br>os dispositivos sem comunicação são contados por tipo | Tela: "3 alertas ativos agora, 1 grave sem reconhecimento", "12 min", "4 alertas nas últimas 24 h, 1 já encerrado", "2 dispositivos sem comunicação, 1 estação ambiental e 1 sensor de nível". | Verificado, tela manual |
 | **US02-4** | — (o painel usa a mesma rota da tela de alertas) | Tela: a fila do painel mostrou os mesmos três alertas na mesma ordem, com "3 · 1 grave". | Verificado, só manual |
+
+## US03 - Novos alertas na tela em tempo real
+
+Mesclada em 24/10/2026. Suíte completa: 98 testes passando. Decisões em
+[`2026-10-24-tempo-real.md`](decisoes/2026-10-24-tempo-real.md). Verificação de tela no Chrome,
+numa cópia isolada da branch, com o simulador parado para controlar as leituras.
+
+| Critério | Teste automatizado (`us03.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US03-1** | o alerta novo chega à tela em até 2 segundos depois da leitura que o disparou | Tela: `mosquitto_pub` de 62 mm no EA-02 com a tela de alertas aberta; "Chuva forte acumulada" apareceu 0,2 s depois do fim da publicação, sem recarregar, e o contador do menu foi para 1. | Verificado, tela manual |
+| **US03-2** | a mudança de situação feita por outro operador também chega em tempo real | O teste emite a mudança pelo serviço de eventos. As ações que mudam a situação (reconhecer, encerrar) são da US04 e da US28 e terão teste próprio da emissão. | Verificado, parcial até a US04 |
+| **US03-3** | sem token, com token adulterado ou de usuário inativo, a conexão é recusada<br>com token válido, a conexão é aceita | — | Verificado |
+| **US03-4** | o alerta emitido com a tela desconectada está na lista consultada ao reconectar | Tela: API parada, alerta criado no banco, API de volta; o alerta apareceu até 1 s depois de a API responder, com a lista da página e o contador do menu consultados juntos, o que indica a consulta disparada pela reconexão. A consulta de 15 s também teria trazido o alerta, mais tarde. | Verificado, tela manual |

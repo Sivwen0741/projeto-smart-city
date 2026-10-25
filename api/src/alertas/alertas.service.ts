@@ -40,6 +40,11 @@ export class AlertasService {
     return alertas.map((a) => ({ ...a, unidade: GRANDEZAS[a.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null }));
   }
 
+  async buscar(id: string): Promise<AlertaDto | null> {
+    const [alerta] = await this.fonte.query(`${CONSULTA} WHERE a.id = $1`, [id]);
+    return alerta ? { ...alerta, unidade: GRANDEZAS[alerta.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null } : null;
+  }
+
   async resumo(): Promise<ResumoAlertasDto> {
     const [contagens] = await this.fonte.query(
       `SELECT count(*) FILTER (WHERE situacao IN ('aberto', 'em_atendimento'))::int AS ativos,

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Alerta, alertasApi, limite, lugar, medida } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
 import { ABRIR_OCORRENCIA, RECONHECER } from '../paginas/Alertas';
 import { Botao } from './Botao';
+import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './FilaAlertas.module.css';
 import { Previsto, textoPrevisao } from './Previsto';
 
@@ -13,23 +14,24 @@ export function FilaAlertas() {
   const [alertas, setAlertas] = useState<Alerta[] | null>(null);
   const [agora, setAgora] = useState(() => Date.now());
 
-  useEffect(() => {
-    let ativo = true;
-    const carregar = () =>
+  const carregar = useCallback(
+    () =>
       alertasApi
         .listar('ativos')
-        .then((lista) => ativo && setAlertas(lista))
-        .catch(() => undefined);
+        .then((lista) => {
+          setAlertas(lista);
+          setAgora(Date.now());
+        })
+        .catch(() => undefined),
+    [],
+  );
+  useAlertasAoVivo(carregar);
+
+  useEffect(() => {
     carregar();
-    const intervalo = setInterval(() => {
-      carregar();
-      setAgora(Date.now());
-    }, ATUALIZACAO_MS);
-    return () => {
-      ativo = false;
-      clearInterval(intervalo);
-    };
-  }, []);
+    const intervalo = setInterval(carregar, ATUALIZACAO_MS);
+    return () => clearInterval(intervalo);
+  }, [carregar]);
 
   const graves = alertas?.filter((a) => a.criticidade === 'grave').length ?? 0;
 

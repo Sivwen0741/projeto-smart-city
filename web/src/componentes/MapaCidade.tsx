@@ -1,10 +1,11 @@
 import L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dispositivo, dispositivosApi, SITUACOES, tempoDesde } from '../dispositivos/modelo';
 import { Ocorrencia, ocorrenciasApi, SITUACOES_OCORRENCIA } from '../ocorrencias/modelo';
+import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './MapaCidade.module.css';
 import { Previsao, Previsto, textoPrevisao } from './Previsto';
 
@@ -106,27 +107,29 @@ export function MapaCidade({ cheia = false }: Props) {
     };
   }, []);
 
-  useEffect(() => {
-    let ativo = true;
-    const carregar = () =>
+  const carregar = useCallback(
+    () =>
       Promise.all([dispositivosApi.listar('codigo', 'asc'), ocorrenciasApi.abertas()])
         .then(([d, o]) => {
-          if (!ativo) return;
           setDispositivos(d.filter((x) => x.estado !== 'inativo'));
           setOcorrencias(o.filter((x) => x.latitude !== null && x.longitude !== null));
           setAtualizado(Date.now());
           setErro(false);
         })
-        .catch(() => ativo && setErro(true));
+        .catch(() => setErro(true)),
+    [],
+  );
+  useAlertasAoVivo(carregar);
+
+  useEffect(() => {
     carregar();
     const intervalo = setInterval(carregar, ATUALIZACAO_MS);
     const relogio = setInterval(() => setAgora(Date.now()), 1000);
     return () => {
-      ativo = false;
       clearInterval(intervalo);
       clearInterval(relogio);
     };
-  }, []);
+  }, [carregar]);
 
   useEffect(() => {
     const c = camadas.current;

@@ -4,6 +4,7 @@ import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medida, ResumoAlertas, S
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
+import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './Alertas.module.css';
 
 const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
@@ -55,6 +56,8 @@ export function Alertas() {
       setErro('Não foi possível carregar os alertas.');
     }
   }, [visao]);
+
+  useAlertasAoVivo(carregar);
 
   useEffect(() => {
     carregar();
