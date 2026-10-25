@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medicao } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medicao, textoComposicao } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
 import { AbrirOcorrencia } from './AbrirOcorrencia';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
@@ -73,6 +73,7 @@ export function FilaAlertas() {
                 <AbrirOcorrencia alerta={a} />
               )}
             </div>
+            {a.composicao && <div className={estilos.lugar}>{textoComposicao(a.composicao)}</div>}
           </li>
         ))}
         {alertas?.length === 0 && <li className={estilos.vazio}>Nenhum alerta ativo.</li>}

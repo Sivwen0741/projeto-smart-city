@@ -1,5 +1,5 @@
 import { FormEvent, useId, useState } from 'react';
-import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medicao, SITUACOES_ALERTA } from '../alertas/modelo';
+import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medicao, SITUACOES_ALERTA, textoComposicao } from '../alertas/modelo';
 import { Botao } from '../componentes/Botao';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { Simulado } from '../componentes/Simulado';
@@ -77,6 +77,12 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
           limite {alerta.operador} {limite(alerta)}
         </span>
       </dd>
+      {alerta.composicao && (
+        <>
+          <dt>Composição</dt>
+          <dd>Nível de {alerta.composicao.nivel.dispositivo} acima da cota, {textoComposicao(alerta.composicao)}</dd>
+        </>
+      )}
       <dt>Detecção</dt>
       <dd>
         {quando(alerta.dataHora)} · {tempoDesde(alerta.dataHora, Date.now())}

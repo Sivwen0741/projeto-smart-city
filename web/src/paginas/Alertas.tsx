@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medicao, ResumoAlertas, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medicao, ResumoAlertas, textoComposicao, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
 import { AbrirOcorrencia } from '../componentes/AbrirOcorrencia';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
@@ -183,6 +183,7 @@ export function Alertas() {
                   <td className="numero">
                     <strong>{medicao(a.valorObservado, a.unidade)}</strong>{' '}
                     <span className={estilos.apoio}>limite {limite(a)}</span>
+                    {a.composicao && <div className={estilos.apoio}>{textoComposicao(a.composicao)}</div>}
                   </td>
                   <td title={new Date(a.dataHora).toLocaleString('pt-BR')}>{hora(a.dataHora)}</td>
                   <td>{a.orgao ?? '–'}</td>

@@ -49,7 +49,7 @@ export class MotorAlertasService {
   async avaliar(m: EntityManager, leitura: LeituraGravada): Promise<ResultadoAvaliacao> {
     const regras: Regra[] = await m.query(
       `SELECT id::text AS id, operador, valor_limite::float8 AS "valorLimite", duracao_minutos AS "duracaoMinutos", criticidade
-         FROM regra_alerta WHERE ativa AND tipo_grandeza = $1`,
+         FROM regra_alerta WHERE ativa AND tipo = 'simples' AND tipo_grandeza = $1`,
       [leitura.tipoGrandeza],
     );
     const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
@@ -68,7 +68,85 @@ export class MotorAlertasService {
       );
       if (alerta) resultado.novos.push(alerta.id);
     }
+    if (leitura.tipoGrandeza === 'nivel_agua') {
+      const composto = await this.avaliarRiscoDeEnchente(m, leitura);
+      resultado.novos.push(...composto.novos);
+      resultado.encerrados.push(...composto.encerrados);
+    }
     return resultado;
+  }
+
+  // us10: nível acima da cota e, no mesmo bairro, chuva ou vazão prevista acima do limite dentro da janela
+  private async avaliarRiscoDeEnchente(m: EntityManager, leitura: LeituraGravada): Promise<ResultadoAvaliacao> {
+    const regras: (Regra & { limitePrecipitacao: number; limiteVazaoPrevista: number; janelaHoras: number })[] = await m.query(
+      `SELECT id::text AS id, operador, valor_limite::float8 AS "valorLimite", criticidade,
+              limite_precipitacao::float8 AS "limitePrecipitacao", limite_vazao_prevista::float8 AS "limiteVazaoPrevista",
+              janela_horas AS "janelaHoras"
+         FROM regra_alerta WHERE ativa AND tipo = 'risco_enchente'`,
+    );
+    const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
+    for (const regra of regras) {
+      if (!foraDoLimite(leitura.valor, regra.operador, regra.valorLimite)) {
+        resultado.encerrados.push(...(await this.encerrarNormalizados(m, leitura, regra.id)));
+        continue;
+      }
+      const complemento = await this.complementoDaEnchente(m, leitura, regra);
+      if (!complemento) continue;
+      const [{ identificador }] = await m.query(`SELECT identificador FROM dispositivo WHERE id = $1`, [leitura.dispositivoId]);
+      const composicao = {
+        nivel: { dispositivo: identificador, valor: leitura.valor, limite: regra.valorLimite, dataHora: leitura.dataHora },
+        complemento,
+      };
+      const [alerta] = await m.query(
+        `INSERT INTO alerta (regra_alerta_id, dispositivo_id, leitura_id, valor_observado, operador, valor_limite, criticidade, situacao, composicao)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'aberto', $8)
+         ON CONFLICT (regra_alerta_id, dispositivo_id) WHERE situacao IN ('aberto', 'em_atendimento') DO NOTHING
+         RETURNING id::text`,
+        [regra.id, leitura.dispositivoId, leitura.id, leitura.valor, regra.operador, regra.valorLimite, regra.criticidade, JSON.stringify(composicao)],
+      );
+      if (alerta) resultado.novos.push(alerta.id);
+    }
+    return resultado;
+  }
+
+  // a maior chuva medida no bairro na janela; senão, a maior vazão do open-meteo de hoje até o fim da janela
+  private async complementoDaEnchente(
+    m: EntityManager,
+    leitura: LeituraGravada,
+    regra: { limitePrecipitacao: number; limiteVazaoPrevista: number; janelaHoras: number },
+  ): Promise<Record<string, unknown> | null> {
+    const [chuva] = await m.query(
+      `SELECT 'precipitacao' AS grandeza, l.valor::float8 AS valor, $4::float8 AS limite, d.identificador AS dispositivo, l.data_hora AS "dataHora"
+         FROM leitura l
+         JOIN dispositivo d ON d.id = l.dispositivo_id
+         JOIN dispositivo s ON s.id = $1
+        WHERE l.tipo_grandeza = 'precipitacao' AND d.bairro_id = s.bairro_id
+          AND l.data_hora > $2::timestamptz - $3 * interval '1 hour' AND l.data_hora <= $2::timestamptz
+          AND l.valor >= $4
+        ORDER BY l.valor DESC, l.data_hora DESC LIMIT 1`,
+      [leitura.dispositivoId, leitura.dataHora, regra.janelaHoras, regra.limitePrecipitacao],
+    );
+    if (chuva) return chuva;
+    const [vazao] = await m.query(
+      `SELECT 'vazao_prevista' AS grandeza, v.valor, $4::float8 AS limite, v.dispositivo, v.data
+         FROM (
+           SELECT p.valor::float8 AS valor, d.identificador AS dispositivo, to_char(p.data, 'YYYY-MM-DD') AS data
+             FROM previsao p JOIN dispositivo d ON d.id = p.dispositivo_id
+            WHERE p.tipo_grandeza = 'vazao' AND (d.id = $1 OR d.bairro_id = (SELECT bairro_id FROM dispositivo WHERE id = $1))
+              AND p.data BETWEEN ($2::timestamptz AT TIME ZONE 'America/Sao_Paulo')::date
+                             AND (($2::timestamptz + $3 * interval '1 hour') AT TIME ZONE 'America/Sao_Paulo')::date
+           UNION ALL
+           SELECT l.valor::float8, d.identificador, to_char(l.data_hora AT TIME ZONE 'America/Sao_Paulo', 'YYYY-MM-DD')
+             FROM leitura l JOIN dispositivo d ON d.id = l.dispositivo_id
+            WHERE l.tipo_grandeza = 'vazao' AND l.fonte_dados_id IS NOT NULL
+              AND (d.id = $1 OR d.bairro_id = (SELECT bairro_id FROM dispositivo WHERE id = $1))
+              AND (l.data_hora AT TIME ZONE 'America/Sao_Paulo')::date = ($2::timestamptz AT TIME ZONE 'America/Sao_Paulo')::date
+         ) v
+        WHERE v.valor >= $4
+        ORDER BY v.valor DESC LIMIT 1`,
+      [leitura.dispositivoId, leitura.dataHora, regra.janelaHoras, regra.limiteVazaoPrevista],
+    );
+    return vazao ?? null;
   }
 
   // us28: sem reconhecimento, só o grave continua ativo quando a leitura volta ao normal.

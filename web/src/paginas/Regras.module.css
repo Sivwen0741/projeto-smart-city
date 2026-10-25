@@ -39,3 +39,10 @@
   color: var(--cor-tinta-suave);
   white-space: nowrap;
 }
+
+.complemento {
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-media);
+  white-space: normal;
+}

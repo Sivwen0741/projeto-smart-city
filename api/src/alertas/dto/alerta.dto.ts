@@ -38,6 +38,15 @@ export class AlertaDto {
   @ApiPropertyOptional({ nullable: true, description: 'Órgão da ocorrência vinculada' }) orgao: string | null;
   @ApiPropertyOptional({ nullable: true }) ocorrenciaId: string | null;
   @ApiProperty({ description: 'A leitura que disparou o alerta veio do simulador' }) simulado: boolean;
+  @ApiPropertyOptional({
+    nullable: true,
+    description: 'Só no risco de enchente (US10): a leitura de nível e a de chuva ou vazão prevista que compõem o alerta',
+    example: {
+      nivel: { dispositivo: 'SN-014', valor: 3.82, limite: 3.5, dataHora: '2026-10-25T21:00:00Z' },
+      complemento: { grandeza: 'precipitacao', valor: 58.2, limite: 50, dispositivo: 'EA-02', dataHora: '2026-10-25T20:59:30Z' },
+    },
+  })
+  composicao: Record<string, unknown> | null;
 }
 
 export class SemComunicacaoPorTipoDto {

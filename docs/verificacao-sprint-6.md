@@ -63,3 +63,15 @@ respostas simuladas da Flood API.
 | **US09-2** | cada ponto traz o nível atual, a tendência da última hora, a série de 6 h e a vazão de hoje<br>a cota vem da menor regra ativa de nível acima de um limite<br>sensor inativo continua como ponto, sem nível, e com a vazão do Open-Meteo | Cópia isolada da branch (`docker compose -p ensaio-us09`): o indicador "Nível dos rios" abre a tela; Arroio Olarias com o nível simulado de SN-014, cota de 3,50 m e vazão real; Ronda sem comunicação e Pilão de Pedra inativo só com a vazão. | Verificado |
 | **US09-3** | leitura de nível nova e coleta concluída chegam às telas em tempo real | Na cópia isolada, o nível de SN-014 mudou na tela sem recarregar. | Verificado |
 | **US09-4** | erro de rede ou HTTP é registrado, a rotina não lança e a última coleta boa continua | O aviso de falha da tela foi conferido só pelo teste da interface de programação. | Verificado |
+
+## US10 - Alerta automático de risco de enchente
+
+Branch `sprint-6-us10`, sobre a da US09, PR aberto para revisão. Suíte completa: 167 testes passando
+num banco de teste recriado. Decisão em
+[`2026-10-25-risco-de-enchente.md`](decisoes/2026-10-25-risco-de-enchente.md).
+
+| Critério | Teste automatizado (`us10.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US10-1** | a regra de risco de enchente vem na carga inicial: cota 3,5 m, chuva 50 mm, vazão prevista 15 m³/s, janela de 24 h<br>nível acima da cota com chuva forte no mesmo bairro dentro da janela abre o alerta<br>só o nível acima da cota não basta<br>chuva em outro bairro ou fora da janela não conta<br>nível abaixo da cota não dispara, mesmo com chuva<br>a vazão prevista do Open-Meteo acima do limite também compõe o alerta<br>enquanto o alerta está ativo, novas leituras não abrem outro | Cópia isolada da branch (`docker compose -p ensaio-us10`), 25/10/2026: o simulador publicou chuva de 53,3 mm em EA-02 às 19:53 e, um minuto depois, nível de 3,87 m em SN-014, os dois em Olarias; o alerta grave "Risco de enchente" apareceu na tela de alertas e no painel de reconhecimento com as duas leituras. O formulário da regra mostra os três campos da condição complementar. | Verificado |
+| **US10-2** | o alerta informa a leitura de nível e a de chuva que o compõem | — | Verificado |
+| **US10-3** | mudar o limite de chuva muda o disparo e fica no histórico da regra<br>limites inválidos, troca de grandeza e campos de enchente numa regra simples são recusados | — | Verificado |
