@@ -74,7 +74,7 @@ export class PainelService {
       ) as Promise<{ grandeza: string; criticidade: string }[]>,
       this.fonte.query(
         `SELECT tipo_grandeza AS grandeza, min(valor_limite)::float8 AS limite FROM regra_alerta
-          WHERE ativa AND NOT sistema AND operador IN ('>', '>=') AND tipo_grandeza IN ('nivel_agua', 'nivel_sonoro')
+          WHERE ativa AND NOT sistema AND operador IN ('>', '>=') AND valor_limite > 0 AND tipo_grandeza IN ('nivel_agua', 'nivel_sonoro')
           GROUP BY tipo_grandeza`,
       ) as Promise<{ grandeza: string; limite: number }[]>,
       this.ocorrenciasHoje(),
@@ -106,7 +106,7 @@ export class PainelService {
           return {
             valor: maior.valor,
             variacao: maior.anterior !== null ? `${sinal(maior.valor - maior.anterior, 2)} m/h` : null,
-            proporcao: cota !== null && cota > 0 ? limitar(maior.valor / (cota / 0.8)) : null,
+            proporcao: cota !== null ? limitar(maior.valor / (cota / 0.8)) : null,
             nota:
               acima.length > 0
                 ? `${nomeDoPonto(acima.reduce((m, l) => (l.valor > m.valor ? l : m)))} acima da cota`

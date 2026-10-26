@@ -69,13 +69,22 @@ describe('US12 painel com os indicadores-chave da cidade', () => {
     });
 
     it('US12-1 nível dos rios é o maior nível medido na última hora', async () => {
-      const sensor = await dispositivo('Sensor de nível', { tipoGrandeza: 'nivel_agua', unidadeMedida: 'm' }, 'Arroio do Teste, ponte A');
-      await leitura(sensor.id, 'nivel_agua', 98.1, 61);
-      await leitura(sensor.id, 'nivel_agua', 98.75);
-      const rios = await indicador('rios');
-      expect(rios).toMatchObject({ valor: 98.75, unidade: 'm', variacao: '+0,65 m/h', nota: 'Arroio do Teste acima da cota' });
-      // sem cota positiva entre as regras ativas (dt07: outras suítes deixam regras no banco), a barra fica sem escala
-      expect([1, null]).toContain(rios.proporcao);
+      // a própria cota, menor que qualquer outra regra positiva, para não depender do banco (critério do dt07)
+      const { id: regraId } = (
+        await autenticado(http().post('/api/regras-alerta'))
+          .send({ nome: `Cota ${randomUUID()}`, tipoGrandeza: 'nivel_agua', operador: '>', valorLimite: 0.0001, duracaoMinutos: 0, criticidade: 'informativo', ativa: true })
+          .expect(201)
+      ).body;
+      try {
+        const sensor = await dispositivo('Sensor de nível', { tipoGrandeza: 'nivel_agua', unidadeMedida: 'm' }, 'Arroio do Teste, ponte A');
+        await leitura(sensor.id, 'nivel_agua', 98.1, 61);
+        await leitura(sensor.id, 'nivel_agua', 98.75);
+        expect(await indicador('rios')).toEqual(
+          expect.objectContaining({ valor: 98.75, unidade: 'm', variacao: '+0,65 m/h', nota: 'Arroio do Teste acima da cota', proporcao: 1 }),
+        );
+      } finally {
+        await autenticado(http().patch(`/api/regras-alerta/${regraId}`)).send({ ativa: false }).expect(200);
+      }
     });
 
     it('US12-1 qualidade do ar é o pior índice calculado do PM2.5 das estações', async () => {

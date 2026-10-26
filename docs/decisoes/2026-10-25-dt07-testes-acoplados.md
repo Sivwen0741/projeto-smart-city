@@ -34,6 +34,13 @@ Pontos conhecidos:
 - a US10 apaga todas as vazões do Open-Meteo do banco;
 - a US06 encerra todas as ocorrências em andamento para testar a ordem da lista;
 - a US07 dispara a verificação de comunicação para todos os dispositivos do banco.
+- a US12 compara máximos e médias de todas as leituras da última hora; rodada de novo no mesmo banco
+  em menos de uma hora, o teste de ruído encontra os 5000 dB gravados pelo US12-5 da rodada anterior;
+- a US10-3 grava chuva em Oficinas; rodada de novo em menos de 6 horas, a chuva anterior ainda está na
+  janela e o alerta dispara antes do esperado.
+
+Observado em 25/10/2026: com o banco de teste recriado, a suíte completa passa; rodada duas vezes
+seguidas no mesmo banco, esses dois testes falham sempre, não de forma aleatória.
 
 ## Consequências
 
