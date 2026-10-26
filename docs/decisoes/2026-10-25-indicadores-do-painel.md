@@ -44,7 +44,8 @@ a leitura do mesmo dispositivo cerca de uma hora antes. Sem leitura na última h
 ## Consequências
 
 - Fluxo em km/h e vagas sem total são diferenças de unidade em relação ao protótipo, registradas aqui.
-- Nenhum dispositivo de exemplo mede vagas: o indicador aparece "sem dados" até existir um sensor.
-- O simulador publica os 9 pontos de IL-118 apagados, então a iluminação aparece com 0,0 % na
-  demonstração. O cálculo segue os dados; mudar o valor seria mudar o episódio do simulador.
+- Para o painel não abrir com indicadores vazios, os exemplos ganharam o tipo "Sensor de vagas" e o
+  SV-212 (rotativo do centro, fora do protótipo), publicado pelo simulador, e o episódio de IL-118
+  passou a ter um ponto apagado, com falha de 4 dos 9 pontos por 15 min a cada hora. Os indicadores
+  continuam calculados das leituras.
 - A qualidade do ar ganha a fonte do Open-Meteo na US17.
