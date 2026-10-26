@@ -52,3 +52,11 @@
   font-weight: var(--peso-seminegrito);
   fill: var(--cor-grave);
 }
+
+.referencia {
+  fill: none;
+  stroke: var(--cor-regua-forte);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  vector-effect: non-scaling-stroke;
+}
