@@ -19,7 +19,7 @@ do protótipo dependem de dados que o modelo não tem, como a capacidade das via
 
 ## Decisão
 
-Todos usam a última leitura de cada dispositivo não inativo na última hora, e a variação compara com
+Todos usam a última leitura de cada dispositivo não inativo na última hora (a qualidade do ar usa a média de 24 h dessas estações), e a variação compara com
 a leitura do mesmo dispositivo cerca de uma hora antes. Sem leitura na última hora, o indicador fica
 "sem dados".
 
@@ -27,7 +27,7 @@ a leitura do mesmo dispositivo cerca de uma hora antes. Sem leitura na última h
 |---|---|---|
 | Nível dos rios | maior nível de água, em m; barra com a cota em 80% | o ponto acima da cota, ou quantos pontos estão abaixo |
 | Fluxo de veículos | velocidade média dos sensores de tráfego, em km/h | quantas vias são monitoradas |
-| Qualidade do ar | pior índice dos EUA (AQI) calculado do PM2.5 das estações, tabela da EPA de 2024 | faixa (boa, moderada, insalubre) e em quantos bairros |
+| Qualidade do ar | pior IQAr (Resolução Conama nº 506/2024) calculado da média de 24 h do PM2.5 das estações; ver `2026-10-27-indice-de-qualidade-do-ar.md` | qualidade (boa, moderada, ruim, muito ruim, péssima) e em quantos bairros |
 | Iluminação pública | parcela de pontos de luz respondendo, pelos pontos apagados e pelo total de cada controlador | quantos pontos não respondem |
 | Ruído urbano | maior nível sonoro, em dB | dentro ou acima do limite da regra de ruído |
 | Vagas públicas | soma das vagas livres medidas | em quantos sensores |
