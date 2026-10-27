@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import request from 'supertest';
 import { DataSource } from 'typeorm';
 import { IngestaoService } from '../src/ingestao/ingestao.service';
-import { aqiDePm25 } from '../src/painel/aqi';
+import { classificarIqar, iqarDePm25 } from '../src/qualidade-ar/iqar';
 import { CAMINHO_TEMPO_REAL } from '../src/tempo-real/tempo-real.gateway';
 import { criarApp, criarUsuario, entrar } from './apoio';
 
@@ -87,11 +87,18 @@ describe('US12 painel com os indicadores-chave da cidade', () => {
       }
     });
 
-    it('US12-1 qualidade do ar é o pior índice calculado do PM2.5 das estações', async () => {
-      expect([aqiDePm25(9), aqiDePm25(35.4), aqiDePm25(55.4), aqiDePm25(12)]).toEqual([50, 100, 150, 56]);
+    it('US12-1 qualidade do ar é o pior IQAr (CONAMA 506/2024) da média de 24 h do PM2.5 das estações', async () => {
+      const bordas = [0, 15, 16, 50, 51, 75, 76, 125, 126, 300, 500];
+      expect(bordas.map(iqarDePm25)).toEqual([0, 40, 41, 80, 81, 120, 121, 200, 201, 400, 400]);
+      expect([iqarDePm25(15.5), iqarDePm25(16.5), iqarDePm25(15.4)]).toEqual([41, 41, 40]);
+      expect([40, 41, 80, 81, 120, 121, 200, 201, 400].map((i) => classificarIqar(i).nome)).toEqual(
+        ['boa', 'moderada', 'moderada', 'ruim', 'ruim', 'muito ruim', 'muito ruim', 'péssima', 'péssima'],
+      );
       const estacao = await dispositivo('Estação ambiental', { variaveisMonitoradas: ['pm25'] });
-      await leitura(estacao.id, 'pm25', 300);
-      expect(await indicador('ar')).toMatchObject({ valor: aqiDePm25(300), unidade: 'AQI', nota: 'insalubre em 1 bairro' });
+      await leitura(estacao.id, 'pm25', 0, 26 * 60);
+      await leitura(estacao.id, 'pm25', 180, 10 * 60);
+      await leitura(estacao.id, 'pm25', 220);
+      expect(await indicador('ar')).toMatchObject({ valor: 286, unidade: 'IQAr', variacao: '+23', nota: 'péssima em 1 bairro' });
     });
 
     it('US12-1 iluminação pública é a parcela de pontos de luz respondendo', async () => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { aqiDePm25, faixaAqi } from './aqi';
+import { classificarIqar, iqarDePm25 } from '../qualidade-ar/iqar';
 import { BairroOcorrenciasDto, IndicadorDto, PainelDto, PontoHoraDto } from './dto/painel.dto';
 
 interface Leitura {
@@ -50,6 +50,16 @@ const LEITURAS = `
      AND l.data_hora > now() - interval '1 hour' AND l.tipo_grandeza = ANY($1)
    ORDER BY l.dispositivo_id, l.tipo_grandeza, l.data_hora DESC`;
 
+// o iqar do mp2,5 é sobre a média de 24 h; a anterior é a janela que terminou uma hora antes
+const MEDIAS_PM25 = `
+  SELECT dispositivo_id::text AS "dispositivoId",
+         avg(valor) FILTER (WHERE data_hora > now() - interval '24 hours')::float8 AS atual,
+         avg(valor) FILTER (WHERE data_hora <= now() - interval '1 hour')::float8 AS anterior
+    FROM leitura
+   WHERE fonte_dados_id IS NULL AND tipo_grandeza = 'pm25' AND data_hora > now() - interval '25 hours'
+     AND dispositivo_id::text = ANY($1)
+   GROUP BY dispositivo_id`;
+
 const numero = (valor: number, casas: number) =>
   new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(valor);
 const sinal = (valor: number, casas: number) => `${valor > 0 ? '+' : valor < 0 ? '−' : ''}${numero(Math.abs(valor), casas)}`;
@@ -80,6 +90,9 @@ export class PainelService {
       this.ocorrenciasHoje(),
       this.ocorrenciasPorBairro(),
     ]);
+    const estacoes = leituras.filter((l) => l.grandeza === 'pm25').map((l) => l.dispositivoId);
+    const mediasPm25: { dispositivoId: string; atual: number | null; anterior: number | null }[] =
+      estacoes.length > 0 ? await this.fonte.query(MEDIAS_PM25, [estacoes]) : [];
 
     const de = (chave: string) => leituras.filter((l) => GRANDEZAS[chave].includes(l.grandeza));
     const limite = (grandeza: string) => limites.find((l) => l.grandeza === grandeza)?.limite ?? null;
@@ -123,17 +136,20 @@ export class PainelService {
             nota: plural(ls.length, 'via monitorada', 'vias monitoradas'),
           };
         }),
-        indicador('ar', 'AQI', 0, (ls) => {
-          const indices = ls.map((l) => ({ l, aqi: aqiDePm25(l.valor), antes: l.anterior !== null ? aqiDePm25(l.anterior) : null }));
-          const pior = indices.reduce((m, i) => (i.aqi > m.aqi ? i : m));
-          const faixa = faixaAqi(pior.aqi);
-          const bairros = new Set(indices.filter((i) => faixaAqi(i.aqi) === faixa).map((i) => i.l.bairro ?? i.l.identificador));
-          const delta = pior.antes !== null ? pior.aqi - pior.antes : null;
+        indicador('ar', 'IQAr', 0, (ls) => {
+          const indices = ls.map((l) => {
+            const m = mediasPm25.find((x) => x.dispositivoId === l.dispositivoId);
+            return { l, iqar: iqarDePm25(m?.atual ?? l.valor), antes: m?.anterior != null ? iqarDePm25(m.anterior) : null };
+          });
+          const pior = indices.reduce((m, i) => (i.iqar > m.iqar ? i : m));
+          const { nome } = classificarIqar(pior.iqar);
+          const bairros = new Set(indices.filter((i) => classificarIqar(i.iqar).nome === nome).map((i) => i.l.bairro ?? i.l.identificador));
+          const delta = pior.antes !== null ? pior.iqar - pior.antes : null;
           return {
-            valor: pior.aqi,
+            valor: pior.iqar,
             variacao: delta === null ? null : Math.abs(delta) <= 5 ? 'estável' : sinal(delta, 0),
-            proporcao: limitar(pior.aqi / 200),
-            nota: `${faixa} em ${plural(bairros.size, 'bairro', 'bairros')}`,
+            proporcao: limitar(pior.iqar / 200),
+            nota: `${nome} em ${plural(bairros.size, 'bairro', 'bairros')}`,
           };
         }),
         indicador('iluminacao', '%', 1, (ls) => {
