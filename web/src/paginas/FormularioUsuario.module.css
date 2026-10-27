@@ -1,0 +1,29 @@
+.senha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  padding: var(--espaco-2) 10px;
+  background: var(--cor-estavel-fundo);
+  border: 1px solid var(--cor-estavel-borda);
+}
+
+.senha strong {
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-bairro);
+  color: var(--cor-tinta);
+  user-select: all;
+}
+
+.rotulo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.acao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-2);
+}

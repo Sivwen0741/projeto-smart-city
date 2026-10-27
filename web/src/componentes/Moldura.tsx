@@ -5,7 +5,7 @@ import { FaixaGrave } from './FaixaGrave';
 import { ocorrenciasApi } from '../ocorrencias/modelo';
 import { useRegistroOcorrencia } from '../ocorrencias/registro';
 import { FormularioOcorrencia } from '../paginas/FormularioOcorrencia';
-import { useSessao } from '../sessao/sessao';
+import { Permissao, useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
 import { BuscaCabecalho } from './BuscaCabecalho';
@@ -17,7 +17,10 @@ interface Aba {
   rotulo: string;
   caminho?: string;
   previsao?: Previsao;
+  permissao?: Permissao;
 }
+
+export const SEM_PERMISSAO = 'Seu perfil não permite esta ação.';
 
 // previsões conforme a seção 2.5 do replanejamento da sprint 4
 export const ABAS: Aba[] = [
@@ -28,7 +31,7 @@ export const ABAS: Aba[] = [
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', caminho: '/regras' },
   { rotulo: 'Relatórios', previsao: { historia: 'US16', sprint: 'backlog' } },
-  { rotulo: 'Usuários', previsao: { historia: 'US21', sprint: 'sprint 6' } },
+  { rotulo: 'Usuários', caminho: '/usuarios', permissao: 'administrar' },
 ];
 
 function useResumoAlertas() {
@@ -79,7 +82,7 @@ function useAgora() {
 }
 
 export function Moldura() {
-  const { usuario, sair } = useSessao();
+  const { usuario, sair, pode } = useSessao();
   const agora = useAgora();
   const resumo = useResumoAlertas();
   const ocorrenciasAbertas = useOcorrenciasAbertas();
@@ -119,7 +122,11 @@ export function Moldura() {
         <ul className={estilos.abas}>
           {ABAS.map((aba) => (
             <li key={aba.rotulo}>
-              {aba.caminho ? (
+              {aba.caminho && aba.permissao && !pode(aba.permissao) ? (
+                <span className={`${estilos.aba} ${estilos.prevista}`} aria-disabled="true" title="Só para o perfil administrador">
+                  {aba.rotulo}
+                </span>
+              ) : aba.caminho ? (
                 <NavLink
                   to={aba.caminho}
                   className={({ isActive }) => [estilos.aba, isActive && estilos.ativa].filter(Boolean).join(' ')}
@@ -143,7 +150,12 @@ export function Moldura() {
         </ul>
         <div className={estilos.acoes}>
           <BuscaCabecalho />
-          <Botao variante="primario" onClick={() => registro.abrir()}>
+          <Botao
+            variante="primario"
+            disabled={!pode('operar')}
+            title={pode('operar') ? undefined : SEM_PERMISSAO}
+            onClick={() => registro.abrir()}
+          >
             Registrar ocorrência
           </Botao>
         </div>

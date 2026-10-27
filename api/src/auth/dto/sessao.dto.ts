@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Usuario } from '../../usuarios/usuario.entity';
+import { Permissao, PERMISSOES } from '../permissao.decorator';
 
 export class UsuarioSessaoDto {
   @ApiProperty() id: string;
@@ -7,6 +8,8 @@ export class UsuarioSessaoDto {
   @ApiProperty() email: string;
   @ApiProperty({ example: 'administrador' }) perfil: string;
   @ApiProperty({ example: 'DTI' }) orgao: string;
+  @ApiProperty({ example: '3' }) orgaoId: string;
+  @ApiProperty({ enum: PERMISSOES, isArray: true }) permissoes: Permissao[];
 
   static de(usuario: Usuario): UsuarioSessaoDto {
     return {
@@ -15,6 +18,8 @@ export class UsuarioSessaoDto {
       email: usuario.email,
       perfil: usuario.perfil.nome,
       orgao: usuario.orgao.sigla,
+      orgaoId: usuario.orgao.id,
+      permissoes: usuario.permissoes,
     };
   }
 }

@@ -4,6 +4,7 @@ import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -76,13 +77,18 @@ export class OcorrenciasController {
   @ApiBadRequestResponse({ description: 'Providência vazia ou situação inválida' })
   @ApiNotFoundResponse()
   @ApiConflictResponse({ description: 'Ocorrência já encerrada' })
+  @ApiForbiddenResponse({ description: 'Ocorrência de outro órgão' })
   async atualizar(
     @Param('id') id: string,
     @Body() dados: AtualizarOcorrenciaDto,
     @UsuarioAtual() usuario: Usuario,
     @Ip() ip: string,
   ): Promise<OcorrenciaDto> {
-    const { ocorrencia, alertasEncerrados } = await this.ocorrencias.atualizar(id, dados, { usuarioId: usuario.id, enderecoIp: ip ?? null });
+    const { ocorrencia, alertasEncerrados } = await this.ocorrencias.atualizar(id, dados, {
+      usuarioId: usuario.id,
+      enderecoIp: ip ?? null,
+      orgaoRestrito: usuario.permissoes.includes('administrar') ? null : usuario.orgao.id,
+    });
     for (const alertaId of alertasEncerrados) await this.eventosAlertas.atualizado(alertaId);
     return ocorrencia;
   }

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { dispositivosApi, Grandeza } from '../dispositivos/modelo';
 import { condicao, condicaoComplementar, CRITICIDADES, RegraAlerta, regrasApi } from '../regras/modelo';
 import { ErroApi } from '../sessao/api';
@@ -17,6 +19,7 @@ export function Regras() {
   const [grandezas, setGrandezas] = useState<Grandeza[]>([]);
   const [painel, setPainel] = useState<Painel>({ modo: 'fechado' });
   const [erro, setErro] = useState<string | null>(null);
+  const { pode } = useSessao();
 
   const carregar = useCallback(async () => {
     try {
@@ -55,7 +58,13 @@ export function Regras() {
         </div>
 
         <div className={estilos.ferramentas}>
-          <Botao variante="primario" className={proprios.cadastrar} onClick={() => setPainel({ modo: 'nova' })}>
+          <Botao
+            variante="primario"
+            className={proprios.cadastrar}
+            disabled={!pode('configurar')}
+            title={pode('configurar') ? undefined : SEM_PERMISSAO}
+            onClick={() => setPainel({ modo: 'nova' })}
+          >
             Cadastrar regra
           </Botao>
         </div>

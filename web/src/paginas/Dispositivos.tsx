@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import { Simulado } from '../componentes/Simulado';
 import {
@@ -53,6 +55,7 @@ export function Dispositivos() {
   const [agora, setAgora] = useState(() => Date.now());
   const [parametros, setParametros] = useSearchParams();
   const pedido = parametros.get('id');
+  const { pode } = useSessao();
 
   const carregar = useCallback(async () => {
     try {
@@ -141,7 +144,7 @@ export function Dispositivos() {
           <span className={`${estilos.filtro} ${estilos.exportar}`} aria-disabled="true" title={`Previsto: ${textoPrevisao(EXPORTAR)}`}>
             Exportar <Previsto previsao={EXPORTAR} />
           </span>
-          <Botao variante="primario" onClick={() => setPainel({ modo: 'novo' })}>
+          <Botao variante="primario" disabled={!pode('configurar')} title={pode('configurar') ? undefined : SEM_PERMISSAO} onClick={() => setPainel({ modo: 'novo' })}>
             Cadastrar dispositivo
           </Botao>
         </div>

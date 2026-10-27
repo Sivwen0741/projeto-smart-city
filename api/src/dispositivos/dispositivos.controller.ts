@@ -10,6 +10,7 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { Exige } from '../auth/permissao.decorator';
 import { UsuarioAtual } from '../auth/usuario-atual.decorator';
 import { GRANDEZAS } from '../grandezas';
 import { Usuario } from '../usuarios/usuario.entity';
@@ -78,6 +79,7 @@ export class DispositivosController {
   }
 
   @Post('dispositivos')
+  @Exige('configurar')
   @ApiOperation({ summary: 'Cadastra um dispositivo; o bairro sai da coordenada' })
   @ApiCreatedResponse({ type: DispositivoDto })
   @ApiBadRequestResponse({ description: 'Campo inválido ou atributo que não pertence ao tipo' })
@@ -88,6 +90,7 @@ export class DispositivosController {
   }
 
   @Patch('dispositivos/:id')
+  @Exige('configurar')
   @ApiOperation({ summary: 'Edita um dispositivo; estado "inativo" inativa sem excluir' })
   @ApiOkResponse({ type: DispositivoDto })
   @ApiNotFoundResponse()

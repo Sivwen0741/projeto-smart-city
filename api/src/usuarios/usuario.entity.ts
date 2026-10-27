@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import type { Permissao } from '../auth/permissao.decorator';
 import { Orgao } from './orgao.entity';
 import { Perfil } from './perfil.entity';
 
@@ -29,4 +30,7 @@ export class Usuario {
 
   @Column({ name: 'ultimo_acesso', type: 'timestamptz', nullable: true })
   ultimoAcesso: Date | null;
+
+  // carregadas do perfil a cada requisição autenticada
+  permissoes: Permissao[];
 }

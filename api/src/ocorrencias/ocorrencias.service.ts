@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Subject } from 'rxjs';
 import { DataSource, EntityManager } from 'typeorm';
 import { Autor, DispositivosService } from '../dispositivos/dispositivos.service';
@@ -100,11 +100,19 @@ export class OcorrenciasService {
     };
   }
 
-  async atualizar(id: string, dados: AtualizarOcorrenciaDto, autor: Autor): Promise<{ ocorrencia: OcorrenciaDto; alertasEncerrados: string[] }> {
+  // orgaoRestrito nulo: o autor atualiza ocorrência de qualquer órgão (administrador)
+  async atualizar(id: string, dados: AtualizarOcorrenciaDto, autor: Autor & { orgaoRestrito: string | null }): Promise<{ ocorrencia: OcorrenciaDto; alertasEncerrados: string[] }> {
     if (!/^\d+$/.test(id)) throw new NotFoundException('Ocorrência não encontrada.');
     const resultado = await this.fonte.transaction(async (m) => {
-      const [atual] = await m.query(`SELECT situacao, protocolo FROM ocorrencia WHERE id = $1 FOR UPDATE`, [id]);
+      const [atual] = await m.query(
+        `SELECT o.situacao, o.protocolo, o.orgao_id::text AS "orgaoId", g.nome AS orgao
+           FROM ocorrencia o LEFT JOIN orgao g ON g.id = o.orgao_id WHERE o.id = $1 FOR UPDATE OF o`,
+        [id],
+      );
       if (!atual) throw new NotFoundException('Ocorrência não encontrada.');
+      if (autor.orgaoRestrito && atual.orgaoId && atual.orgaoId !== autor.orgaoRestrito) {
+        throw new ForbiddenException(`A ocorrência ${atual.protocolo} é do órgão ${atual.orgao}; só esse órgão pode atualizá-la.`);
+      }
       if (atual.situacao === 'encerrada') throw new ConflictException(`A ocorrência ${atual.protocolo} já foi encerrada.`);
       const nova = dados.situacao ?? (atual.situacao === 'aberta' ? 'em_atendimento' : atual.situacao);
       const encerrando = nova === 'encerrada';

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { Usuario } from '../usuarios/usuario.entity';
 import { SessaoDto, UsuarioSessaoDto } from './dto/sessao.dto';
+import { Permissao } from './permissao.decorator';
 import { gerarHashSenha, verificarSenha } from './senha';
 
 export const DURACAO_TOKEN_SEGUNDOS = 8 * 60 * 60;
@@ -61,6 +62,7 @@ export class AuthService implements OnModuleInit {
       enderecoIp,
     });
 
+    usuario.permissoes = await this.permissoes(usuario.perfil.id);
     const token = await this.jwt.signAsync({ sub: usuario.id }, { expiresIn: DURACAO_TOKEN_SEGUNDOS });
     return {
       token,
@@ -73,9 +75,19 @@ export class AuthService implements OnModuleInit {
     try {
       const { sub } = await this.jwt.verifyAsync<{ sub: string }>(token);
       const usuario = await this.usuarios.findOne({ where: { id: sub } });
-      return usuario?.ativo ? usuario : null;
+      if (!usuario?.ativo) return null;
+      usuario.permissoes = await this.permissoes(usuario.perfil.id);
+      return usuario;
     } catch {
       return null;
     }
+  }
+
+  async permissoes(perfilId: string): Promise<Permissao[]> {
+    const linhas: { codigo: Permissao }[] = await this.usuarios.query(
+      `SELECT p.codigo FROM perfil_permissao pp JOIN permissao p ON p.id = pp.permissao_id WHERE pp.perfil_id = $1`,
+      [perfilId],
+    );
+    return linhas.map((l) => l.codigo);
   }
 }

@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { Campo } from '../componentes/Campo';
 import { Segmentado } from '../componentes/Segmentado';
@@ -106,6 +108,7 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
   const [alteracoes, setAlteracoes] = useState<Alteracao[]>([]);
+  const { pode } = useSessao();
 
   const editando = regra !== null;
   const composta = regra?.tipo === 'risco_enchente';
@@ -311,7 +314,7 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
 
         <footer className={estilos.rodape}>
           <Botao onClick={aoFechar}>Cancelar</Botao>
-          <Botao type="submit" variante="primario" disabled={!valido || enviando}>
+          <Botao type="submit" variante="primario" disabled={!valido || enviando || !pode('configurar')} title={pode('configurar') ? undefined : SEM_PERMISSAO}>
             {enviando ? 'Salvando…' : editando ? 'Salvar alteração' : 'Cadastrar regra'}
           </Botao>
         </footer>
