@@ -114,3 +114,16 @@ passando num banco de teste recriado, sem mudança nos testes anteriores. Decis�
 | **US21-2** | os quatro perfis acumulam consultar, operar, configurar e administrar<br>perfil consulta/operador/gestor/administrador: consultar, operar, configurar dispositivo, configurar regra e administrar<br>o perfil de consulta não reconhece alerta nem registra providência, e a recusa explica o motivo | Botões desabilitados por perfil na tela não conferidos no navegador (DT05). | Verificado pela API |
 | **US21-3** | operador da Defesa Civil vê a ocorrência da Mobilidade e não a atualiza; atualiza a da Defesa Civil<br>ocorrência sem órgão pode ser atualizada por qualquer operador, e o administrador atualiza a de qualquer órgão | | Verificado |
 | **US21-4** | cadastro, edição de perfil e órgão, inativação e nova senha ficam no log com o autor | | Verificado |
+
+## US18 - Alerta quando a poluição ultrapassar o limite configurado
+
+Branch `sprint-6-us18`, sobre a da US21, PR aberto para revisão. Suíte completa: 208 testes
+passando num banco de teste recriado. Decisão em
+[`2026-10-27-poluicao-por-bairro.md`](decisoes/2026-10-27-poluicao-por-bairro.md), que inclui a
+coleta do critério US17-1.
+
+| Critério | Teste automatizado (`us18.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US18-1** | uma requisição traz PM2.5 e PM10 de todos os bairros, gravados por bairro sem duplicar e sem as horas futuras<br>a regra dispara para o bairro acima do limite e o alerta não grave se encerra quando a leitura volta<br>a duração mínima conta as horas seguidas acima do limite no bairro<br>falha do Open-Meteo fica registrada na fonte, sem derrubar a rotina | 27/10/2026, ambiente de desenvolvimento: a coleta real gravou 48 horas de PM2.5 e PM10 para os 16 bairros, sem erro (PM2.5 médio de 5 µg/m³, abaixo da regra de exemplo). | Verificado |
+| **US18-2** | o alerta do bairro não tem dispositivo e traz o bairro, a fonte e a posição dentro do bairro | A exibição na tela não foi conferida no navegador (DT05). | Verificado pela API |
+| **US18-3** | o alerta de poluição sugere o Meio Ambiente e a ocorrência aberta dele fica vinculada<br>alerta de outra grandeza não sugere órgão | O órgão e a categoria preenchidos no formulário não foram conferidos no navegador (DT05). | Verificado pela API |
