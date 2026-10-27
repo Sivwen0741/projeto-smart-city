@@ -73,6 +73,7 @@
   --barra-aba: 3px;
 
   /* valores das telas 01 a 05, ausentes do guia */
+  --cor-barrinha: #9aa3a2;
   --cor-topo-texto: #e4e5e1;
   --cor-topo-apoio: #9a9f9c;
   --cor-topo-divisoria: #383c3a;
@@ -96,6 +97,7 @@
   --largura-fila: 344px;
   --altura-faixa-indicadores: 124px;
   --altura-barra-mapa: 37px;
+  --altura-barrinha: 16px;
   --altura-tira-graficos: 184px;
   --espacamento-letra-bairro: 0.6px;
   --altura-faixa-grave: 40px;

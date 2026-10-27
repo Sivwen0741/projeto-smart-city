@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Moldura } from './componentes/Moldura';
 import { Alertas } from './paginas/Alertas';
 import { Dispositivos } from './paginas/Dispositivos';
+import { Historico } from './paginas/Historico';
 import { Login } from './paginas/Login';
 import { Mapa } from './paginas/Mapa';
 import { OcorrenciaDetalhe } from './paginas/OcorrenciaDetalhe';
@@ -39,6 +40,7 @@ export function Rotas() {
         <Route path="ocorrencias" element={<Ocorrencias />} />
         <Route path="ocorrencias/:id" element={<OcorrenciaDetalhe />} />
         <Route path="dispositivos" element={<Dispositivos />} />
+        <Route path="dispositivos/:id/historico" element={<Historico />} />
         <Route path="regras" element={<Regras />} />
         <Route path="rios" element={<Rios />} />
         <Route path="usuarios" element={<Usuarios />} />

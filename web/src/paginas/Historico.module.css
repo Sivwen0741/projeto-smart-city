@@ -1,0 +1,68 @@
+.pagina {
+  composes: pagina from './Rios.module.css';
+}
+
+.titulo {
+  composes: titulo from './Rios.module.css';
+}
+
+.resumo {
+  composes: resumo from './Rios.module.css';
+}
+
+.voltar {
+  composes: voltar from './Rios.module.css';
+}
+
+.ferramentas {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--espaco-4);
+}
+
+.periodo {
+  width: 280px;
+}
+
+.grandeza {
+  width: 220px;
+}
+
+.caixa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  padding: var(--espaco-4);
+  background: var(--cor-folha);
+  border: var(--borda);
+}
+
+.legenda {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.vazio {
+  padding: var(--espaco-8) 0;
+  text-align: center;
+  color: var(--cor-tinta-media);
+}
+
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2) var(--espaco-6);
+  padding-top: var(--espaco-2);
+  border-top: var(--borda);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-apoio);
+  color: var(--cor-tinta-media);
+}
+
+.tracejado {
+  display: inline-block;
+  width: 18px;
+  vertical-align: middle;
+  border-top: 1.5px dashed var(--cor-grave);
+}

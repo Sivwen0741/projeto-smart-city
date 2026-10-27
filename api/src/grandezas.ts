@@ -24,3 +24,5 @@ export const SEM_COMUNICACAO = 'sem_comunicacao';
 
 export const unidadeDaGrandeza = (codigo: string): string | null =>
   codigo === SEM_COMUNICACAO ? 'min' : (GRANDEZAS[codigo as Grandeza]?.unidade ?? null);
+
+export const rotuloDaGrandeza = (codigo: string): string => GRANDEZAS[codigo as Grandeza]?.rotulo ?? codigo;
