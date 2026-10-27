@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
@@ -16,7 +17,7 @@ import { ErroApi } from '../sessao/api';
 import estilos from './Dispositivos.module.css';
 import { FormularioDispositivo } from './FormularioDispositivo';
 
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
+const BUSCA: Previsao = { historia: 'US08', sprint: 'backlog' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
 const LEITURAS: Previsao = { historia: 'US19', sprint: 'sprint 6' };
@@ -50,6 +51,8 @@ export function Dispositivos() {
   const [painel, setPainel] = useState<Painel>({ modo: 'fechado' });
   const [erro, setErro] = useState<string | null>(null);
   const [agora, setAgora] = useState(() => Date.now());
+  const [parametros, setParametros] = useSearchParams();
+  const pedido = parametros.get('id');
 
   const carregar = useCallback(async () => {
     try {
@@ -75,6 +78,14 @@ export function Dispositivos() {
       })
       .catch(() => setErro('Não foi possível carregar os tipos de dispositivo.'));
   }, []);
+
+  // a busca do cabeçalho abre o dispositivo por /dispositivos?id=
+  useEffect(() => {
+    if (!pedido || !dispositivos) return;
+    const encontrado = dispositivos.find((d) => d.id === pedido);
+    if (encontrado) setPainel({ modo: 'edicao', dispositivo: encontrado });
+    setParametros({}, { replace: true });
+  }, [pedido, dispositivos, setParametros]);
 
   function ordenar(campo: Ordenacao) {
     if (campo === ordem) setDirecao(direcao === 'asc' ? 'desc' : 'asc');
