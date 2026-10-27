@@ -66,9 +66,9 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
 
   const ficha = (
     <dl className={estilos.ficha}>
-      <dt>Dispositivo</dt>
+      <dt>{alerta.fonte ? 'Fonte' : 'Dispositivo'}</dt>
       <dd>
-        {alerta.dispositivo} · {alerta.tipoDispositivo.toLowerCase()}
+        {alerta.fonte ?? `${alerta.dispositivo} · ${alerta.tipoDispositivo.toLowerCase()}`}
         {alerta.simulado && <Simulado />}
       </dd>
       <dt>Local</dt>

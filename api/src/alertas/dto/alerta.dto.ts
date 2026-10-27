@@ -18,12 +18,13 @@ export class AlertaDto {
   @ApiProperty({ example: 'Nível do arroio acima da cota' }) regra: string;
   @ApiProperty({ example: 'nivel_agua' }) tipoGrandeza: string;
   @ApiPropertyOptional({ nullable: true, example: 'm' }) unidade: string | null;
-  @ApiProperty() dispositivoId: string;
-  @ApiProperty({ example: 'SN-014' }) dispositivo: string;
+  @ApiPropertyOptional({ nullable: true, description: 'Nulo no alerta de fonte externa por bairro (US18)' }) dispositivoId: string | null;
+  @ApiProperty({ example: 'SN-014', description: 'Código do dispositivo, ou o nome da fonte externa' }) dispositivo: string;
   @ApiProperty({ example: 'Sensor de nível' }) tipoDispositivo: string;
   @ApiPropertyOptional({ nullable: true }) endereco: string | null;
   @ApiPropertyOptional({ nullable: true, example: 'Olarias' }) bairro: string | null;
-  @ApiProperty({ description: 'Posição do dispositivo' }) latitude: number;
+  @ApiPropertyOptional({ nullable: true, description: 'Bairro do alerta de fonte externa (US18)' }) bairroId: string | null;
+  @ApiProperty({ description: 'Posição do dispositivo, ou um ponto dentro do bairro' }) latitude: number;
   @ApiProperty({ description: 'Posição do dispositivo' }) longitude: number;
   @ApiPropertyOptional({ example: 3.81, nullable: true, description: 'Nulo no alerta de dispositivo que nunca se comunicou' }) valorObservado: number | null;
   @ApiProperty({ example: '>' }) operador: string;
@@ -47,6 +48,9 @@ export class AlertaDto {
     },
   })
   composicao: Record<string, unknown> | null;
+  @ApiPropertyOptional({ nullable: true, example: 'Open-Meteo Air Quality API', description: 'Fonte externa da leitura (US18-2); nulo quando veio do dispositivo' })
+  fonte: string | null;
+  @ApiPropertyOptional({ nullable: true, description: 'Órgão sugerido ao abrir ocorrência a partir do alerta (US18-3)' }) orgaoSugeridoId: string | null;
 }
 
 export class SemComunicacaoPorTipoDto {

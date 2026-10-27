@@ -23,9 +23,10 @@ export function FormularioOcorrencia() {
   const idDescricao = useId();
   const [categorias, setCategorias] = useState<string[]>([]);
   const [orgaos, setOrgaos] = useState<Orgao[]>([]);
-  const [categoria, setCategoria] = useState('');
+  const poluicao = alerta?.tipoGrandeza === 'pm25' || alerta?.tipoGrandeza === 'pm10';
+  const [categoria, setCategoria] = useState(poluicao ? 'Qualidade do ar' : '');
   const [criticidade, setCriticidade] = useState<Criticidade | null>(alerta?.criticidade ?? null);
-  const [orgaoId, setOrgaoId] = useState('');
+  const [orgaoId, setOrgaoId] = useState(alerta?.orgaoSugeridoId ?? '');
   const [descricao, setDescricao] = useState(
     alerta ? alerta.valorObservado === null
         ? `${alerta.regra}: ${alerta.dispositivo} nunca se comunicou.`
@@ -162,6 +163,9 @@ export function FormularioOcorrencia() {
             value={orgaoId}
             onChange={(e) => setOrgaoId(e.target.value)}
           />
+          {alerta?.orgaoSugeridoId && orgaoId === alerta.orgaoSugeridoId && (
+            <span className={estilos.dica}>Sugerido para alertas de poluição; pode trocar.</span>
+          )}
           <div className={estilos.campo}>
             <label className={estilos.rotulo} htmlFor={idDescricao}>
               Descrição <span className={estilos.dica}>· o que o cidadão informou</span>

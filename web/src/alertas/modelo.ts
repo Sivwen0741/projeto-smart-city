@@ -10,7 +10,7 @@ export interface Alerta {
   regra: string;
   tipoGrandeza: string;
   unidade: string | null;
-  dispositivoId: string;
+  dispositivoId: string | null;
   dispositivo: string;
   tipoDispositivo: string;
   endereco: string | null;
@@ -31,6 +31,9 @@ export interface Alerta {
   ocorrenciaId: string | null;
   simulado: boolean;
   composicao: Composicao | null;
+  bairroId: string | null;
+  fonte: string | null;
+  orgaoSugeridoId: string | null;
 }
 
 // us10: a segunda leitura do alerta de risco de enchente
