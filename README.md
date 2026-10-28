@@ -212,6 +212,14 @@ anterior. Para rodar contra um banco vazio, apague-o antes:
 docker compose --profile teste rm -sf db-teste
 ```
 
+Os testes de unidade cobrem as funções puras (índice de qualidade do ar, operador das regras,
+limite de sem comunicação e cálculo dos indicadores do painel), não precisam de banco e mostram a
+cobertura no fim:
+
+```sh
+docker compose --profile teste run --rm --no-deps --build api-teste npm run test:unidade
+```
+
 ### Base territorial
 
 Distritos e bairros vêm de arquivos GeoJSON versionados em

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
+import { foraDoLimite } from './regra';
 
 export interface LeituraGravada {
   id: string;
@@ -21,25 +22,6 @@ interface Regra {
 
 // o operador vem de coluna com check, mas entra no sql só por esta lista
 const OPERADORES_SQL: Record<string, string> = { '>': '>', '>=': '>=', '<': '<', '<=': '<=', '=': '=', '<>': '<>' };
-
-export function foraDoLimite(valor: number, operador: string, limite: number): boolean {
-  switch (operador) {
-    case '>':
-      return valor > limite;
-    case '>=':
-      return valor >= limite;
-    case '<':
-      return valor < limite;
-    case '<=':
-      return valor <= limite;
-    case '=':
-      return valor === limite;
-    case '<>':
-      return valor !== limite;
-    default:
-      return false;
-  }
-}
 
 // coluna que identifica de quem é a leitura; só estes dois valores entram no sql
 const alvo = (leitura: LeituraGravada) =>
