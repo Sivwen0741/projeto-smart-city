@@ -243,8 +243,9 @@ grandeza. Ela não é excluída, só desativada, e cada alteração fica registr
 anterior e o novo. Os motivos estão em
 [`docs/decisoes/2026-10-22-regras-de-alerta.md`](docs/decisoes/2026-10-22-regras-de-alerta.md).
 
-Os limites das regras de exemplo são ilustrativos e precisam ser validados com os órgãos antes de
-qualquer uso real.
+Os limites das regras de exemplo, inclusive os da regra de risco de enchente (cota de 3,5 m e chuva
+a partir de 50 mm ou vazão prevista a partir de 15 m³/s, em 24 h), são ilustrativos e precisam ser
+validados com os órgãos antes de qualquer uso real.
 
 ## Situação
 

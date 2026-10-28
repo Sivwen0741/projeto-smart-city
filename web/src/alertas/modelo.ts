@@ -30,6 +30,21 @@ export interface Alerta {
   orgao: string | null;
   ocorrenciaId: string | null;
   simulado: boolean;
+  composicao: Composicao | null;
+}
+
+// us10: a segunda leitura do alerta de risco de enchente
+export interface Composicao {
+  nivel: { dispositivo: string; valor: number; limite: number; dataHora: string };
+  complemento: { grandeza: 'precipitacao' | 'vazao_prevista'; valor: number; limite: number; dispositivo: string; dataHora?: string; data?: string };
+}
+
+export function textoComposicao(c: Composicao): string {
+  const { grandeza, valor, limite, dispositivo, data } = c.complemento;
+  const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+  if (grandeza === 'precipitacao') return `com chuva de ${numero.format(valor)} mm em ${dispositivo} (limite ${numero.format(limite)} mm)`;
+  const dia = data ? ` para ${data.slice(8, 10)}/${data.slice(5, 7)}` : '';
+  return `com vazão prevista de ${numero.format(valor)} m³/s${dia} (limite ${numero.format(limite)} m³/s)`;
 }
 
 export interface ResumoAlertas {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { dispositivosApi, Grandeza } from '../dispositivos/modelo';
-import { condicao, CRITICIDADES, RegraAlerta, regrasApi } from '../regras/modelo';
+import { condicao, condicaoComplementar, CRITICIDADES, RegraAlerta, regrasApi } from '../regras/modelo';
 import { ErroApi } from '../sessao/api';
 import estilos from './Dispositivos.module.css';
 import { FormularioRegra } from './FormularioRegra';
@@ -103,7 +103,10 @@ export function Regras() {
                     </button>
                   </td>
                   <td>{rotuloGrandeza(r.tipoGrandeza)}</td>
-                  <td className={proprios.condicao}>{condicao(r, grandezas)}</td>
+                  <td className={proprios.condicao}>
+                    {condicao(r, grandezas)}
+                    {r.tipo === 'risco_enchente' && <div className={proprios.complemento}>{condicaoComplementar(r)}</div>}
+                  </td>
                   <td className="numero">{r.duracaoMinutos} min</td>
                   <td>
                     <span className={`${estilos.situacao} ${proprios[r.criticidade]}`}>

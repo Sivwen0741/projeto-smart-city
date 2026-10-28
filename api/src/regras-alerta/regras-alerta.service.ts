@@ -7,7 +7,9 @@ import { AlteracaoRegraDto, AtualizarRegraAlertaDto, CriarRegraAlertaDto, RegraA
 const CONSULTA = `
   SELECT r.id::text AS id, r.nome, r.tipo_grandeza AS "tipoGrandeza", r.operador,
          r.valor_limite::float8 AS "valorLimite", r.duracao_minutos AS "duracaoMinutos",
-         r.criticidade, r.ativa, r.sistema,
+         r.criticidade, r.ativa, r.sistema, r.tipo,
+         r.limite_precipitacao::float8 AS "limitePrecipitacao", r.limite_vazao_prevista::float8 AS "limiteVazaoPrevista",
+         r.janela_horas AS "janelaHoras",
          (SELECT count(*) FROM alerta a WHERE a.regra_alerta_id = r.id)::int AS alertas
     FROM regra_alerta r`;
 
@@ -19,9 +21,13 @@ const MENSAGEM_VAZIO: Record<string, string> = {
   duracaoMinutos: 'Informe a duração mínima em minutos inteiros.',
   criticidade: 'Escolha a gravidade.',
   ativa: 'Ativa deve ser verdadeiro ou falso.',
+  limitePrecipitacao: 'Informe o limite de precipitação.',
+  limiteVazaoPrevista: 'Informe o limite de vazão prevista.',
+  janelaHoras: 'Informe a janela em horas inteiras.',
 };
 
-const CAMPOS = ['nome', 'tipoGrandeza', 'operador', 'valorLimite', 'duracaoMinutos', 'criticidade', 'ativa'] as const;
+const CAMPOS = ['nome', 'tipoGrandeza', 'operador', 'valorLimite', 'duracaoMinutos', 'criticidade', 'ativa', 'limitePrecipitacao', 'limiteVazaoPrevista', 'janelaHoras'] as const;
+const CAMPOS_ENCHENTE = ['limitePrecipitacao', 'limiteVazaoPrevista', 'janelaHoras'] as const;
 
 @Injectable()
 export class RegrasAlertaService {
@@ -71,14 +77,34 @@ export class RegrasAlertaService {
     const atual = await this.buscar(id);
     // a regra da us07 usa o limite de cada dispositivo; editar ou desativar não tem efeito previsível
     if (atual.sistema) throw new ConflictException('A regra do sistema não pode ser alterada.');
+    if (atual.tipo === 'simples' && CAMPOS_ENCHENTE.some((c) => dados[c] !== undefined)) {
+      throw new BadRequestException(['Precipitação, vazão prevista e janela só existem na regra de risco de enchente.']);
+    }
+    // a regra composta compara o nível de água; trocar a grandeza desfaria a regra
+    if (atual.tipo === 'risco_enchente' && dados.tipoGrandeza !== undefined && dados.tipoGrandeza !== 'nivel_agua') {
+      throw new BadRequestException(['A regra de risco de enchente observa sempre o nível de água.']);
+    }
     const novo = { ...this.auditavel(atual), ...Object.fromEntries(Object.entries(dados).filter(([, v]) => v !== undefined)) };
 
     return this.fonte.transaction(async (m) => {
       await m.query(
         `UPDATE regra_alerta
-            SET nome = $2, tipo_grandeza = $3, operador = $4, valor_limite = $5, duracao_minutos = $6, criticidade = $7, ativa = $8
+            SET nome = $2, tipo_grandeza = $3, operador = $4, valor_limite = $5, duracao_minutos = $6, criticidade = $7, ativa = $8,
+                limite_precipitacao = $9, limite_vazao_prevista = $10, janela_horas = $11
           WHERE id = $1`,
-        [id, novo.nome, novo.tipoGrandeza, novo.operador, novo.valorLimite, novo.duracaoMinutos, novo.criticidade, novo.ativa],
+        [
+          id,
+          novo.nome,
+          novo.tipoGrandeza,
+          novo.operador,
+          novo.valorLimite,
+          novo.duracaoMinutos,
+          novo.criticidade,
+          novo.ativa,
+          novo.limitePrecipitacao,
+          novo.limiteVazaoPrevista,
+          novo.janelaHoras,
+        ],
       );
       const atualizada = await this.buscar(id, m);
 
@@ -123,6 +149,7 @@ export class RegrasAlertaService {
   }
 
   private auditavel(r: RegraAlertaDto): Record<(typeof CAMPOS)[number], unknown> {
-    return Object.fromEntries(CAMPOS.map((campo) => [campo, r[campo]])) as Record<(typeof CAMPOS)[number], unknown>;
+    const campos = r.tipo === 'simples' ? CAMPOS.filter((c) => !(CAMPOS_ENCHENTE as readonly string[]).includes(c)) : CAMPOS;
+    return Object.fromEntries(campos.map((campo) => [campo, r[campo]])) as Record<(typeof CAMPOS)[number], unknown>;
   }
 }

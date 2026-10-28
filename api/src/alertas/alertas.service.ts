@@ -15,7 +15,7 @@ const CONSULTA = `
          a.criticidade, a.situacao, a.data_hora AS "dataHora", a.data_reconhecimento AS "dataReconhecimento",
          u.nome AS "reconhecidoPor", a.providencia, a.data_encerramento AS "dataEncerramento",
          og.nome AS orgao, a.ocorrencia_id::text AS "ocorrenciaId",
-         COALESCE(l.origem = 'simulador', false) AS simulado
+         COALESCE(l.origem = 'simulador', false) AS simulado, a.composicao
     FROM alerta a
     JOIN regra_alerta r ON r.id = a.regra_alerta_id
     JOIN dispositivo d ON d.id = a.dispositivo_id
