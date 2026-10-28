@@ -22,11 +22,11 @@ As estimativas incluem preparar os dados do caso, executar, conferir o resultado
 | Elementos do backlog | 1 | 1 | 0 | 0 | 10 min |
 | **Total** | **64** | **7** | **27** | **29** | **10 h 45 min** |
 
-Divididos igualmente, são cerca de 2.7 h por integrante. O ensaio em máquina limpa (CT-005) precisa ser de quem não escreveu o README, e o grupo de usuários e perfis precisa de um administrador e de quatro usuários de teste.
+Divididos igualmente, são cerca de 2,7 h por integrante. O ensaio em máquina limpa (CT-005) precisa ser de quem não escreveu o README, e o grupo de usuários e perfis precisa de um administrador e de quatro usuários de teste.
 
 ## Casos por grupo
 
-### Ambiente e repositório — 4 casos, cerca de 125 min
+### Ambiente e repositório — 4 casos, cerca de 2 h 05 min
 
 Preparação: Máquina com Docker; para o CT de máquina limpa, um computador de outro integrante, sem Node nem PostgreSQL.
 
@@ -37,13 +37,13 @@ Preparação: Máquina com Docker; para o CT de máquina limpa, um computador de
 | CT-005 | TT01 | Executar o projeto numa máquina limpa seguindo só o README, por quem não escreveu o manual | alta | manual | Ensaio em máquina limpa por outro integrante. | 90 |
 | CT-033 | TT02 | Subir o simulador com o Compose, publicando as leituras dos exemplos | média | automatizado e manual | Simulador em execução e dispositivos operando na tela. | 10 |
 
-### Login e sessão — 1 casos, cerca de 5 min
+### Login e sessão — 1 caso, cerca de 5 min
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
 | CT-006 | US20 | Exigir e-mail funcional e senha em toda rota, exceto as públicas | alta | automatizado e manual | Login pela tela e redirecionamento para o painel. | 5 |
 
-### Mapa e painel — 11 casos, cerca de 85 min
+### Mapa e painel — 11 casos, cerca de 1 h 25 min
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
@@ -59,7 +59,7 @@ Preparação: Máquina com Docker; para o CT de máquina limpa, um computador de
 | CT-111 | US12 | Montar os gráficos de ocorrências a partir das ocorrências registradas | média | automatizado e manual | Gráficos na tela. | 10 |
 | CT-112 | US12 | Atualizar o painel em tempo real | média | automatizado e manual | Atualização da tela. | 5 |
 
-### Alertas e faixa grave — 13 casos, cerca de 115 min
+### Alertas e faixa grave — 13 casos, cerca de 1 h 55 min
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
@@ -77,7 +77,7 @@ Preparação: Máquina com Docker; para o CT de máquina limpa, um computador de
 | CT-099 | US10 | Informar no alerta as duas leituras que o compõem | média | automatizado e manual | Composição no painel do alerta. | 10 |
 | CT-127 | US18 | Indicar o bairro e a fonte no alerta | média | automatizado e manual | Painel do alerta mostrando a fonte. | 5 |
 
-### Ocorrências — 12 casos, cerca de 95 min
+### Ocorrências — 12 casos, cerca de 1 h 35 min
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
@@ -150,7 +150,7 @@ Preparação: Terminal com `mosquitto_pub` (ou `docker compose exec mosquitto mo
 | CT-107 | US09 | Cota do rio na fronteira: nível igual à cota | média | manual | Publicação MQTT e conferência na tela dos rios. | 15 |
 | CT-126 | US18 | Aplicar as regras de PM2.5 e PM10 às leituras do Open-Meteo de cada bairro | média | automatizado e manual | Coleta real uma vez por rodada, contra a fonte. | 10 |
 
-### Elementos do backlog — 1 casos, cerca de 10 min
+### Elementos do backlog — 1 caso, cerca de 10 min
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
