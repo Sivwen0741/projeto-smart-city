@@ -6,25 +6,35 @@ import { SITUACAO } from '../dispositivos/dispositivos.service';
 import { unidadeDaGrandeza } from '../grandezas';
 import { AlertaDto, ResumoAlertasDto, Visao } from './dto/alerta.dto';
 
+// us18: o alerta do open-meteo é do bairro, sem dispositivo; a posição vira um ponto dentro do bairro
+export const ROTULO_FONTE_EXTERNA = 'Open-Meteo';
+
+// us18-3: poluição sugere o meio ambiente como responsável
+const ORGAO_SUGERIDO = `CASE WHEN r.tipo_grandeza IN ('pm25', 'pm10') THEN (SELECT id FROM orgao WHERE sigla = 'SMMA') END`;
+
 const CONSULTA = `
   SELECT a.id::text AS id, r.id::text AS "regraId", r.nome AS regra, r.tipo_grandeza AS "tipoGrandeza",
-         d.id::text AS "dispositivoId", d.identificador AS dispositivo, t.nome AS "tipoDispositivo",
-         d.endereco, b.nome AS bairro,
-         ST_Y(d.localizacao::geometry) AS latitude, ST_X(d.localizacao::geometry) AS longitude,
+         d.id::text AS "dispositivoId", COALESCE(d.identificador, '${ROTULO_FONTE_EXTERNA}') AS dispositivo,
+         COALESCE(t.nome, 'Qualidade do ar do bairro') AS "tipoDispositivo",
+         d.endereco, b.nome AS bairro, a.bairro_id::text AS "bairroId",
+         COALESCE(ST_Y(d.localizacao::geometry), ST_Y(ST_PointOnSurface(b.area))) AS latitude,
+         COALESCE(ST_X(d.localizacao::geometry), ST_X(ST_PointOnSurface(b.area))) AS longitude,
          a.valor_observado::float8 AS "valorObservado", a.operador, a.valor_limite::float8 AS "valorLimite",
          a.criticidade, a.situacao, a.data_hora AS "dataHora", a.data_reconhecimento AS "dataReconhecimento",
          u.nome AS "reconhecidoPor", a.providencia, a.data_encerramento AS "dataEncerramento",
          og.nome AS orgao, a.ocorrencia_id::text AS "ocorrenciaId",
-         COALESCE(l.origem = 'simulador', false) AS simulado, a.composicao
+         COALESCE(l.origem = 'simulador', false) AS simulado, a.composicao,
+         fd.nome AS fonte, (${ORGAO_SUGERIDO})::text AS "orgaoSugeridoId"
     FROM alerta a
     JOIN regra_alerta r ON r.id = a.regra_alerta_id
-    JOIN dispositivo d ON d.id = a.dispositivo_id
-    JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
-    LEFT JOIN bairro b ON b.id = d.bairro_id
+    LEFT JOIN dispositivo d ON d.id = a.dispositivo_id
+    LEFT JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
+    LEFT JOIN bairro b ON b.id = COALESCE(d.bairro_id, a.bairro_id)
     LEFT JOIN usuario u ON u.id = a.usuario_reconhecimento_id
     LEFT JOIN ocorrencia o ON o.id = a.ocorrencia_id
     LEFT JOIN orgao og ON og.id = o.orgao_id
-    LEFT JOIN leitura l ON l.id = a.leitura_id`;
+    LEFT JOIN leitura l ON l.id = a.leitura_id
+    LEFT JOIN fonte_dados fd ON fd.id = l.fonte_dados_id`;
 
 const FILTRO: Record<Visao, string> = {
   ativos: `a.situacao IN ('aberto', 'em_atendimento')`,

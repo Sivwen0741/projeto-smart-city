@@ -41,15 +41,15 @@ const HISTORICO = `
    WHERE h.ocorrencia_id = $1
   UNION ALL
   SELECT 'alerta_gerado', a.data_hora, NULL, NULL, NULL, NULL, NULL,
-         json_build_object('regra', r.nome, 'dispositivo', d.identificador, 'valorObservado', a.valor_observado::float8,
+         json_build_object('regra', r.nome, 'dispositivo', COALESCE(d.identificador, 'Open-Meteo, ' || ab.nome), 'valorObservado', a.valor_observado::float8,
                            'valorLimite', a.valor_limite::float8, 'operador', a.operador, 'tipoGrandeza', r.tipo_grandeza), 0
-    FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id JOIN dispositivo d ON d.id = a.dispositivo_id
+    FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id LEFT JOIN dispositivo d ON d.id = a.dispositivo_id LEFT JOIN bairro ab ON ab.id = a.bairro_id
    WHERE a.ocorrencia_id = $1
   UNION ALL
   SELECT 'alerta_reconhecido', a.data_reconhecimento, NULL, NULL, a.providencia, u.nome, og.nome,
-         json_build_object('regra', r.nome, 'dispositivo', d.identificador, 'valorObservado', a.valor_observado::float8,
+         json_build_object('regra', r.nome, 'dispositivo', COALESCE(d.identificador, 'Open-Meteo, ' || ab.nome), 'valorObservado', a.valor_observado::float8,
                            'valorLimite', a.valor_limite::float8, 'operador', a.operador, 'tipoGrandeza', r.tipo_grandeza), 0
-    FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id JOIN dispositivo d ON d.id = a.dispositivo_id
+    FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id LEFT JOIN dispositivo d ON d.id = a.dispositivo_id LEFT JOIN bairro ab ON ab.id = a.bairro_id
     LEFT JOIN usuario u ON u.id = a.usuario_reconhecimento_id
     LEFT JOIN orgao og ON og.id = u.orgao_id
    WHERE a.ocorrencia_id = $1 AND a.data_reconhecimento IS NOT NULL
@@ -84,9 +84,9 @@ export class OcorrenciasService {
       return { ...r, alerta: { ...resto, unidade: unidade(tipoGrandeza) } };
     });
     const alertas = await this.fonte.query(
-      `SELECT a.id::text AS id, r.nome AS regra, d.identificador AS dispositivo, a.criticidade, a.situacao,
+      `SELECT a.id::text AS id, r.nome AS regra, COALESCE(d.identificador, 'Open-Meteo, ' || ab.nome) AS dispositivo, a.criticidade, a.situacao,
               a.valor_observado::float8 AS "valorObservado", r.tipo_grandeza AS "tipoGrandeza", a.data_hora AS "dataHora"
-         FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id JOIN dispositivo d ON d.id = a.dispositivo_id
+         FROM alerta a JOIN regra_alerta r ON r.id = a.regra_alerta_id LEFT JOIN dispositivo d ON d.id = a.dispositivo_id LEFT JOIN bairro ab ON ab.id = a.bairro_id
         WHERE a.ocorrencia_id = $1
         ORDER BY a.data_hora DESC`,
       [id],

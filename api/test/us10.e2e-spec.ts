@@ -51,7 +51,7 @@ describe('US10 alerta automático de risco de enchente', () => {
     ingestao = app.get(IngestaoService);
     // a us09 grava vazão simulada para todos os sensores de nível; aqui cada caso controla a sua
     await fonte.query(`DELETE FROM previsao`);
-    await fonte.query(`DELETE FROM leitura WHERE fonte_dados_id IS NOT NULL`);
+    await fonte.query(`DELETE FROM leitura WHERE fonte_dados_id IS NOT NULL AND tipo_grandeza = 'vazao'`);
     const regras = (await autenticado(http().get('/api/regras-alerta')).expect(200)).body;
     regraId = regras.find((r: { tipo: string }) => r.tipo === 'risco_enchente').id;
   });

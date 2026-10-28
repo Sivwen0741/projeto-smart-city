@@ -3,7 +3,9 @@ import { EntityManager } from 'typeorm';
 
 export interface LeituraGravada {
   id: string;
-  dispositivoId: string;
+  dispositivoId: string | null;
+  // us18: leitura do open-meteo para o bairro, sem dispositivo
+  bairroId?: string | null;
   tipoGrandeza: string;
   valor: number;
   dataHora: Date;
@@ -39,6 +41,12 @@ export function foraDoLimite(valor: number, operador: string, limite: number): b
   }
 }
 
+// coluna que identifica de quem é a leitura; só estes dois valores entram no sql
+const alvo = (leitura: LeituraGravada) =>
+  leitura.dispositivoId
+    ? { coluna: 'dispositivo_id', id: leitura.dispositivoId, conflito: `(regra_alerta_id, dispositivo_id) WHERE situacao IN ('aberto', 'em_atendimento')` }
+    : { coluna: 'bairro_id', id: leitura.bairroId!, conflito: `(regra_alerta_id, bairro_id) WHERE situacao IN ('aberto', 'em_atendimento') AND bairro_id IS NOT NULL` };
+
 export interface ResultadoAvaliacao {
   novos: string[];
   encerrados: string[];
@@ -60,15 +68,15 @@ export class MotorAlertasService {
       }
       if (!(await this.duracaoCumprida(m, leitura, regra))) continue;
       const [alerta] = await m.query(
-        `INSERT INTO alerta (regra_alerta_id, dispositivo_id, leitura_id, valor_observado, operador, valor_limite, criticidade, situacao)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'aberto')
-         ON CONFLICT (regra_alerta_id, dispositivo_id) WHERE situacao IN ('aberto', 'em_atendimento') DO NOTHING
+        `INSERT INTO alerta (regra_alerta_id, dispositivo_id, bairro_id, leitura_id, valor_observado, operador, valor_limite, criticidade, situacao)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'aberto')
+         ON CONFLICT ${alvo(leitura).conflito} DO NOTHING
          RETURNING id::text`,
-        [regra.id, leitura.dispositivoId, leitura.id, leitura.valor, regra.operador, regra.valorLimite, regra.criticidade],
+        [regra.id, leitura.dispositivoId, leitura.dispositivoId ? null : leitura.bairroId, leitura.id, leitura.valor, regra.operador, regra.valorLimite, regra.criticidade],
       );
       if (alerta) resultado.novos.push(alerta.id);
     }
-    if (leitura.tipoGrandeza === 'nivel_agua') {
+    if (leitura.tipoGrandeza === 'nivel_agua' && leitura.dispositivoId) {
       const composto = await this.avaliarRiscoDeEnchente(m, leitura);
       resultado.novos.push(...composto.novos);
       resultado.encerrados.push(...composto.encerrados);
@@ -155,7 +163,7 @@ export class MotorAlertasService {
     // em update, o driver do postgres devolve [linhas, quantidade]
     const [encerrados]: [{ id: string }[], number] = await m.query(
       `UPDATE alerta SET situacao = 'encerrado', data_encerramento = now()
-        WHERE regra_alerta_id = $1 AND dispositivo_id = $2 AND situacao = 'aberto' AND criticidade <> 'grave'
+        WHERE regra_alerta_id = $1 AND ${alvo(leitura).coluna} = $2 AND situacao = 'aberto' AND criticidade <> 'grave'
           AND NOT CASE operador
                 WHEN '>' THEN $3::numeric > valor_limite
                 WHEN '>=' THEN $3::numeric >= valor_limite
@@ -165,7 +173,7 @@ export class MotorAlertasService {
                 ELSE $3::numeric <> valor_limite
               END
        RETURNING id::text`,
-      [regraId, leitura.dispositivoId, leitura.valor],
+      [regraId, alvo(leitura).id, leitura.valor],
     );
     return encerrados.map((a) => a.id);
   }
@@ -174,16 +182,17 @@ export class MotorAlertasService {
   private async duracaoCumprida(m: EntityManager, leitura: LeituraGravada, regra: Regra): Promise<boolean> {
     if (regra.duracaoMinutos === 0) return true;
     const operador = OPERADORES_SQL[regra.operador];
+    const { coluna, id } = alvo(leitura);
     const [{ inicio }] = await m.query(
       `SELECT min(data_hora) AS inicio
          FROM leitura
-        WHERE dispositivo_id = $1 AND tipo_grandeza = $2 AND data_hora <= $3
+        WHERE ${coluna} = $1 AND tipo_grandeza = $2 AND data_hora <= $3
           AND data_hora > COALESCE(
                 (SELECT max(data_hora) FROM leitura
-                  WHERE dispositivo_id = $1 AND tipo_grandeza = $2 AND data_hora <= $3
+                  WHERE ${coluna} = $1 AND tipo_grandeza = $2 AND data_hora <= $3
                     AND NOT (valor ${operador} $4::numeric)),
                 '-infinity')`,
-      [leitura.dispositivoId, leitura.tipoGrandeza, leitura.dataHora, regra.valorLimite],
+      [id, leitura.tipoGrandeza, leitura.dataHora, regra.valorLimite],
     );
     return leitura.dataHora.getTime() - new Date(inicio).getTime() >= regra.duracaoMinutos * 60_000;
   }
