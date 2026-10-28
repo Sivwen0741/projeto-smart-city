@@ -10,7 +10,7 @@ import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './Alertas.module.css';
 import { PainelReconhecimento } from './PainelReconhecimento';
 
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
+const BUSCA: Previsao = { historia: 'US08', sprint: 'backlog' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
 const ATUALIZACAO_MS = 15_000;

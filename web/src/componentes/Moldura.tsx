@@ -8,6 +8,7 @@ import { FormularioOcorrencia } from '../paginas/FormularioOcorrencia';
 import { useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
+import { BuscaCabecalho } from './BuscaCabecalho';
 import { Marca } from './Marca';
 import estilos from './Moldura.module.css';
 import { Previsao, Previsto, textoPrevisao } from './Previsto';
@@ -29,8 +30,6 @@ export const ABAS: Aba[] = [
   { rotulo: 'Relatórios', previsao: { historia: 'US16', sprint: 'backlog' } },
   { rotulo: 'Usuários', previsao: { historia: 'US21', sprint: 'sprint 6' } },
 ];
-
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
 
 function useResumoAlertas() {
   const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
@@ -143,10 +142,7 @@ export function Moldura() {
           ))}
         </ul>
         <div className={estilos.acoes}>
-          <span className={estilos.busca} aria-disabled="true" title={`Previsto: ${textoPrevisao(BUSCA)}`}>
-            Buscar ocorrência
-            <Previsto previsao={BUSCA} />
-          </span>
+          <BuscaCabecalho />
           <Botao variante="primario" onClick={() => registro.abrir()}>
             Registrar ocorrência
           </Botao>

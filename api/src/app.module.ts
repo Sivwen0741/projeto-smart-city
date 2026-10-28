@@ -7,13 +7,14 @@ import { DispositivosModule } from './dispositivos/dispositivos.module';
 import { HealthController } from './health/health.controller';
 import { IngestaoModule } from './ingestao/ingestao.module';
 import { OcorrenciasModule } from './ocorrencias/ocorrencias.module';
+import { BuscaModule } from './busca/busca.module';
 import { PainelModule } from './painel/painel.module';
 import { RegrasAlertaModule } from './regras-alerta/regras-alerta.module';
 import { RiosModule } from './rios/rios.module';
 import { TempoRealModule } from './tempo-real/tempo-real.module';
 
 @Module({
-  imports: [TypeOrmModule.forRootAsync({ useFactory: () => ({ ...opcoesBanco(), autoLoadEntities: true }) }), AuthModule, DispositivosModule, RegrasAlertaModule, AlertasModule, IngestaoModule, OcorrenciasModule, PainelModule, RiosModule, TempoRealModule],
+  imports: [TypeOrmModule.forRootAsync({ useFactory: () => ({ ...opcoesBanco(), autoLoadEntities: true }) }), AuthModule, DispositivosModule, RegrasAlertaModule, AlertasModule, IngestaoModule, OcorrenciasModule, PainelModule, BuscaModule, RiosModule, TempoRealModule],
   controllers: [HealthController],
 })
 export class AppModule {}
