@@ -68,7 +68,7 @@ const CONSULTA = `
     ) di ON true
     LEFT JOIN LATERAL (
       SELECT json_build_object('grandeza', tipo_grandeza, 'valor', valor::float8, 'unidade', unidade, 'dataHora', data_hora, 'origem', origem) AS leitura
-        FROM leitura WHERE dispositivo_id = d.id ORDER BY data_hora DESC LIMIT 1
+        FROM leitura WHERE dispositivo_id = d.id AND fonte_dados_id IS NULL ORDER BY data_hora DESC LIMIT 1
     ) ul ON true`;
 
 const ORDEM_SITUACAO = `array_position(ARRAY['operando', 'sem_comunicacao', 'manutencao', 'inativo'], ${SITUACAO})`;
