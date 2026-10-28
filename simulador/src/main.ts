@@ -53,8 +53,14 @@ const SIMULADOS: Simulado[] = [
     leituras: { velocidade_media: (t) => arredondar(emEpisodio(t, 120, 60, 85) ? 11 + ruido(2) : 34 + ruido(7), 0) },
   },
   {
+    // um ponto apagado e, por 15 min a cada hora, falha parcial de 4 dos 9 pontos (regra informativa de 5 min)
     codigo: 'IL-118',
-    leituras: { pontos_apagados: () => 9, consumo_energia: () => arredondar(3.1 + ruido(0.2), 2) },
+    leituras: { pontos_apagados: (t) => (emEpisodio(t, 60, 40, 55) ? 4 : 1), consumo_energia: () => arredondar(3.1 + ruido(0.2), 2) },
+  },
+  {
+    // vagas livres do rotativo do centro oscilando ao longo de duas horas
+    codigo: 'SV-212',
+    leituras: { vagas_livres: (t) => Math.round(190 + 60 * Math.sin((2 * Math.PI * t) / 120) + ruido(8)) },
   },
   { codigo: 'CAM-22', leituras: {} },
   { codigo: 'CAM-08', leituras: {} },

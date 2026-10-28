@@ -28,6 +28,8 @@ const EXEMPLOS: Exemplo[] = [
   { identificador: 'EA-02', tipo: 'Estação ambiental', bairro: 'Olarias', endereco: 'Parque Ambiental', descricao: 'Estação do Parque Ambiental', estado: 'ativo', comunicacao: 18, atributos: { variaveisMonitoradas: ['precipitacao', 'temperatura'] } },
   { identificador: 'SN-027', tipo: 'Sensor de nível', bairro: 'Ronda', endereco: 'Arroio Ronda, Rua Dr. Colares', descricao: 'Nível do Arroio Ronda', estado: 'ativo', comunicacao: null, atributos: { tipoGrandeza: 'nivel_agua', unidadeMedida: 'm' } },
   { identificador: 'SN-019', tipo: 'Sensor de nível', bairro: 'Neves', endereco: 'Arroio Pilão de Pedra', descricao: 'Retirado para substituição', estado: 'inativo', comunicacao: 41 * 24 * 60 * 60, atributos: { tipoGrandeza: 'nivel_agua', unidadeMedida: 'm' } },
+  // fora do protótipo: dá leitura ao indicador "Vagas públicas" do painel (us12), "rotativo do centro" em 02-painel.svg
+  { identificador: 'SV-212', tipo: 'Sensor de vagas', bairro: 'Centro', endereco: 'Estacionamento rotativo do centro', descricao: 'Vagas livres do rotativo', estado: 'ativo', comunicacao: 9, atributos: { tipoGrandeza: 'vagas_livres', unidadeMedida: 'vagas', intervaloLeituraSegundos: 30 } },
 ];
 
 export async function carregarDispositivosExemplo(fonte: DataSource): Promise<void> {

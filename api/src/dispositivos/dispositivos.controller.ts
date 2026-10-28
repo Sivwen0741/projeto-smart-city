@@ -10,6 +10,7 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { Exige } from '../auth/permissao.decorator';
 import { UsuarioAtual } from '../auth/usuario-atual.decorator';
 import { GRANDEZAS } from '../grandezas';
 import { Usuario } from '../usuarios/usuario.entity';
@@ -22,6 +23,8 @@ import {
   GrandezaDto,
   LeituraDto,
   ListarDispositivosDto,
+  ConsultarHistoricoDto,
+  HistoricoDto,
   ListarLeiturasDto,
   LocalDto,
   LocalizarDto,
@@ -78,6 +81,7 @@ export class DispositivosController {
   }
 
   @Post('dispositivos')
+  @Exige('configurar')
   @ApiOperation({ summary: 'Cadastra um dispositivo; o bairro sai da coordenada' })
   @ApiCreatedResponse({ type: DispositivoDto })
   @ApiBadRequestResponse({ description: 'Campo inválido ou atributo que não pertence ao tipo' })
@@ -88,6 +92,7 @@ export class DispositivosController {
   }
 
   @Patch('dispositivos/:id')
+  @Exige('configurar')
   @ApiOperation({ summary: 'Edita um dispositivo; estado "inativo" inativa sem excluir' })
   @ApiOkResponse({ type: DispositivoDto })
   @ApiNotFoundResponse()
@@ -107,5 +112,16 @@ export class DispositivosController {
   @ApiNotFoundResponse()
   leituras(@Param('id') id: string, @Query() { limite }: ListarLeiturasDto): Promise<LeituraDto[]> {
     return this.dispositivos.leituras(id, limite);
+  }
+
+  @Get('dispositivos/:id/historico')
+  @ApiOperation({
+    summary: 'Gráfico histórico de uma grandeza (US19): média, mínimo e máximo por bloco de 5 min em 24 h ou de 1 h em 7 e 30 dias, com os limites das regras ativas',
+  })
+  @ApiOkResponse({ type: HistoricoDto })
+  @ApiBadRequestResponse({ description: 'Período inválido ou grandeza sem leitura no dispositivo' })
+  @ApiNotFoundResponse()
+  historico(@Param('id') id: string, @Query() { periodo, grandeza }: ConsultarHistoricoDto): Promise<HistoricoDto> {
+    return this.dispositivos.historico(id, periodo ?? '24h', grandeza);
   }
 }

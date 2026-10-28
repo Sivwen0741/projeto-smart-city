@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { Campo } from '../componentes/Campo';
 import { Segmentado } from '../componentes/Segmentado';
@@ -29,6 +31,9 @@ interface Formulario {
   duracaoMinutos: string;
   criticidade: Criticidade | null;
   ativa: boolean;
+  limitePrecipitacao: string;
+  limiteVazaoPrevista: string;
+  janelaHoras: string;
 }
 
 type NomeCampo = keyof Formulario;
@@ -41,6 +46,9 @@ const ROTULOS: Record<NomeCampo, string> = {
   duracaoMinutos: 'duração mínima',
   criticidade: 'gravidade',
   ativa: 'situação',
+  limitePrecipitacao: 'chuva no bairro',
+  limiteVazaoPrevista: 'vazão prevista',
+  janelaHoras: 'janela',
 };
 
 interface Props {
@@ -51,7 +59,8 @@ interface Props {
 }
 
 function inicial(r: RegraAlerta | null): Formulario {
-  if (!r) return { nome: '', tipoGrandeza: '', operador: null, valorLimite: '', duracaoMinutos: '', criticidade: null, ativa: true };
+  const vazio = { limitePrecipitacao: '', limiteVazaoPrevista: '', janelaHoras: '' };
+  if (!r) return { nome: '', tipoGrandeza: '', operador: null, valorLimite: '', duracaoMinutos: '', criticidade: null, ativa: true, ...vazio };
   return {
     nome: r.nome,
     tipoGrandeza: r.tipoGrandeza,
@@ -60,6 +69,9 @@ function inicial(r: RegraAlerta | null): Formulario {
     duracaoMinutos: String(r.duracaoMinutos),
     criticidade: r.criticidade,
     ativa: r.ativa,
+    limitePrecipitacao: r.limitePrecipitacao === null ? '' : formatarNumero(r.limitePrecipitacao).replace(/\./g, ''),
+    limiteVazaoPrevista: r.limiteVazaoPrevista === null ? '' : formatarNumero(r.limiteVazaoPrevista).replace(/\./g, ''),
+    janelaHoras: r.janelaHoras === null ? '' : String(r.janelaHoras),
   };
 }
 
@@ -69,7 +81,7 @@ function numero(texto: string): number | null {
   return Number(limpo);
 }
 
-function validar(f: Formulario): Partial<Record<NomeCampo, string>> {
+function validar(f: Formulario, composta: boolean): Partial<Record<NomeCampo, string>> {
   const erros: Partial<Record<NomeCampo, string>> = {};
   if (!f.nome.trim()) erros.nome = 'Informe o nome da regra.';
   if (!f.tipoGrandeza) erros.tipoGrandeza = 'Escolha a grandeza observada.';
@@ -79,6 +91,14 @@ function validar(f: Formulario): Partial<Record<NomeCampo, string>> {
   if (duracao !== null && duracao < 0) erros.duracaoMinutos = 'Não pode ser negativa. Use 0 para disparar na primeira leitura.';
   else if (duracao === null || !Number.isInteger(duracao)) erros.duracaoMinutos = 'Informe a duração em minutos inteiros.';
   if (!f.criticidade) erros.criticidade = 'Escolha a gravidade.';
+  if (composta) {
+    const chuva = numero(f.limitePrecipitacao);
+    if (chuva === null || chuva <= 0) erros.limitePrecipitacao = 'Informe a chuva em mm, maior que zero.';
+    const vazao = numero(f.limiteVazaoPrevista);
+    if (vazao === null || vazao <= 0) erros.limiteVazaoPrevista = 'Informe a vazão em m³/s, maior que zero.';
+    const janela = numero(f.janelaHoras);
+    if (janela === null || janela < 1 || !Number.isInteger(janela)) erros.janelaHoras = 'Informe a janela em horas inteiras.';
+  }
   return erros;
 }
 
@@ -88,9 +108,11 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
   const [alteracoes, setAlteracoes] = useState<Alteracao[]>([]);
+  const { pode } = useSessao();
 
   const editando = regra !== null;
-  const erros = validar(f);
+  const composta = regra?.tipo === 'risco_enchente';
+  const erros = validar(f, composta);
   const valido = Object.keys(erros).length === 0;
   const unidade = grandezas.find((g) => g.codigo === f.tipoGrandeza)?.unidade;
   const limiteMudou = editando && numero(f.valorLimite) !== null && numero(f.valorLimite) !== regra.valorLimite;
@@ -110,7 +132,17 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
   async function enviar(evento: FormEvent) {
     evento.preventDefault();
     if (!valido) {
-      setTocados({ nome: true, tipoGrandeza: true, operador: true, valorLimite: true, duracaoMinutos: true, criticidade: true });
+      setTocados({
+        nome: true,
+        tipoGrandeza: true,
+        operador: true,
+        valorLimite: true,
+        duracaoMinutos: true,
+        criticidade: true,
+        limitePrecipitacao: true,
+        limiteVazaoPrevista: true,
+        janelaHoras: true,
+      });
       return;
     }
     const dados: DadosRegra = {
@@ -121,6 +153,11 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
       duracaoMinutos: numero(f.duracaoMinutos)!,
       criticidade: f.criticidade!,
       ativa: f.ativa,
+      ...(composta && {
+        limitePrecipitacao: numero(f.limitePrecipitacao)!,
+        limiteVazaoPrevista: numero(f.limiteVazaoPrevista)!,
+        janelaHoras: numero(f.janelaHoras)!,
+      }),
     };
     setEnviando(true);
     setErroGeral(null);
@@ -152,6 +189,8 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
             erro={erro('tipoGrandeza')}
             opcoes={grandezas.map((g) => ({ valor: g.codigo, rotulo: `${g.rotulo}, em ${g.unidade}` }))}
             value={f.tipoGrandeza}
+            disabled={composta}
+            title={composta ? 'A regra de risco de enchente observa sempre o nível de água' : undefined}
             onChange={(e) => alterar('tipoGrandeza', e.target.value)}
           />
 
@@ -190,6 +229,42 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
               onChange={(e) => alterar('duracaoMinutos', e.target.value)}
             />
           </div>
+
+          {composta && (
+            <fieldset className={estilos.complemento}>
+              <legend>E, no mesmo bairro e dentro da janela, a partir de</legend>
+              <div className={estilos.par}>
+                <Campo
+                  rotulo="Chuva medida"
+                  className="numero"
+                  inputMode="decimal"
+                  unidade="mm"
+                  erro={erro('limitePrecipitacao')}
+                  value={f.limitePrecipitacao}
+                  onChange={(e) => alterar('limitePrecipitacao', e.target.value)}
+                />
+                <Campo
+                  rotulo="ou vazão prevista"
+                  className="numero"
+                  inputMode="decimal"
+                  unidade="m³/s"
+                  erro={erro('limiteVazaoPrevista')}
+                  value={f.limiteVazaoPrevista}
+                  onChange={(e) => alterar('limiteVazaoPrevista', e.target.value)}
+                />
+              </div>
+              <Campo
+                rotulo="Janela"
+                className={`numero ${estilos.janela}`}
+                inputMode="numeric"
+                unidade="h"
+                erro={erro('janelaHoras')}
+                value={f.janelaHoras}
+                onChange={(e) => alterar('janelaHoras', e.target.value)}
+              />
+              <span className={estilos.dica}>A chuva vem das estações do bairro do sensor; a vazão, do Open-Meteo para hoje e a previsão até o fim da janela.</span>
+            </fieldset>
+          )}
 
           <Segmentado
             rotulo="Gravidade"
@@ -239,7 +314,7 @@ export function FormularioRegra({ regra, grandezas, aoSalvar, aoFechar }: Props)
 
         <footer className={estilos.rodape}>
           <Botao onClick={aoFechar}>Cancelar</Botao>
-          <Botao type="submit" variante="primario" disabled={!valido || enviando}>
+          <Botao type="submit" variante="primario" disabled={!valido || enviando || !pode('configurar')} title={pode('configurar') ? undefined : SEM_PERMISSAO}>
             {enviando ? 'Salvando…' : editando ? 'Salvar alteração' : 'Cadastrar regra'}
           </Botao>
         </footer>

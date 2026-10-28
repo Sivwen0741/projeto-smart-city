@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsIn, IsLatitude, IsLongitude, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
+import { IsIn, IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 import { CRITICIDADES } from '../../regras-alerta/dto/regra-alerta.dto';
 import { CATEGORIAS_OCORRENCIA } from '../categorias';
 
@@ -66,6 +66,69 @@ export class OcorrenciaDto {
   @ApiPropertyOptional({ nullable: true, example: 'Defesa Civil' }) orgao: string | null;
   @ApiPropertyOptional({ nullable: true }) registradaPor: string | null;
   @ApiProperty() dataAbertura: string;
+  @ApiPropertyOptional({ nullable: true }) dataEncerramento: string | null;
+}
+
+export const VISOES_OCORRENCIA = ['andamento', 'encerradas'] as const;
+export type VisaoOcorrencia = (typeof VISOES_OCORRENCIA)[number];
+
+export class ListarOcorrenciasDto {
+  @ApiPropertyOptional({ enum: VISOES_OCORRENCIA, default: 'andamento', description: 'Em andamento são as abertas e as em atendimento; encerradas, as dos últimos 30 dias' })
+  @IsOptional()
+  @IsIn(VISOES_OCORRENCIA, { message: 'Visão deve ser andamento ou encerradas.' })
+  visao?: VisaoOcorrencia;
+}
+
+export class AtualizarOcorrenciaDto {
+  @ApiProperty({ example: 'Equipe da Defesa Civil no local; faixa da direita interditada.' })
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @IsString({ message: 'Escreva a providência.' })
+  @IsNotEmpty({ message: 'Escreva a providência.' })
+  @MaxLength(2000, { message: 'A providência tem no máximo 2000 caracteres.' })
+  observacao: string;
+
+  @ApiPropertyOptional({
+    enum: ['em_atendimento', 'encerrada'],
+    description: 'Sem situação, a providência mantém a situação; numa ocorrência aberta, passa para em atendimento',
+  })
+  @IsOptional()
+  @IsIn(['em_atendimento', 'encerrada'], { message: 'Situação deve ser em_atendimento ou encerrada.' })
+  situacao?: 'em_atendimento' | 'encerrada';
+}
+
+export class RegistroHistoricoDto {
+  @ApiProperty({ enum: ['ocorrencia', 'alerta_gerado', 'alerta_reconhecido'] }) tipo: string;
+  @ApiProperty() dataHora: string;
+  @ApiPropertyOptional({ nullable: true, example: 'aberta' }) situacaoAnterior: string | null;
+  @ApiPropertyOptional({ nullable: true, example: 'em_atendimento' }) situacaoNova: string | null;
+  @ApiPropertyOptional({ nullable: true }) observacao: string | null;
+  @ApiPropertyOptional({ nullable: true, example: 'Ricardo Menezes' }) autor: string | null;
+  @ApiPropertyOptional({ nullable: true, example: 'Defesa Civil' }) orgaoAutor: string | null;
+  @ApiPropertyOptional({ nullable: true, description: 'Para registros de alerta: regra, dispositivo e medição' }) alerta: {
+    regra: string;
+    dispositivo: string;
+    valorObservado: number | null;
+    valorLimite: number;
+    operador: string;
+    unidade: string | null;
+  } | null;
+}
+
+export class AlertaVinculadoDto {
+  @ApiProperty() id: string;
+  @ApiProperty({ example: 'Nível do arroio acima da cota' }) regra: string;
+  @ApiProperty({ example: 'SN-014' }) dispositivo: string;
+  @ApiProperty({ example: 'grave' }) criticidade: string;
+  @ApiProperty({ example: 'em_atendimento' }) situacao: string;
+  @ApiPropertyOptional({ nullable: true }) valorObservado: number | null;
+  @ApiPropertyOptional({ nullable: true }) unidade: string | null;
+  @ApiProperty() dataHora: string;
+}
+
+export class DetalheOcorrenciaDto extends OcorrenciaDto {
+  @ApiPropertyOptional({ nullable: true, description: 'Autor da última providência' }) responsavel: string | null;
+  @ApiProperty({ type: [RegistroHistoricoDto], description: 'Em ordem cronológica, com os alertas vinculados' }) historico: RegistroHistoricoDto[];
+  @ApiProperty({ type: [AlertaVinculadoDto] }) alertas: AlertaVinculadoDto[];
 }
 
 export class OrgaoDto {

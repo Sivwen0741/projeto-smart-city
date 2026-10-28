@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { alertasApi, ResumoAlertas } from '../alertas/modelo';
 import { FaixaGrave } from './FaixaGrave';
+import { ocorrenciasApi } from '../ocorrencias/modelo';
 import { useRegistroOcorrencia } from '../ocorrencias/registro';
 import { FormularioOcorrencia } from '../paginas/FormularioOcorrencia';
-import { useSessao } from '../sessao/sessao';
+import { Permissao, useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import { Botao } from './Botao';
+import { BuscaCabecalho } from './BuscaCabecalho';
 import { Marca } from './Marca';
 import estilos from './Moldura.module.css';
 import { Previsao, Previsto, textoPrevisao } from './Previsto';
@@ -15,21 +17,22 @@ interface Aba {
   rotulo: string;
   caminho?: string;
   previsao?: Previsao;
+  permissao?: Permissao;
 }
+
+export const SEM_PERMISSAO = 'Seu perfil não permite esta ação.';
 
 // previsões conforme a seção 2.5 do replanejamento da sprint 4
 export const ABAS: Aba[] = [
   { rotulo: 'Painel', caminho: '/painel' },
   { rotulo: 'Alertas', caminho: '/alertas' },
-  { rotulo: 'Ocorrências', previsao: { historia: 'US06', sprint: 'sprint 6' } },
+  { rotulo: 'Ocorrências', caminho: '/ocorrencias' },
   { rotulo: 'Mapa', caminho: '/mapa' },
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', caminho: '/regras' },
   { rotulo: 'Relatórios', previsao: { historia: 'US16', sprint: 'backlog' } },
-  { rotulo: 'Usuários', previsao: { historia: 'US21', sprint: 'sprint 6' } },
+  { rotulo: 'Usuários', caminho: '/usuarios', permissao: 'administrar' },
 ];
-
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
 
 function useResumoAlertas() {
   const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
@@ -50,6 +53,25 @@ function useResumoAlertas() {
   return resumo;
 }
 
+function useOcorrenciasAbertas() {
+  const [abertas, setAbertas] = useState<number | null>(null);
+  const carregar = useCallback(
+    () =>
+      ocorrenciasApi
+        .listar('andamento')
+        .then((lista) => setAbertas(lista.filter((o) => o.situacao === 'aberta').length))
+        .catch(() => undefined),
+    [],
+  );
+  useAlertasAoVivo(carregar);
+  useEffect(() => {
+    carregar();
+    const intervalo = setInterval(carregar, 15_000);
+    return () => clearInterval(intervalo);
+  }, [carregar]);
+  return abertas;
+}
+
 function useAgora() {
   const [agora, setAgora] = useState(() => new Date());
   useEffect(() => {
@@ -60,9 +82,10 @@ function useAgora() {
 }
 
 export function Moldura() {
-  const { usuario, sair } = useSessao();
+  const { usuario, sair, pode } = useSessao();
   const agora = useAgora();
   const resumo = useResumoAlertas();
+  const ocorrenciasAbertas = useOcorrenciasAbertas();
   const registro = useRegistroOcorrencia();
   const alertasAtivos = resumo?.ativos ?? null;
   const data = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
@@ -99,13 +122,18 @@ export function Moldura() {
         <ul className={estilos.abas}>
           {ABAS.map((aba) => (
             <li key={aba.rotulo}>
-              {aba.caminho ? (
+              {aba.caminho && aba.permissao && !pode(aba.permissao) ? (
+                <span className={`${estilos.aba} ${estilos.prevista}`} aria-disabled="true" title="Só para o perfil administrador">
+                  {aba.rotulo}
+                </span>
+              ) : aba.caminho ? (
                 <NavLink
                   to={aba.caminho}
                   className={({ isActive }) => [estilos.aba, isActive && estilos.ativa].filter(Boolean).join(' ')}
                 >
                   {aba.rotulo}
                   {aba.caminho === '/alertas' && alertasAtivos !== null && <span className={estilos.contador}>{alertasAtivos}</span>}
+                  {aba.caminho === '/ocorrencias' && ocorrenciasAbertas !== null && <span className={estilos.contador}>{ocorrenciasAbertas}</span>}
                 </NavLink>
               ) : (
                 <span
@@ -121,11 +149,13 @@ export function Moldura() {
           ))}
         </ul>
         <div className={estilos.acoes}>
-          <span className={estilos.busca} aria-disabled="true" title={`Previsto: ${textoPrevisao(BUSCA)}`}>
-            Buscar ocorrência
-            <Previsto previsao={BUSCA} />
-          </span>
-          <Botao variante="primario" onClick={() => registro.abrir()}>
+          <BuscaCabecalho />
+          <Botao
+            variante="primario"
+            disabled={!pode('operar')}
+            title={pode('operar') ? undefined : SEM_PERMISSAO}
+            onClick={() => registro.abrir()}
+          >
             Registrar ocorrência
           </Botao>
         </div>

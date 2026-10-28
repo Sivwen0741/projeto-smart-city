@@ -5,6 +5,19 @@
   cursor: crosshair;
 }
 
+.leitura {
+  composes: mapa;
+  height: 100%;
+  border: 0;
+  cursor: grab;
+}
+
+/* mesma base esmaecida do mapa da cidade */
+.base {
+  filter: grayscale(1) contrast(0.8) brightness(1.08);
+  opacity: 0.75;
+}
+
 .mapa :global(.leaflet-container) {
   font-family: var(--fonte-texto);
 }

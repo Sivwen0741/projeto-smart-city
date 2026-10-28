@@ -1,11 +1,12 @@
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { connect, MqttClient } from 'mqtt';
+import { Subject } from 'rxjs';
 import { DataSource } from 'typeorm';
 import { EventosAlertasService } from '../alertas/eventos-alertas.service';
 import { LeituraGravada, MotorAlertasService, ResultadoAvaliacao } from '../alertas/motor-alertas.service';
 import { grandezasMedidas } from '../dispositivos/atributos';
-import { CODIGOS_GRANDEZA, Grandeza, GRANDEZAS } from '../grandezas';
+import { CODIGOS_GRANDEZA, SEM_COMUNICACAO, Grandeza, GRANDEZAS } from '../grandezas';
 
 export const TOPICO_LEITURAS = 'scoc/dispositivos/+/leituras';
 
@@ -64,6 +65,8 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
   private cliente?: MqttClient;
   // mensagens processadas uma a uma: a duração das regras depende da ordem das leituras
   private fila: Promise<void> = Promise.resolve();
+  // avisa o tempo real das grandezas gravadas, depois do commit
+  readonly leituras = new Subject<{ dispositivoId: string; grandezas: string[] }>();
 
   constructor(
     private readonly fonte: DataSource,
@@ -96,7 +99,9 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
   private async receber(topico: string, conteudo: Buffer): Promise<void> {
     const codigo = topico.split('/')[2];
     try {
-      const { novos, encerrados } = await this.gravar(codigo, interpretar(conteudo));
+      const mensagem = interpretar(conteudo);
+      const { novos, encerrados, dispositivoId } = await this.gravar(codigo, mensagem);
+      if (mensagem.leituras.length > 0) this.leituras.next({ dispositivoId, grandezas: mensagem.leituras.map((l) => l.grandeza) });
       if (novos.length > 0) this.logger.log(`alertas emitidos para ${codigo}: ${novos.join(', ')}`);
       if (encerrados.length > 0) this.logger.log(`alertas encerrados por normalização em ${codigo}: ${encerrados.join(', ')}`);
       await Promise.all([this.eventos.novos(novos), ...encerrados.map((id) => this.eventos.atualizado(id))]).catch((erro) =>
@@ -108,7 +113,7 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  async gravar(codigo: string, mensagem: Mensagem): Promise<ResultadoAvaliacao> {
+  async gravar(codigo: string, mensagem: Mensagem): Promise<ResultadoAvaliacao & { dispositivoId: string }> {
     return this.fonte.transaction(async (m) => {
       const [dispositivo] = await m.query(
         `SELECT d.id::text AS id, d.estado, t.categoria, d.atributos_especificos AS atributos
@@ -133,8 +138,17 @@ export class IngestaoService implements OnModuleInit, OnModuleDestroy {
       }
       await m.query(`UPDATE dispositivo SET ultima_comunicacao = now(), origem_comunicacao = $2 WHERE id = $1`, [dispositivo.id, mensagem.origem]);
 
+      // us07-3: voltou a comunicar, o alerta de sem comunicação ainda não reconhecido se encerra
+      const [religados]: [{ id: string }[], number] = await m.query(
+        `UPDATE alerta SET situacao = 'encerrado', data_encerramento = now()
+          WHERE dispositivo_id = $1 AND situacao = 'aberto'
+            AND regra_alerta_id IN (SELECT id FROM regra_alerta WHERE sistema AND tipo_grandeza = $2)
+        RETURNING id::text`,
+        [dispositivo.id, SEM_COMUNICACAO],
+      );
+
       // em manutenção a leitura fica no histórico, mas não gera alerta
-      const resultado: ResultadoAvaliacao = { novos: [], encerrados: [] };
+      const resultado = { novos: [] as string[], encerrados: religados.map((a) => a.id), dispositivoId: dispositivo.id as string };
       if (dispositivo.estado !== 'ativo') return resultado;
       for (const leitura of gravadas) {
         const { novos, encerrados } = await this.motor.avaliar(m, leitura);

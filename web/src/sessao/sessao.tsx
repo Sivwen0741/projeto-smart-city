@@ -7,7 +7,11 @@ export interface UsuarioSessao {
   email: string;
   perfil: string;
   orgao: string;
+  orgaoId: string;
+  permissoes: Permissao[];
 }
+
+export type Permissao = 'consultar' | 'operar' | 'configurar' | 'administrar';
 
 interface Sessao {
   token: string;
@@ -20,6 +24,7 @@ interface ContextoSessao {
   token: string | null;
   entrar(email: string, senha: string, manterConectado: boolean): Promise<void>;
   sair(): void;
+  pode(permissao: Permissao): boolean;
 }
 
 const CHAVE = 'scoc.sessao';
@@ -61,6 +66,15 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
     return () => clearTimeout(temporizador);
   }, [sessao, sair]);
 
+  // o perfil pode ter mudado depois do login, e sessões anteriores à us21 não traziam permissões
+  const token = sessao?.token;
+  useEffect(() => {
+    if (!token) return;
+    api<UsuarioSessao>('/auth/eu')
+      .then((usuario) => setSessao((atual) => (atual && atual.token === token ? { ...atual, usuario } : atual)))
+      .catch(() => undefined);
+  }, [token]);
+
   const entrar = useCallback(async (email: string, senha: string, manterConectado: boolean) => {
     const nova = await api<Sessao>('/auth/login', { method: 'POST', body: JSON.stringify({ email, senha }) });
     apagarGuardada();
@@ -70,7 +84,16 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
     setSessao(nova);
   }, []);
 
-  const valor = useMemo(() => ({ usuario: sessao?.usuario ?? null, token: sessao?.token ?? null, entrar, sair }), [sessao, entrar, sair]);
+  const valor = useMemo(
+    () => ({
+      usuario: sessao?.usuario ?? null,
+      token: sessao?.token ?? null,
+      entrar,
+      sair,
+      pode: (permissao: Permissao) => sessao?.usuario.permissoes?.includes(permissao) ?? false,
+    }),
+    [sessao, entrar, sair],
+  );
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;
 }
 

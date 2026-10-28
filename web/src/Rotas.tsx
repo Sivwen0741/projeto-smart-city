@@ -2,10 +2,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Moldura } from './componentes/Moldura';
 import { Alertas } from './paginas/Alertas';
 import { Dispositivos } from './paginas/Dispositivos';
+import { Historico } from './paginas/Historico';
 import { Login } from './paginas/Login';
 import { Mapa } from './paginas/Mapa';
+import { OcorrenciaDetalhe } from './paginas/OcorrenciaDetalhe';
+import { Ocorrencias } from './paginas/Ocorrencias';
 import { Painel } from './paginas/Painel';
 import { Regras } from './paginas/Regras';
+import { Rios } from './paginas/Rios';
+import { Usuarios } from './paginas/Usuarios';
 import { useSessao } from './sessao/sessao';
 import { ProvedorRegistroOcorrencia } from './ocorrencias/registro';
 import { ProvedorTempoReal } from './tempo-real/tempoReal';
@@ -32,8 +37,13 @@ export function Rotas() {
         <Route path="painel" element={<Painel />} />
         <Route path="mapa" element={<Mapa />} />
         <Route path="alertas" element={<Alertas />} />
+        <Route path="ocorrencias" element={<Ocorrencias />} />
+        <Route path="ocorrencias/:id" element={<OcorrenciaDetalhe />} />
         <Route path="dispositivos" element={<Dispositivos />} />
+        <Route path="dispositivos/:id/historico" element={<Historico />} />
         <Route path="regras" element={<Regras />} />
+        <Route path="rios" element={<Rios />} />
+        <Route path="usuarios" element={<Usuarios />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

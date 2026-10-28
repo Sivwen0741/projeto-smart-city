@@ -43,7 +43,25 @@ export class CriarRegraAlertaDto {
   ativa?: boolean;
 }
 
-export class AtualizarRegraAlertaDto extends PartialType(CriarRegraAlertaDto) {}
+export class AtualizarRegraAlertaDto extends PartialType(CriarRegraAlertaDto) {
+  @ApiPropertyOptional({ example: 50, description: 'Só na regra de risco de enchente: chuva no bairro, em mm' })
+  @IsOptional()
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'Informe o limite de precipitação.' })
+  @Min(0.01, { message: 'O limite de precipitação precisa ser maior que zero.' })
+  limitePrecipitacao?: number;
+
+  @ApiPropertyOptional({ example: 15, description: 'Só na regra de risco de enchente: vazão prevista, em m³/s' })
+  @IsOptional()
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'Informe o limite de vazão prevista.' })
+  @Min(0.01, { message: 'O limite de vazão prevista precisa ser maior que zero.' })
+  limiteVazaoPrevista?: number;
+
+  @ApiPropertyOptional({ example: 24, description: 'Só na regra de risco de enchente: janela em horas' })
+  @IsOptional()
+  @IsInt({ message: 'Informe a janela em horas inteiras.' })
+  @Min(1, { message: 'A janela precisa ter pelo menos 1 hora.' })
+  janelaHoras?: number;
+}
 
 export class RegraAlertaDto {
   @ApiProperty() id: string;
@@ -55,6 +73,11 @@ export class RegraAlertaDto {
   @ApiProperty({ enum: CRITICIDADES }) criticidade: string;
   @ApiProperty() ativa: boolean;
   @ApiProperty({ description: 'Alertas já gerados por esta regra' }) alertas: number;
+  @ApiProperty({ description: 'Regra mantida pelo sistema (US07): aparece na lista, mas não pode ser alterada' }) sistema: boolean;
+  @ApiProperty({ enum: ['simples', 'risco_enchente'], description: 'risco_enchente combina o nível com chuva ou vazão prevista (US10)' }) tipo: string;
+  @ApiPropertyOptional({ nullable: true, example: 50 }) limitePrecipitacao: number | null;
+  @ApiPropertyOptional({ nullable: true, example: 15 }) limiteVazaoPrevista: number | null;
+  @ApiPropertyOptional({ nullable: true, example: 24 }) janelaHoras: number | null;
 }
 
 export class AlteracaoRegraDto {

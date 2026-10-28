@@ -1,0 +1,69 @@
+.grafico {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.grade {
+  stroke: var(--cor-regua);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.eixo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  fill: var(--cor-tinta-suave);
+}
+
+/* realce é a cor do guia para séries de gráfico */
+.linha,
+.previsao {
+  fill: none;
+  stroke: var(--cor-realce);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.previsao {
+  stroke-dasharray: 3 3;
+}
+
+.ponto {
+  fill: var(--cor-realce);
+}
+
+.divisa {
+  stroke: var(--cor-regua-forte);
+  vector-effect: non-scaling-stroke;
+}
+
+.limite {
+  stroke: var(--cor-grave);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.rotuloLimite {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-weight: var(--peso-seminegrito);
+  fill: var(--cor-grave);
+}
+
+.referencia {
+  fill: none;
+  stroke: var(--cor-regua-forte);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.faixa {
+  fill: var(--cor-folha-2);
+  stroke: var(--cor-regua);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}

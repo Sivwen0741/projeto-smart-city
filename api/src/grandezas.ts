@@ -18,3 +18,11 @@ export const GRANDEZAS = {
 export type Grandeza = keyof typeof GRANDEZAS;
 
 export const CODIGOS_GRANDEZA = Object.keys(GRANDEZAS) as Grandeza[];
+
+// grandeza da regra de sistema da us07: o valor do alerta é o tempo sem comunicação
+export const SEM_COMUNICACAO = 'sem_comunicacao';
+
+export const unidadeDaGrandeza = (codigo: string): string | null =>
+  codigo === SEM_COMUNICACAO ? 'min' : (GRANDEZAS[codigo as Grandeza]?.unidade ?? null);
+
+export const rotuloDaGrandeza = (codigo: string): string => GRANDEZAS[codigo as Grandeza]?.rotulo ?? codigo;

@@ -143,11 +143,6 @@ th[aria-sort] .ordenar {
   stroke-linecap: square;
 }
 
-.previstaColuna {
-  font-weight: var(--peso-regular) !important;
-  color: var(--cor-parado) !important;
-}
-
 .estreita {
   width: 72px;
   white-space: normal !important;

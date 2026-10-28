@@ -96,7 +96,9 @@ use o PowerShell: os comandos são os mesmos.
 
    Na primeira subida é criado um usuário administrador com o `ADMIN_EMAIL` e a `ADMIN_SENHA`
    do `.env`. Use essas credenciais para entrar na interface web. Se o e-mail já existir, o
-   usuário não é alterado.
+   usuário não é alterado. Os demais usuários são cadastrados por ele na aba Usuários, com um
+   dos quatro perfis (Consulta, Operador, Gestor, Administrador) e uma senha provisória gerada na
+   hora.
 
 3. Suba tudo:
 
@@ -112,10 +114,10 @@ use o PowerShell: os comandos são os mesmos.
    api-1  | migração aplicada: ...
    api-1  | território carregado: 5 distritos, 16 bairros
    api-1  | usuário administrador inicial criado: admin@pontagrossa.pr.gov.br
-   api-1  | dispositivos de exemplo carregados: 13
+   api-1  | dispositivos de exemplo carregados: 14
    api-1  | regras de alerta de exemplo carregadas: 7
    api-1  | ... [IngestaoService] conectado ao broker, assinando scoc/dispositivos/+/leituras
-   simulador-1  | simulador conectado a mqtt://mosquitto:1883: 10 dispositivos a cada 30 s
+   simulador-1  | simulador conectado a mqtt://mosquitto:1883: 11 dispositivos a cada 30 s
    ```
 
    Nas subidas seguintes, a carga inicial só mostra a linha do território. Para deixar o
@@ -210,6 +212,14 @@ anterior. Para rodar contra um banco vazio, apague-o antes:
 docker compose --profile teste rm -sf db-teste
 ```
 
+Os testes de unidade cobrem as funções puras (índice de qualidade do ar, operador das regras,
+limite de sem comunicação e cálculo dos indicadores do painel), não precisam de banco e mostram a
+cobertura no fim:
+
+```sh
+docker compose --profile teste run --rm --no-deps --build api-teste npm run test:unidade
+```
+
 ### Base territorial
 
 Distritos e bairros vêm de arquivos GeoJSON versionados em
@@ -243,8 +253,9 @@ grandeza. Ela não é excluída, só desativada, e cada alteração fica registr
 anterior e o novo. Os motivos estão em
 [`docs/decisoes/2026-10-22-regras-de-alerta.md`](docs/decisoes/2026-10-22-regras-de-alerta.md).
 
-Os limites das regras de exemplo são ilustrativos e precisam ser validados com os órgãos antes de
-qualquer uso real.
+Os limites das regras de exemplo, inclusive os da regra de risco de enchente (cota de 3,5 m e chuva
+a partir de 50 mm ou vazão prevista a partir de 15 m³/s, em 24 h), são ilustrativos e precisam ser
+validados com os órgãos antes de qualquer uso real.
 
 ## Situação
 

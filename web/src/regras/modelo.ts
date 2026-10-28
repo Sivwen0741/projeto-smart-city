@@ -14,9 +14,15 @@ export interface RegraAlerta {
   criticidade: Criticidade;
   ativa: boolean;
   alertas: number;
+  sistema: boolean;
+  tipo: 'simples' | 'risco_enchente';
+  limitePrecipitacao: number | null;
+  limiteVazaoPrevista: number | null;
+  janelaHoras: number | null;
 }
 
-export type DadosRegra = Omit<RegraAlerta, 'id' | 'alertas'>;
+export type DadosRegra = Omit<RegraAlerta, 'id' | 'alertas' | 'sistema' | 'tipo' | 'limitePrecipitacao' | 'limiteVazaoPrevista' | 'janelaHoras'> &
+  Partial<Pick<RegraAlerta, 'limitePrecipitacao' | 'limiteVazaoPrevista' | 'janelaHoras'>>;
 
 export interface Alteracao {
   acao: string;
@@ -49,6 +55,9 @@ const ROTULOS_CAMPO: Record<string, string> = {
   duracaoMinutos: 'Duração mínima',
   criticidade: 'Gravidade',
   ativa: 'Situação',
+  limitePrecipitacao: 'Chuva no bairro',
+  limiteVazaoPrevista: 'Vazão prevista',
+  janelaHoras: 'Janela',
 };
 
 export const regrasApi = {
@@ -70,6 +79,11 @@ export function condicao(regra: Pick<RegraAlerta, 'operador' | 'valorLimite' | '
   return `${simboloOperador(regra.operador)} ${formatarNumero(regra.valorLimite)} ${unidade}`.trim();
 }
 
+// us10: a condição complementar da regra de risco de enchente
+export function condicaoComplementar(regra: Pick<RegraAlerta, 'limitePrecipitacao' | 'limiteVazaoPrevista' | 'janelaHoras'>): string {
+  return `e chuva ≥ ${formatarNumero(regra.limitePrecipitacao ?? 0)} mm ou vazão prevista ≥ ${formatarNumero(regra.limiteVazaoPrevista ?? 0)} m³/s em ${regra.janelaHoras} h`;
+}
+
 export function descreverValor(campo: string, valor: unknown, grandezas: Grandeza[]): string {
   if (valor === null || valor === undefined) return '–';
   switch (campo) {
@@ -85,6 +99,12 @@ export function descreverValor(campo: string, valor: unknown, grandezas: Grandez
       return CRITICIDADES.find((c) => c.valor === valor)?.rotulo ?? String(valor);
     case 'ativa':
       return valor ? 'ativa' : 'desativada';
+    case 'limitePrecipitacao':
+      return `${formatarNumero(Number(valor))} mm`;
+    case 'limiteVazaoPrevista':
+      return `${formatarNumero(Number(valor))} m³/s`;
+    case 'janelaHoras':
+      return `${valor} h`;
     default:
       return String(valor);
   }

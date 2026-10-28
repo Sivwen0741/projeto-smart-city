@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medida } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, limite, lugar, medicao, textoComposicao } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
-import { ABRIR_OCORRENCIA } from '../paginas/Alertas';
-import { Botao } from './Botao';
+import { AbrirOcorrencia } from './AbrirOcorrencia';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './FilaAlertas.module.css';
-import { Previsto, textoPrevisao } from './Previsto';
 import { Simulado } from './Simulado';
 
 const ATUALIZACAO_MS = 15_000;
@@ -65,18 +63,17 @@ export function FilaAlertas() {
             </div>
             <div className={estilos.linha}>
               <span className={`${estilos.medicao} numero`}>
-                {medida(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>
+                {medicao(a.valorObservado, a.unidade)} <span>limite {limite(a)}</span>
               </span>
               {a.situacao === 'aberto' ? (
                 <Link className={estilos.reconhecer} to={`/alertas?alerta=${a.id}`}>
                   Reconhecer
                 </Link>
               ) : (
-                <Botao disabled title={`Previsto: ${textoPrevisao(ABRIR_OCORRENCIA)}`}>
-                  Abrir&nbsp;<Previsto previsao={ABRIR_OCORRENCIA} />
-                </Botao>
+                <AbrirOcorrencia alerta={a} />
               )}
             </div>
+            {a.composicao && <div className={estilos.lugar}>{textoComposicao(a.composicao)}</div>}
           </li>
         ))}
         {alertas?.length === 0 && <li className={estilos.vazio}>Nenhum alerta ativo.</li>}

@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medida, ResumoAlertas, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
+import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medicao, ResumoAlertas, textoComposicao, SITUACOES_ALERTA, Visao } from '../alertas/modelo';
+import { AbrirOcorrencia } from '../componentes/AbrirOcorrencia';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import { Simulado } from '../componentes/Simulado';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './Alertas.module.css';
 import { PainelReconhecimento } from './PainelReconhecimento';
 
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
+const BUSCA: Previsao = { historia: 'US08', sprint: 'backlog' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
-export const ABRIR_OCORRENCIA: Previsao = { historia: 'US06', sprint: 'sprint 6' };
 const ATUALIZACAO_MS = 15_000;
 // meta citada em design/03-alertas.svg
 const META_RECONHECIMENTO_MIN = 15;
@@ -43,6 +45,7 @@ const VISOES: { visao: Visao; rotulo: string; contagem: (r: ResumoAlertas) => nu
 
 export function Alertas() {
   const [visao, setVisao] = useState<Visao>('ativos');
+  const { pode } = useSessao();
   const [alertas, setAlertas] = useState<Alerta[] | null>(null);
   const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -181,8 +184,9 @@ export function Alertas() {
                     {a.simulado && <Simulado />}
                   </td>
                   <td className="numero">
-                    <strong>{medida(a.valorObservado, a.unidade)}</strong>{' '}
+                    <strong>{medicao(a.valorObservado, a.unidade)}</strong>{' '}
                     <span className={estilos.apoio}>limite {limite(a)}</span>
+                    {a.composicao && <div className={estilos.apoio}>{textoComposicao(a.composicao)}</div>}
                   </td>
                   <td title={new Date(a.dataHora).toLocaleString('pt-BR')}>{hora(a.dataHora)}</td>
                   <td>{a.orgao ?? '–'}</td>
@@ -192,13 +196,11 @@ export function Alertas() {
                   </td>
                   <td className={estilos.acoes}>
                     {a.situacao === 'aberto' ? (
-                      <Botao variante="primario" onClick={() => setSelecionado(a)}>
+                      <Botao variante="primario" disabled={!pode('operar')} title={pode('operar') ? undefined : SEM_PERMISSAO} onClick={() => setSelecionado(a)}>
                         Reconhecer
                       </Botao>
                     ) : (
-                      <Botao disabled title={`Previsto: ${textoPrevisao(ABRIR_OCORRENCIA)}`}>
-                        Abrir&nbsp;<Previsto previsao={ABRIR_OCORRENCIA} />
-                      </Botao>
+                      <AbrirOcorrencia alerta={a} />
                     )}
                     <Botao variante="link" onClick={() => setSelecionado(a)}>
                       Detalhes

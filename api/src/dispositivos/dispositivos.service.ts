@@ -6,6 +6,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
+import { rotuloDaGrandeza, unidadeDaGrandeza } from '../grandezas';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { CATEGORIAS, validarAtributos } from './atributos';
 import {
@@ -18,12 +19,17 @@ import {
   LocalDto,
   Ordenacao,
   TipoDispositivoDto,
+  HistoricoDto,
+  LimiteHistoricoDto,
+  PeriodoHistorico,
+  PERIODOS,
+  PontoHistoricoDto,
 } from './dto/dispositivo.dto';
 
 // último recurso quando nem o dispositivo nem o tipo informam intervalo (docs/decisoes/2026-10-22-situacao-sem-comunicacao.md)
 export const LIMITE_SEM_INTERVALO_SEGUNDOS = 30 * 60;
 
-const LIMITE_COMUNICACAO = `COALESCE(2 * COALESCE((d.atributos_especificos->>'intervaloLeituraSegundos')::int, t.intervalo_leitura_segundos), ${LIMITE_SEM_INTERVALO_SEGUNDOS})`;
+export const LIMITE_COMUNICACAO = `COALESCE(2 * COALESCE((d.atributos_especificos->>'intervaloLeituraSegundos')::int, t.intervalo_leitura_segundos), ${LIMITE_SEM_INTERVALO_SEGUNDOS})`;
 
 export const SITUACAO = `CASE
     WHEN d.estado = 'inativo' THEN 'inativo'
@@ -54,9 +60,12 @@ const CONSULTA = `
          d.atributos_especificos                   AS atributos,
          (SELECT a.criticidade FROM alerta a
            WHERE a.dispositivo_id = d.id AND a.situacao IN ('aberto', 'em_atendimento')
+             -- o alerta de sem comunicação não pinta o dispositivo: ele já aparece como sem comunicação
+             AND a.regra_alerta_id NOT IN (SELECT id FROM regra_alerta WHERE sistema)
            ORDER BY array_position(ARRAY['grave', 'atencao', 'informativo'], a.criticidade::text)
            LIMIT 1)                                AS "alertaAtivo",
          ul.leitura                                AS "ultimaLeitura",
+         u3.serie                                  AS "ultimas3h",
          COALESCE(d.origem_comunicacao = 'simulador', false) AS simulado
     FROM dispositivo d
     JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
@@ -66,8 +75,18 @@ const CONSULTA = `
     ) di ON true
     LEFT JOIN LATERAL (
       SELECT json_build_object('grandeza', tipo_grandeza, 'valor', valor::float8, 'unidade', unidade, 'dataHora', data_hora, 'origem', origem) AS leitura
-        FROM leitura WHERE dispositivo_id = d.id ORDER BY data_hora DESC LIMIT 1
-    ) ul ON true`;
+        FROM leitura WHERE dispositivo_id = d.id AND fonte_dados_id IS NULL ORDER BY data_hora DESC LIMIT 1
+    ) ul ON true
+    -- us19-3: as nove barras de 05-dispositivos.svg, média de cada 20 min das últimas 3 h na grandeza da última leitura
+    LEFT JOIN LATERAL (
+      SELECT array_agg(
+               (SELECT avg(x.valor)::float8 FROM leitura x
+                 WHERE x.dispositivo_id = d.id AND x.fonte_dados_id IS NULL AND x.tipo_grandeza = ul.leitura->>'grandeza'
+                   AND x.data_hora > now() - (9 - n) * interval '20 minutes' AND x.data_hora <= now() - (8 - n) * interval '20 minutes')
+               ORDER BY n) AS serie
+        FROM generate_series(0, 8) n
+       WHERE ul.leitura IS NOT NULL
+    ) u3 ON true`;
 
 const ORDEM_SITUACAO = `array_position(ARRAY['operando', 'sem_comunicacao', 'manutencao', 'inativo'], ${SITUACAO})`;
 
@@ -265,6 +284,53 @@ export class DispositivosService {
         return atualizado;
       }),
     );
+  }
+
+  // us19-4: a agregação é no banco; 24 h em blocos de 5 min, 7 e 30 dias em blocos de 1 h
+  async historico(id: string, periodo: PeriodoHistorico, grandezaPedida?: string): Promise<HistoricoDto> {
+    const dispositivo = await this.buscar(id);
+    const grandezas: { codigo: string }[] = await this.fonte.query(
+      `SELECT DISTINCT tipo_grandeza AS codigo FROM leitura WHERE dispositivo_id = $1 AND data_hora > now() - interval '30 days' ORDER BY 1`,
+      [id],
+    );
+    const codigos = grandezas.map((g) => g.codigo);
+    const grandeza = grandezaPedida ?? dispositivo.ultimaLeitura?.grandeza ?? codigos[0] ?? null;
+    if (grandezaPedida && !codigos.includes(grandezaPedida)) {
+      throw new BadRequestException([`O dispositivo não tem leituras de ${rotuloDaGrandeza(grandezaPedida)} nos últimos 30 dias.`]);
+    }
+    const { horas, blocoMinutos } = PERIODOS[periodo];
+    const pontos: PontoHistoricoDto[] = grandeza
+      ? await this.fonte.query(
+          `SELECT date_bin($3 * interval '1 minute', data_hora, timestamptz '2000-01-01') AS inicio,
+                  avg(valor)::float8 AS media, min(valor)::float8 AS minimo, max(valor)::float8 AS maximo, count(*)::int AS leituras
+             FROM leitura
+            WHERE dispositivo_id = $1 AND tipo_grandeza = $2 AND data_hora > now() - $4 * interval '1 hour'
+            GROUP BY 1 ORDER BY 1`,
+          [id, grandeza, blocoMinutos, horas],
+        )
+      : [];
+    const limites: LimiteHistoricoDto[] = grandeza
+      ? await this.fonte.query(
+          `SELECT nome AS regra, operador, valor_limite::float8 AS valor, criticidade FROM regra_alerta
+            WHERE ativa AND NOT sistema AND tipo_grandeza = $1 ORDER BY valor_limite`,
+          [grandeza],
+        )
+      : [];
+    const [{ fim }] = await this.fonte.query(`SELECT now() AS fim`);
+    return {
+      dispositivoId: dispositivo.id,
+      identificador: dispositivo.identificador,
+      periodo,
+      blocoMinutos,
+      inicio: new Date(new Date(fim).getTime() - horas * 3_600_000).toISOString(),
+      fim: new Date(fim).toISOString(),
+      grandeza,
+      rotulo: grandeza ? rotuloDaGrandeza(grandeza) : null,
+      unidade: grandeza ? unidadeDaGrandeza(grandeza) : null,
+      grandezas: codigos.map((codigo) => ({ codigo, rotulo: rotuloDaGrandeza(codigo), unidade: unidadeDaGrandeza(codigo) })),
+      pontos,
+      limites,
+    };
   }
 
   async leituras(id: string, limite = 100): Promise<LeituraDto[]> {

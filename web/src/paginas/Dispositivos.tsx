@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { Barrinha } from '../componentes/Barrinha';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import { Simulado } from '../componentes/Simulado';
 import {
@@ -12,14 +16,14 @@ import {
   tempoDesde,
   TipoDispositivo,
 } from '../dispositivos/modelo';
+import { medida } from '../alertas/modelo';
 import { ErroApi } from '../sessao/api';
 import estilos from './Dispositivos.module.css';
 import { FormularioDispositivo } from './FormularioDispositivo';
 
-const BUSCA: Previsao = { historia: 'US26', sprint: 'sprint 6' };
+const BUSCA: Previsao = { historia: 'US08', sprint: 'backlog' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
-const LEITURAS: Previsao = { historia: 'US19', sprint: 'sprint 6' };
 
 // mesma cadência de atualização do guia de identidade
 const ATUALIZACAO_MS = 30_000;
@@ -50,6 +54,9 @@ export function Dispositivos() {
   const [painel, setPainel] = useState<Painel>({ modo: 'fechado' });
   const [erro, setErro] = useState<string | null>(null);
   const [agora, setAgora] = useState(() => Date.now());
+  const [parametros, setParametros] = useSearchParams();
+  const pedido = parametros.get('id');
+  const { pode } = useSessao();
 
   const carregar = useCallback(async () => {
     try {
@@ -75,6 +82,14 @@ export function Dispositivos() {
       })
       .catch(() => setErro('Não foi possível carregar os tipos de dispositivo.'));
   }, []);
+
+  // a busca do cabeçalho abre o dispositivo por /dispositivos?id=
+  useEffect(() => {
+    if (!pedido || !dispositivos) return;
+    const encontrado = dispositivos.find((d) => d.id === pedido);
+    if (encontrado) setPainel({ modo: 'edicao', dispositivo: encontrado });
+    setParametros({}, { replace: true });
+  }, [pedido, dispositivos, setParametros]);
 
   function ordenar(campo: Ordenacao) {
     if (campo === ordem) setDirecao(direcao === 'asc' ? 'desc' : 'asc');
@@ -130,7 +145,7 @@ export function Dispositivos() {
           <span className={`${estilos.filtro} ${estilos.exportar}`} aria-disabled="true" title={`Previsto: ${textoPrevisao(EXPORTAR)}`}>
             Exportar <Previsto previsao={EXPORTAR} />
           </span>
-          <Botao variante="primario" onClick={() => setPainel({ modo: 'novo' })}>
+          <Botao variante="primario" disabled={!pode('configurar')} title={pode('configurar') ? undefined : SEM_PERMISSAO} onClick={() => setPainel({ modo: 'novo' })}>
             Cadastrar dispositivo
           </Botao>
         </div>
@@ -142,11 +157,11 @@ export function Dispositivos() {
             <thead>
               <tr>
                 {COLUNAS.map((c) => cabecalho(c.campo, c.rotulo))}
-                <th className={estilos.previstaColuna} title={`Previsto: ${textoPrevisao(LEITURAS)}`}>
-                  Última leitura <Previsto previsao={LEITURAS} />
+                <th>
+                  Última leitura
                 </th>
-                <th className={`${estilos.previstaColuna} ${estilos.estreita}`} title={`Previsto: ${textoPrevisao(LEITURAS)}`}>
-                  Últimas 3 h <Previsto previsao={LEITURAS} />
+                <th className={estilos.estreita}>
+                  Últimas 3 h
                 </th>
                 {cabecalho('comunicacao', 'Comunicação')}
               </tr>
@@ -172,8 +187,16 @@ export function Dispositivos() {
                   <td>
                     <span className={`${estilos.situacao} ${estilos[d.situacao]}`}>{SITUACOES[d.situacao]}</span>
                   </td>
-                  <td className={estilos.vazia}>–</td>
-                  <td className={estilos.vazia}>–</td>
+                  <td className={d.ultimaLeitura ? 'numero' : estilos.vazia}>
+                    {d.ultimaLeitura ? medida(d.ultimaLeitura.valor, d.ultimaLeitura.unidade) : '–'}
+                  </td>
+                  <td>
+                    {d.ultimas3h?.some((v) => v !== null) ? (
+                      <Barrinha serie={d.ultimas3h} rotulo={`${d.identificador}: médias de 20 min das últimas 3 h`} />
+                    ) : (
+                      <span className={estilos.vazia}>–</span>
+                    )}
+                  </td>
                   <td className="numero" title={d.ultimaComunicacao ? new Date(d.ultimaComunicacao).toLocaleString('pt-BR') : undefined}>
                     {tempoDesde(d.ultimaComunicacao, agora)}
                   </td>

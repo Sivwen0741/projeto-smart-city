@@ -51,6 +51,8 @@ services:
       ADMIN_NOME: ${ADMIN_NOME:-}
       ADMIN_EMAIL: ${ADMIN_EMAIL:?defina ADMIN_EMAIL no .env}
       ADMIN_SENHA: ${ADMIN_SENHA:?defina ADMIN_SENHA no .env}
+      VERIFICACAO_COMUNICACAO_SEGUNDOS: ${VERIFICACAO_COMUNICACAO_SEGUNDOS:-60}
+      OPEN_METEO_INTERVALO_MINUTOS: ${OPEN_METEO_INTERVALO_MINUTOS:-60}
     depends_on:
       db:
         condition: service_healthy
@@ -110,6 +112,9 @@ services:
       <<: *conexao
       DB_HOST: db-teste
       MQTT_URL: mqtt://mosquitto-teste:1883
+      # os testes disparam a verificação da us07 por conta própria
+      VERIFICACAO_COMUNICACAO_SEGUNDOS: "0"
+      OPEN_METEO_INTERVALO_MINUTOS: "0"
     depends_on:
       db-teste:
         condition: service_healthy

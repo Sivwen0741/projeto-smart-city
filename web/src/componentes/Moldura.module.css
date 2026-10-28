@@ -126,20 +126,6 @@ a.aba:hover {
   margin-left: auto;
 }
 
-.busca {
-  display: flex;
-  white-space: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-2);
-  width: 178px;
-  height: var(--altura-controle);
-  padding: 0 9px 0 var(--espaco-3);
-  background: var(--cor-folha-2);
-  border: var(--borda);
-  color: var(--cor-parado);
-  cursor: not-allowed;
-}
 
 .conteudo {
   position: relative;

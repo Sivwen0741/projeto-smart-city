@@ -7,7 +7,8 @@ const CENTRO_PONTA_GROSSA: L.LatLngTuple = [-25.0945, -50.1633];
 
 interface Props {
   ponto: { latitude: number; longitude: number } | null;
-  aoEscolher: (latitude: number, longitude: number) => void;
+  // sem aoEscolher o mapa só mostra o ponto
+  aoEscolher?: (latitude: number, longitude: number) => void;
   rotulo: string;
 }
 
@@ -21,13 +22,14 @@ export function MapaPonto({ ponto, aoEscolher, rotulo }: Props) {
   escolher.current = aoEscolher;
 
   useEffect(() => {
-    const m = L.map(elemento.current!, { zoomControl: true, attributionControl: true }).setView(CENTRO_PONTA_GROSSA, 12);
+    const m = L.map(elemento.current!, { zoomControl: true, attributionControl: true }).setView(CENTRO_PONTA_GROSSA, escolher.current ? 12 : 15);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
+      className: escolher.current ? undefined : estilos.base,
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(m);
     m.attributionControl.setPrefix(false);
-    m.on('click', (e: L.LeafletMouseEvent) => escolher.current(arredondar(e.latlng.lat), arredondar(e.latlng.lng)));
+    m.on('click', (e: L.LeafletMouseEvent) => escolher.current?.(arredondar(e.latlng.lat), arredondar(e.latlng.lng)));
     mapa.current = m;
     return () => {
       m.remove();
@@ -56,5 +58,5 @@ export function MapaPonto({ ponto, aoEscolher, rotulo }: Props) {
     if (!m.getBounds().pad(-0.1).contains(posicao)) m.setView(posicao, Math.max(m.getZoom(), 15));
   }, [ponto?.latitude, ponto?.longitude]);
 
-  return <div ref={elemento} className={estilos.mapa} role="application" aria-label={rotulo} />;
+  return <div ref={elemento} className={aoEscolher ? estilos.mapa : estilos.leitura} role="application" aria-label={rotulo} />;
 }

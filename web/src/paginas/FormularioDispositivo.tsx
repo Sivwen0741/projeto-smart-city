@@ -1,6 +1,9 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { Campo } from '../componentes/Campo';
 import { MapaPonto } from '../componentes/MapaPonto';
@@ -111,6 +114,8 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
   const [erros, setErros] = useState<Erros>({});
   const [localizacao, setLocalizacao] = useState<Localizacao>({ situacao: 'vazia' });
   const [enviando, setEnviando] = useState(false);
+  const { pode } = useSessao();
+  const navegar = useNavigate();
 
   const tipo = tipos.find((t) => t.id === f.tipoDispositivoId) ?? null;
   const ponto = coordenada(f);
@@ -293,6 +298,12 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
             <p className={estilos.nota}>Inativar não exclui o dispositivo: o histórico de leituras continua disponível.</p>
           )}
 
+          {editando && (
+            <Botao onClick={() => navegar(`/dispositivos/${dispositivo.id}/historico`)} disabled={!dispositivo.ultimaLeitura} title={dispositivo.ultimaLeitura ? undefined : 'Sem leituras ainda'}>
+              Ver histórico
+            </Botao>
+          )}
+
           {tipo && tipo.campos.length > 0 && (
             <section className={estilos.atributos} aria-label={`Atributos de ${tipo.rotuloCategoria.toLowerCase()}`}>
               <h3>Atributos de {tipo.rotuloCategoria.toLowerCase()}</h3>
@@ -305,7 +316,7 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
 
         <footer className={estilos.rodape}>
           <Botao onClick={aoFechar}>Cancelar</Botao>
-          <Botao type="submit" variante="primario" disabled={enviando}>
+          <Botao type="submit" variante="primario" disabled={enviando || !pode('configurar')} title={pode('configurar') ? undefined : SEM_PERMISSAO}>
             {enviando ? 'Salvando…' : editando ? 'Salvar alterações' : 'Cadastrar'}
           </Botao>
         </footer>

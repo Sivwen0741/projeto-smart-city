@@ -150,3 +150,25 @@
   font-size: var(--texto-apoio);
   color: var(--cor-tinta-media);
 }
+
+.complemento {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: var(--espaco-3);
+  background: var(--cor-folha-2);
+  border: var(--borda);
+}
+
+.complemento legend {
+  padding: 0 var(--espaco-1);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  font-weight: var(--peso-seminegrito);
+  color: var(--cor-tinta-media);
+}
+
+.janela {
+  width: 120px;
+}

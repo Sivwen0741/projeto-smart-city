@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { dispositivosApi, Grandeza } from '../dispositivos/modelo';
-import { condicao, CRITICIDADES, RegraAlerta, regrasApi } from '../regras/modelo';
+import { condicao, condicaoComplementar, CRITICIDADES, RegraAlerta, regrasApi } from '../regras/modelo';
 import { ErroApi } from '../sessao/api';
 import estilos from './Dispositivos.module.css';
 import { FormularioRegra } from './FormularioRegra';
 import proprios from './Regras.module.css';
+
+const TITULO_SISTEMA = 'Regra do sistema (US07): usa o limite de comunicação de cada dispositivo e não pode ser editada nem desativada';
 
 type Painel = { modo: 'fechado' } | { modo: 'nova' } | { modo: 'edicao'; regra: RegraAlerta };
 
@@ -15,6 +19,7 @@ export function Regras() {
   const [grandezas, setGrandezas] = useState<Grandeza[]>([]);
   const [painel, setPainel] = useState<Painel>({ modo: 'fechado' });
   const [erro, setErro] = useState<string | null>(null);
+  const { pode } = useSessao();
 
   const carregar = useCallback(async () => {
     try {
@@ -53,7 +58,13 @@ export function Regras() {
         </div>
 
         <div className={estilos.ferramentas}>
-          <Botao variante="primario" className={proprios.cadastrar} onClick={() => setPainel({ modo: 'nova' })}>
+          <Botao
+            variante="primario"
+            className={proprios.cadastrar}
+            disabled={!pode('configurar')}
+            title={pode('configurar') ? undefined : SEM_PERMISSAO}
+            onClick={() => setPainel({ modo: 'nova' })}
+          >
             Cadastrar regra
           </Botao>
         </div>
@@ -73,7 +84,23 @@ export function Regras() {
               </tr>
             </thead>
             <tbody>
-              {regras?.map((r) => (
+              {regras?.map((r) =>
+                r.sistema ? (
+                  <tr key={r.id} className={proprios.sistema} aria-disabled="true" title={TITULO_SISTEMA}>
+                    <td className={proprios.nome}>
+                      {r.nome} <span className={proprios.marca}>regra do sistema</span>
+                    </td>
+                    <td>Tempo sem comunicação</td>
+                    <td>limite de cada dispositivo</td>
+                    <td className="numero">–</td>
+                    <td>
+                      <span className={`${estilos.situacao} ${proprios[r.criticidade]}`}>
+                        {CRITICIDADES.find((c) => c.valor === r.criticidade)?.rotulo}
+                      </span>
+                    </td>
+                    <td className="numero">{r.ativa ? 'Ativa' : 'Desativada'}</td>
+                  </tr>
+                ) : (
                 <tr
                   key={r.id}
                   className={[r.id === selecionada && estilos.selecionada, !r.ativa && estilos.inativa].filter(Boolean).join(' ')}
@@ -85,7 +112,10 @@ export function Regras() {
                     </button>
                   </td>
                   <td>{rotuloGrandeza(r.tipoGrandeza)}</td>
-                  <td className={proprios.condicao}>{condicao(r, grandezas)}</td>
+                  <td className={proprios.condicao}>
+                    {condicao(r, grandezas)}
+                    {r.tipo === 'risco_enchente' && <div className={proprios.complemento}>{condicaoComplementar(r)}</div>}
+                  </td>
                   <td className="numero">{r.duracaoMinutos} min</td>
                   <td>
                     <span className={`${estilos.situacao} ${proprios[r.criticidade]}`}>
@@ -94,7 +124,8 @@ export function Regras() {
                   </td>
                   <td className="numero">{r.ativa ? 'Ativa' : 'Desativada'}</td>
                 </tr>
-              ))}
+                ),
+              )}
               {regras?.length === 0 && (
                 <tr>
                   <td colSpan={6} className={estilos.semDados}>

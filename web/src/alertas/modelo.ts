@@ -10,14 +10,14 @@ export interface Alerta {
   regra: string;
   tipoGrandeza: string;
   unidade: string | null;
-  dispositivoId: string;
+  dispositivoId: string | null;
   dispositivo: string;
   tipoDispositivo: string;
   endereco: string | null;
   bairro: string | null;
   latitude: number;
   longitude: number;
-  valorObservado: number;
+  valorObservado: number | null;
   operador: string;
   valorLimite: number;
   criticidade: Criticidade;
@@ -30,6 +30,24 @@ export interface Alerta {
   orgao: string | null;
   ocorrenciaId: string | null;
   simulado: boolean;
+  composicao: Composicao | null;
+  bairroId: string | null;
+  fonte: string | null;
+  orgaoSugeridoId: string | null;
+}
+
+// us10: a segunda leitura do alerta de risco de enchente
+export interface Composicao {
+  nivel: { dispositivo: string; valor: number; limite: number; dataHora: string };
+  complemento: { grandeza: 'precipitacao' | 'vazao_prevista'; valor: number; limite: number; dispositivo: string; dataHora?: string; data?: string };
+}
+
+export function textoComposicao(c: Composicao): string {
+  const { grandeza, valor, limite, dispositivo, data } = c.complemento;
+  const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+  if (grandeza === 'precipitacao') return `com chuva de ${numero.format(valor)} mm em ${dispositivo} (limite ${numero.format(limite)} mm)`;
+  const dia = data ? ` para ${data.slice(8, 10)}/${data.slice(5, 7)}` : '';
+  return `com vazão prevista de ${numero.format(valor)} m³/s${dia} (limite ${numero.format(limite)} m³/s)`;
 }
 
 export interface ResumoAlertas {
@@ -55,12 +73,26 @@ export const SITUACOES_ALERTA: Record<SituacaoAlerta, string> = {
 
 const casasDe = (valor: number) => Math.min(2, (String(valor).split('.')[1] ?? '').length);
 
+// tempo sem comunicação da us07, que pode passar de dias
+function duracao(minutos: number): string {
+  const inteiros = Math.round(minutos);
+  if (inteiros < 60) return `${inteiros} min`;
+  const horas = Math.floor(inteiros / 60);
+  if (horas < 48) return `${horas} h ${String(inteiros % 60).padStart(2, '0')} min`;
+  return `${new Intl.NumberFormat('pt-BR').format(Math.floor(horas / 24))} dias`;
+}
+
 // o limite usa as mesmas casas da medição, como "3,81 m, limite 3,50 m" no protótipo
 export const medida = (valor: number, unidade: string | null, casas = casasDe(valor)) =>
-  `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
+  unidade === 'min'
+    ? duracao(valor)
+    : `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
+
+// us07: sem valor é o dispositivo que nunca se comunicou
+export const medicao = (valor: number | null, unidade: string | null) => (valor === null ? 'nunca se comunicou' : medida(valor, unidade));
 
 export const limite = (a: Pick<Alerta, 'valorObservado' | 'valorLimite' | 'unidade'>) =>
-  medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado), casasDe(a.valorLimite)));
+  medida(a.valorLimite, a.unidade, Math.max(casasDe(a.valorObservado ?? 0), casasDe(a.valorLimite)));
 
 export const fixoAteReconhecer = (a: Pick<Alerta, 'criticidade' | 'situacao'>) => a.criticidade === 'grave' && a.situacao === 'aberto';
 

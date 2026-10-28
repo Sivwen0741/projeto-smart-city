@@ -24,3 +24,25 @@
 .informativo::before {
   background: var(--cor-parado);
 }
+
+/* mesmo tratamento dos elementos desabilitados com a marca da sprint */
+.sistema td {
+  color: var(--cor-parado);
+  cursor: not-allowed;
+}
+
+.marca {
+  margin-left: var(--espaco-2);
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-legenda);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-suave);
+  white-space: nowrap;
+}
+
+.complemento {
+  font-size: var(--texto-apoio);
+  font-weight: var(--peso-regular);
+  color: var(--cor-tinta-media);
+  white-space: normal;
+}

@@ -21,14 +21,17 @@
   display: flex;
   flex-direction: column;
   gap: var(--espaco-1);
+  min-width: 0;
   padding: var(--espaco-4) 20px;
   border-right: var(--borda);
-  color: var(--cor-parado);
-  cursor: not-allowed;
 }
 
 .servico:last-child {
   border-right: 0;
+}
+
+.servico.grave {
+  background: var(--cor-grave-fundo);
 }
 
 .nome {
@@ -37,11 +40,80 @@
   color: var(--cor-tinta-media);
 }
 
+.linhaValor {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+}
+
 .valor {
   font-family: var(--fonte-numero);
-  font-size: var(--texto-numero-medio);
+  font-size: var(--texto-numero);
   font-weight: var(--peso-seminegrito);
+  letter-spacing: var(--espacamento-letra-numero);
+  line-height: 1.1;
+  color: var(--cor-tinta);
+  white-space: nowrap;
+}
+
+.valor small {
+  margin-left: 6px;
+  font-size: var(--texto-padrao);
+  font-weight: var(--peso-regular);
+  letter-spacing: 0;
+  color: var(--cor-tinta-media);
+}
+
+.sem_dados .valor {
   color: var(--cor-regua-forte);
+}
+
+.grave .valor {
+  color: var(--cor-grave);
+}
+
+.variacao {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-media);
+  white-space: nowrap;
+}
+
+.trilho {
+  position: relative;
+  height: 4px;
+  background: var(--cor-trilho);
+}
+
+.trilho > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--cor-estavel);
+}
+
+.atencao .trilho > span {
+  background: var(--cor-atencao);
+}
+
+.grave .trilho > span {
+  background: var(--cor-grave);
+}
+
+.nota {
+  overflow: hidden;
+  font-size: var(--texto-corpo);
+  color: var(--cor-tinta-media);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.grave .nota {
+  color: var(--cor-grave);
+}
+
+.sem_dados .nota {
+  color: var(--cor-tinta-suave);
 }
 
 .mapa {
@@ -52,34 +124,126 @@
 .tira {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  min-height: 0;
   background: var(--cor-folha);
   border-top: var(--borda-forte);
   border-right: var(--borda-forte);
-  cursor: not-allowed;
 }
 
 .grafico {
   display: flex;
   flex-direction: column;
-  gap: var(--espaco-1);
-  padding: 20px;
+  gap: var(--espaco-2);
+  min-width: 0;
+  min-height: 0;
+  padding: var(--espaco-4) 20px var(--espaco-3);
 }
 
 .grafico + .grafico {
   border-left: var(--borda);
 }
 
-.grafico h2 {
+.cabecalhoGrafico {
   display: flex;
-  align-items: center;
-  gap: var(--espaco-2);
-  font-size: var(--texto-corpo);
+  justify-content: space-between;
+  gap: var(--espaco-3);
+}
+
+.cabecalhoGrafico h2 {
+  font-size: var(--texto-destaque);
   font-weight: var(--peso-seminegrito);
+}
+
+.subtitulo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+  color: var(--cor-tinta-suave);
+}
+
+.legenda {
+  display: flex;
+  gap: var(--espaco-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
   color: var(--cor-tinta-media);
+}
+
+.legenda li::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 2px solid var(--cor-realce);
+}
+
+.legenda .media::before {
+  border-top: 2px dashed var(--cor-regua-forte);
+}
+
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-padrao);
+}
+
+.barras li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: var(--espaco-3);
+}
+
+.barras li > span:last-child {
+  font-weight: var(--peso-seminegrito);
+  text-align: right;
+}
+
+.barra {
+  height: 8px;
+}
+
+.barra > span {
+  display: block;
+  height: 100%;
+  background: var(--cor-realce);
+}
+
+.semOcorrencias {
+  display: block !important;
+  color: var(--cor-tinta-suave);
 }
 
 .fila {
   grid-column: 2;
   grid-row: 2 / 4;
   min-height: 0;
+}
+
+.servico:has(.abrirRios) {
+  padding: 0;
+}
+
+.abrirRios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  height: 100%;
+  padding: var(--espaco-4) 20px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.abrirRios:hover .nome {
+  color: var(--cor-tinta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

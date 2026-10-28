@@ -24,14 +24,17 @@ export interface UsuarioDeTeste {
   senha: string;
 }
 
-export async function criarUsuario(fonte: DataSource, opcoes: { ativo?: boolean } = {}): Promise<UsuarioDeTeste> {
+export async function criarUsuario(
+  fonte: DataSource,
+  opcoes: { ativo?: boolean; perfil?: string; orgao?: string } = {},
+): Promise<UsuarioDeTeste> {
   const email = `teste.${randomUUID()}@pontagrossa.pr.gov.br`;
   const senha = `senha-${randomUUID()}`;
   const [{ id }] = await fonte.query(
     `INSERT INTO usuario (orgao_id, perfil_id, nome, email, senha_hash, ativo)
-     VALUES ((SELECT id FROM orgao WHERE sigla = 'DTI'), (SELECT id FROM perfil WHERE nome = 'administrador'),
+     VALUES ((SELECT id FROM orgao WHERE sigla = $4), (SELECT id FROM perfil WHERE nome = $5),
              'Usuário de teste', $1, $2, $3) RETURNING id`,
-    [email, await gerarHashSenha(senha), opcoes.ativo ?? true],
+    [email, await gerarHashSenha(senha), opcoes.ativo ?? true, opcoes.orgao ?? 'DTI', opcoes.perfil ?? 'administrador'],
   );
   return { id, email, senha };
 }

@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 import request from 'supertest';
 import { DataSource } from 'typeorm';
 import { preparar } from '../src/database/preparar';
+import { limiteComunicacaoSegundos, situacaoDispositivo } from '../src/dispositivos/comunicacao';
 import { criarApp, criarUsuario, entrar, UsuarioDeTeste } from './apoio';
 
 interface Ponto {
@@ -364,6 +365,24 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
         const lido = (await autenticado(http().get(`/api/dispositivos/${criado.id}`)).expect(200)).body;
         expect(`${limite} ${segundos} ${lido.situacao}`).toBe(`${limite} ${segundos} ${situacao}`);
       }
+    }
+  });
+
+  it('US22-6 a situação e o limite calculados no banco batem com a regra de referência da suíte de unidade', async () => {
+    const tiposLidos: { id: string; intervaloLeituraSegundos: number | null }[] = (await autenticado(http().get('/api/tipos-dispositivo')).expect(200)).body;
+    const intervaloDoTipo = new Map(tiposLidos.map((t) => [t.id, t.intervaloLeituraSegundos]));
+    const lista = (await autenticado(http().get('/api/dispositivos')).expect(200)).body;
+    const [{ agora }] = await fonte.query(`SELECT now() AS agora`);
+    expect(lista.length).toBeGreaterThan(10);
+    for (const d of lista) {
+      const intervaloDispositivo = d.atributos?.intervaloLeituraSegundos ?? null;
+      const limite = limiteComunicacaoSegundos(intervaloDispositivo, intervaloDoTipo.get(d.tipoDispositivoId) ?? null);
+      expect(`${d.identificador} ${d.limiteComunicacaoSegundos}`).toBe(`${d.identificador} ${limite}`);
+      const ultima = d.ultimaComunicacao ? new Date(d.ultimaComunicacao) : null;
+      // perto da borda, a diferença de milissegundos entre a consulta e o now() decidiria o resultado
+      if (ultima && Math.abs(new Date(agora).getTime() - limite * 1000 - ultima.getTime()) < 2000) continue;
+      const referencia = situacaoDispositivo({ estado: d.estado, ultimaComunicacao: ultima, intervaloDispositivo, intervaloTipo: intervaloDoTipo.get(d.tipoDispositivoId) ?? null, agora: new Date(agora) });
+      expect(`${d.identificador} ${d.situacao}`).toBe(`${d.identificador} ${referencia}`);
     }
   });
 
