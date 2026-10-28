@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Alerta, lugar, medida } from '../alertas/modelo';
+import { Alerta, lugar, medicao } from '../alertas/modelo';
 import { tempoDesde } from '../dispositivos/modelo';
 import estilos from './FaixaGrave.module.css';
 
@@ -17,7 +17,7 @@ export function FaixaGrave({ quantidade, maisAntigo }: Props) {
     return () => clearInterval(relogio);
   }, []);
 
-  const detalhe = [maisAntigo.regra, maisAntigo.dispositivo, maisAntigo.bairro ?? lugar(maisAntigo), medida(maisAntigo.valorObservado, maisAntigo.unidade)]
+  const detalhe = [maisAntigo.regra, maisAntigo.dispositivo, maisAntigo.bairro ?? lugar(maisAntigo), medicao(maisAntigo.valorObservado, maisAntigo.unidade)]
     .filter(Boolean)
     .join(' · ');
 

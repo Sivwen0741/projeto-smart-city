@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
 import { Autor } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
@@ -7,7 +7,7 @@ import { AlteracaoRegraDto, AtualizarRegraAlertaDto, CriarRegraAlertaDto, RegraA
 const CONSULTA = `
   SELECT r.id::text AS id, r.nome, r.tipo_grandeza AS "tipoGrandeza", r.operador,
          r.valor_limite::float8 AS "valorLimite", r.duracao_minutos AS "duracaoMinutos",
-         r.criticidade, r.ativa,
+         r.criticidade, r.ativa, r.sistema,
          (SELECT count(*) FROM alerta a WHERE a.regra_alerta_id = r.id)::int AS alertas
     FROM regra_alerta r`;
 
@@ -69,6 +69,8 @@ export class RegrasAlertaService {
     const vazios = Object.entries(dados).filter(([, v]) => v === null).map(([campo]) => MENSAGEM_VAZIO[campo]);
     if (vazios.length > 0) throw new BadRequestException(vazios);
     const atual = await this.buscar(id);
+    // a regra da us07 usa o limite de cada dispositivo; editar ou desativar não tem efeito previsível
+    if (atual.sistema) throw new ConflictException('A regra do sistema não pode ser alterada.');
     const novo = { ...this.auditavel(atual), ...Object.fromEntries(Object.entries(dados).filter(([, v]) => v !== undefined)) };
 
     return this.fonte.transaction(async (m) => {

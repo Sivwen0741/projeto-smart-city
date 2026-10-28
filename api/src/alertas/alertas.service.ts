@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { Autor } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { SITUACAO } from '../dispositivos/dispositivos.service';
-import { GRANDEZAS } from '../grandezas';
+import { unidadeDaGrandeza } from '../grandezas';
 import { AlertaDto, ResumoAlertasDto, Visao } from './dto/alerta.dto';
 
 const CONSULTA = `
@@ -44,7 +44,7 @@ const hora = (instante: string | Date | null) =>
 
 const comUnidade = (a: Omit<AlertaDto, 'unidade'>): AlertaDto => ({
   ...a,
-  unidade: GRANDEZAS[a.tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null,
+  unidade: unidadeDaGrandeza(a.tipoGrandeza),
 });
 
 @Injectable()

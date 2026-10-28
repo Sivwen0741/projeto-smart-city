@@ -55,6 +55,7 @@ export class RegraAlertaDto {
   @ApiProperty({ enum: CRITICIDADES }) criticidade: string;
   @ApiProperty() ativa: boolean;
   @ApiProperty({ description: 'Alertas já gerados por esta regra' }) alertas: number;
+  @ApiProperty({ description: 'Regra mantida pelo sistema (US07): aparece na lista, mas não pode ser alterada' }) sistema: boolean;
 }
 
 export class AlteracaoRegraDto {

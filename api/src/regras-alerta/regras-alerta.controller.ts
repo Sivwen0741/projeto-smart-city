@@ -2,6 +2,7 @@ import { Body, Controller, Get, Ip, Param, Patch, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -45,6 +46,7 @@ export class RegrasAlertaController {
   @ApiOperation({ summary: 'Altera a regra, inclusive o limite; "ativa": false desativa sem excluir' })
   @ApiOkResponse({ type: RegraAlertaDto })
   @ApiNotFoundResponse()
+  @ApiConflictResponse({ description: 'Regra do sistema, que não pode ser alterada' })
   atualizar(
     @Param('id') id: string,
     @Body() dados: AtualizarRegraAlertaDto,

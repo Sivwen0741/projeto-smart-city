@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { DataSource, EntityManager } from 'typeorm';
 import { Autor, DispositivosService } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
-import { GRANDEZAS } from '../grandezas';
+import { unidadeDaGrandeza as unidade } from '../grandezas';
 import {
   AtualizarOcorrenciaDto,
   CriarOcorrenciaDto,
@@ -56,8 +56,6 @@ const HISTORICO = `
   ORDER BY "dataHora", ordem`;
 
 type AlertaNoHistorico = Omit<NonNullable<RegistroHistoricoDto['alerta']>, 'unidade'> & { tipoGrandeza: string };
-
-const unidade = (tipoGrandeza: string) => GRANDEZAS[tipoGrandeza as keyof typeof GRANDEZAS]?.unidade ?? null;
 
 @Injectable()
 export class OcorrenciasService {

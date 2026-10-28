@@ -27,7 +27,9 @@ export function FormularioOcorrencia() {
   const [criticidade, setCriticidade] = useState<Criticidade | null>(alerta?.criticidade ?? null);
   const [orgaoId, setOrgaoId] = useState('');
   const [descricao, setDescricao] = useState(
-    alerta ? `${alerta.regra}: ${alerta.dispositivo} registrou ${medida(alerta.valorObservado, alerta.unidade)}.` : '',
+    alerta ? alerta.valorObservado === null
+        ? `${alerta.regra}: ${alerta.dispositivo} nunca se comunicou.`
+        : `${alerta.regra}: ${alerta.dispositivo} registrou ${medida(alerta.valorObservado, alerta.unidade)}.` : '',
   );
   const [ponto, setPonto] = useState<{ latitude: number; longitude: number } | null>(
     alerta ? { latitude: alerta.latitude, longitude: alerta.longitude } : null,

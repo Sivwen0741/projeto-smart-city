@@ -107,7 +107,7 @@ export class RegistroHistoricoDto {
   @ApiPropertyOptional({ nullable: true, description: 'Para registros de alerta: regra, dispositivo e medição' }) alerta: {
     regra: string;
     dispositivo: string;
-    valorObservado: number;
+    valorObservado: number | null;
     valorLimite: number;
     operador: string;
     unidade: string | null;
@@ -120,7 +120,7 @@ export class AlertaVinculadoDto {
   @ApiProperty({ example: 'SN-014' }) dispositivo: string;
   @ApiProperty({ example: 'grave' }) criticidade: string;
   @ApiProperty({ example: 'em_atendimento' }) situacao: string;
-  @ApiProperty() valorObservado: number;
+  @ApiPropertyOptional({ nullable: true }) valorObservado: number | null;
   @ApiPropertyOptional({ nullable: true }) unidade: string | null;
   @ApiProperty() dataHora: string;
 }

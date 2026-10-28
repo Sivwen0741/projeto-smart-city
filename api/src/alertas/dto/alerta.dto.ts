@@ -25,7 +25,7 @@ export class AlertaDto {
   @ApiPropertyOptional({ nullable: true, example: 'Olarias' }) bairro: string | null;
   @ApiProperty({ description: 'Posição do dispositivo' }) latitude: number;
   @ApiProperty({ description: 'Posição do dispositivo' }) longitude: number;
-  @ApiProperty({ example: 3.81 }) valorObservado: number;
+  @ApiPropertyOptional({ example: 3.81, nullable: true, description: 'Nulo no alerta de dispositivo que nunca se comunicou' }) valorObservado: number | null;
   @ApiProperty({ example: '>' }) operador: string;
   @ApiProperty({ example: 3.5 }) valorLimite: number;
   @ApiProperty({ example: 'grave' }) criticidade: string;
