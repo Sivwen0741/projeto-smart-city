@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { Barrinha } from '../componentes/Barrinha';
 import { useSessao } from '../sessao/sessao';
 import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
@@ -15,6 +16,7 @@ import {
   tempoDesde,
   TipoDispositivo,
 } from '../dispositivos/modelo';
+import { medida } from '../alertas/modelo';
 import { ErroApi } from '../sessao/api';
 import estilos from './Dispositivos.module.css';
 import { FormularioDispositivo } from './FormularioDispositivo';
@@ -22,7 +24,6 @@ import { FormularioDispositivo } from './FormularioDispositivo';
 const BUSCA: Previsao = { historia: 'US08', sprint: 'backlog' };
 const FILTROS: Previsao = { historia: 'US08', sprint: 'backlog' };
 const EXPORTAR: Previsao = { historia: 'US25', sprint: 'backlog' };
-const LEITURAS: Previsao = { historia: 'US19', sprint: 'sprint 6' };
 
 // mesma cadência de atualização do guia de identidade
 const ATUALIZACAO_MS = 30_000;
@@ -156,11 +157,11 @@ export function Dispositivos() {
             <thead>
               <tr>
                 {COLUNAS.map((c) => cabecalho(c.campo, c.rotulo))}
-                <th className={estilos.previstaColuna} title={`Previsto: ${textoPrevisao(LEITURAS)}`}>
-                  Última leitura <Previsto previsao={LEITURAS} />
+                <th>
+                  Última leitura
                 </th>
-                <th className={`${estilos.previstaColuna} ${estilos.estreita}`} title={`Previsto: ${textoPrevisao(LEITURAS)}`}>
-                  Últimas 3 h <Previsto previsao={LEITURAS} />
+                <th className={estilos.estreita}>
+                  Últimas 3 h
                 </th>
                 {cabecalho('comunicacao', 'Comunicação')}
               </tr>
@@ -186,8 +187,16 @@ export function Dispositivos() {
                   <td>
                     <span className={`${estilos.situacao} ${estilos[d.situacao]}`}>{SITUACOES[d.situacao]}</span>
                   </td>
-                  <td className={estilos.vazia}>–</td>
-                  <td className={estilos.vazia}>–</td>
+                  <td className={d.ultimaLeitura ? 'numero' : estilos.vazia}>
+                    {d.ultimaLeitura ? medida(d.ultimaLeitura.valor, d.ultimaLeitura.unidade) : '–'}
+                  </td>
+                  <td>
+                    {d.ultimas3h?.some((v) => v !== null) ? (
+                      <Barrinha serie={d.ultimas3h} rotulo={`${d.identificador}: médias de 20 min das últimas 3 h`} />
+                    ) : (
+                      <span className={estilos.vazia}>–</span>
+                    )}
+                  </td>
                   <td className="numero" title={d.ultimaComunicacao ? new Date(d.ultimaComunicacao).toLocaleString('pt-BR') : undefined}>
                     {tempoDesde(d.ultimaComunicacao, agora)}
                   </td>

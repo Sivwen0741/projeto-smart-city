@@ -51,7 +51,25 @@ export interface Dispositivo {
   atributos: Record<string, unknown>;
   alertaAtivo: Criticidade | null;
   ultimaLeitura: { grandeza: string; valor: number; unidade: string | null; dataHora: string; origem: string } | null;
+  ultimas3h: (number | null)[] | null;
   simulado: boolean;
+}
+
+export type PeriodoHistorico = '24h' | '7d' | '30d';
+
+export interface Historico {
+  dispositivoId: string;
+  identificador: string;
+  periodo: PeriodoHistorico;
+  blocoMinutos: number;
+  inicio: string;
+  fim: string;
+  grandeza: string | null;
+  rotulo: string | null;
+  unidade: string | null;
+  grandezas: { codigo: string; rotulo: string; unidade: string | null }[];
+  pontos: { inicio: string; media: number; minimo: number; maximo: number; leituras: number }[];
+  limites: { regra: string; operador: string; valor: number; criticidade: Criticidade }[];
 }
 
 export type Criticidade = 'grave' | 'atencao' | 'informativo';
@@ -81,6 +99,8 @@ export const SITUACOES: Record<Situacao, string> = {
 };
 
 export const dispositivosApi = {
+  historico: (id: string, periodo: PeriodoHistorico, grandeza?: string) =>
+    api<Historico>(`/dispositivos/${id}/historico?periodo=${periodo}${grandeza ? `&grandeza=${encodeURIComponent(grandeza)}` : ''}`),
   listar: (ordem: Ordenacao, direcao: 'asc' | 'desc') =>
     api<Dispositivo[]>(`/dispositivos?ordem=${ordem}&direcao=${direcao}`),
   tipos: () => api<TipoDispositivo[]>('/tipos-dispositivo'),

@@ -127,3 +127,16 @@ coleta do critério US17-1.
 | **US18-1** | uma requisição traz PM2.5 e PM10 de todos os bairros, gravados por bairro sem duplicar e sem as horas futuras<br>a regra dispara para o bairro acima do limite e o alerta não grave se encerra quando a leitura volta<br>a duração mínima conta as horas seguidas acima do limite no bairro<br>falha do Open-Meteo fica registrada na fonte, sem derrubar a rotina | 27/10/2026, ambiente de desenvolvimento: a coleta real gravou 48 horas de PM2.5 e PM10 para os 16 bairros, sem erro (PM2.5 médio de 5 µg/m³, abaixo da regra de exemplo). | Verificado |
 | **US18-2** | o alerta do bairro não tem dispositivo e traz o bairro, a fonte e a posição dentro do bairro | A exibição na tela não foi conferida no navegador (DT05). | Verificado pela API |
 | **US18-3** | o alerta de poluição sugere o Meio Ambiente e a ocorrência aberta dele fica vinculada<br>alerta de outra grandeza não sugere órgão | O órgão e a categoria preenchidos no formulário não foram conferidos no navegador (DT05). | Verificado pela API |
+
+## US19 - Gráfico histórico de uma variável monitorada
+
+Branch `sprint-6-us19`, sobre a da US18, PR aberto para revisão. Suíte completa: 215 testes
+passando num banco de teste recriado. Decisão em
+[`2026-10-27-grafico-historico.md`](decisoes/2026-10-27-grafico-historico.md).
+
+| Critério | Teste automatizado (`us19.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US19-1** | sem parâmetros, 24 h da grandeza da última leitura, em blocos de 5 min<br>7 e 30 dias usam blocos de 1 h e só as leituras do período<br>recusa período inválido, grandeza sem leitura e dispositivo inexistente<br>dispositivo sem leituras devolve o histórico vazio, sem grandeza | 27/10/2026, ambiente de desenvolvimento: EA-03 em PM2.5, 24 h, 18 pontos de 5 min a partir de 173 leituras do simulador. A tela não foi conferida no navegador (DT05). | Verificado pela API |
+| **US19-2** | traz as regras ativas da grandeza, sem as desativadas | Na mesma consulta veio a regra "Material particulado elevado" (> 55 µg/m³). | Verificado pela API |
+| **US19-3** | nove médias de 20 min na grandeza da última leitura, nulas onde não houve leitura | Na lista do ambiente de desenvolvimento, EA-02, EA-03 e IL-118 trouxeram as séries; dispositivos sem leitura vieram nulos. A barrinha na tela não foi conferida no navegador (DT05). | Verificado pela API |
+| **US19-4** | mil leituras em 30 dias chegam como no máximo um ponto por hora | | Verificado |

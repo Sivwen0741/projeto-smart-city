@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
 import { useSessao } from '../sessao/sessao';
@@ -114,6 +115,7 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
   const [localizacao, setLocalizacao] = useState<Localizacao>({ situacao: 'vazia' });
   const [enviando, setEnviando] = useState(false);
   const { pode } = useSessao();
+  const navegar = useNavigate();
 
   const tipo = tipos.find((t) => t.id === f.tipoDispositivoId) ?? null;
   const ponto = coordenada(f);
@@ -294,6 +296,12 @@ export function FormularioDispositivo({ dispositivo, tipos, grandezas, aoSalvar,
           <Segmentado rotulo="Situação" opcoes={ESTADOS} valor={f.estado} aoMudar={(estado) => alterar('estado', estado)} />
           {f.estado === 'inativo' && dispositivo?.estado !== 'inativo' && editando && (
             <p className={estilos.nota}>Inativar não exclui o dispositivo: o histórico de leituras continua disponível.</p>
+          )}
+
+          {editando && (
+            <Botao onClick={() => navegar(`/dispositivos/${dispositivo.id}/historico`)} disabled={!dispositivo.ultimaLeitura} title={dispositivo.ultimaLeitura ? undefined : 'Sem leituras ainda'}>
+              Ver histórico
+            </Botao>
           )}
 
           {tipo && tipo.campos.length > 0 && (

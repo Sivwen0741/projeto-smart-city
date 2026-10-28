@@ -167,6 +167,8 @@ export class DispositivoDto {
   @ApiPropertyOptional({ enum: CRITICIDADES, nullable: true, description: 'Maior gravidade entre os alertas ativos do dispositivo' })
   alertaAtivo: (typeof CRITICIDADES)[number] | null;
   @ApiPropertyOptional({ type: () => UltimaLeituraDto, nullable: true }) ultimaLeitura: UltimaLeituraDto | null;
+  @ApiPropertyOptional({ nullable: true, type: [Number], description: 'Média de cada 20 min das últimas 3 h (nove barras) na grandeza da última leitura; nulo no bloco sem leitura' })
+  ultimas3h: (number | null)[] | null;
   @ApiProperty({ description: 'A última comunicação veio do simulador da equipe (documento de visão, 9.2)' }) simulado: boolean;
 }
 
@@ -185,4 +187,59 @@ export class LeituraDto {
   @ApiPropertyOptional({ nullable: true }) unidade: string | null;
   @ApiProperty({ example: 'mqtt' }) origem: string;
   @ApiProperty() dataHora: string;
+}
+
+export const PERIODOS = {
+  '24h': { horas: 24, blocoMinutos: 5 },
+  '7d': { horas: 7 * 24, blocoMinutos: 60 },
+  '30d': { horas: 30 * 24, blocoMinutos: 60 },
+} as const;
+export type PeriodoHistorico = keyof typeof PERIODOS;
+
+export class ConsultarHistoricoDto {
+  @ApiPropertyOptional({ enum: Object.keys(PERIODOS), default: '24h' })
+  @IsOptional()
+  @IsIn(Object.keys(PERIODOS), { message: 'Período deve ser 24h, 7d ou 30d.' })
+  periodo?: PeriodoHistorico;
+
+  @ApiPropertyOptional({ example: 'nivel_agua', description: 'Sem informar, usa a grandeza da última leitura' })
+  @IsOptional()
+  @IsString()
+  grandeza?: string;
+}
+
+export class PontoHistoricoDto {
+  @ApiProperty({ description: 'Início do bloco' }) inicio: string;
+  @ApiProperty() media: number;
+  @ApiProperty() minimo: number;
+  @ApiProperty() maximo: number;
+  @ApiProperty({ description: 'Leituras no bloco' }) leituras: number;
+}
+
+export class LimiteHistoricoDto {
+  @ApiProperty({ example: 'Cota de alerta do Arroio Olarias' }) regra: string;
+  @ApiProperty({ example: '>' }) operador: string;
+  @ApiProperty({ example: 3.5 }) valor: number;
+  @ApiProperty({ enum: CRITICIDADES }) criticidade: string;
+}
+
+export class GrandezaHistoricoDto {
+  @ApiProperty({ example: 'nivel_agua' }) codigo: string;
+  @ApiProperty({ example: 'Nível de água' }) rotulo: string;
+  @ApiPropertyOptional({ nullable: true, example: 'm' }) unidade: string | null;
+}
+
+export class HistoricoDto {
+  @ApiProperty() dispositivoId: string;
+  @ApiProperty({ example: 'SN-014' }) identificador: string;
+  @ApiProperty({ enum: Object.keys(PERIODOS) }) periodo: PeriodoHistorico;
+  @ApiProperty({ example: 5, description: 'Tamanho do bloco de agregação' }) blocoMinutos: number;
+  @ApiProperty() inicio: string;
+  @ApiProperty() fim: string;
+  @ApiPropertyOptional({ nullable: true, description: 'Nula quando o dispositivo não tem leituras' }) grandeza: string | null;
+  @ApiPropertyOptional({ nullable: true }) rotulo: string | null;
+  @ApiPropertyOptional({ nullable: true }) unidade: string | null;
+  @ApiProperty({ type: [GrandezaHistoricoDto], description: 'Grandezas com leitura nos últimos 30 dias' }) grandezas: GrandezaHistoricoDto[];
+  @ApiProperty({ type: [PontoHistoricoDto] }) pontos: PontoHistoricoDto[];
+  @ApiProperty({ type: [LimiteHistoricoDto], description: 'Regras ativas da grandeza (US19-2)' }) limites: LimiteHistoricoDto[];
 }

@@ -1,0 +1,6 @@
+.barrinha {
+  display: block;
+  height: var(--altura-barrinha);
+  width: auto;
+  fill: var(--cor-barrinha);
+}

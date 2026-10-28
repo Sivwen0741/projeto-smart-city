@@ -60,3 +60,10 @@
   stroke-dasharray: 4 3;
   vector-effect: non-scaling-stroke;
 }
+
+.faixa {
+  fill: var(--cor-folha-2);
+  stroke: var(--cor-regua);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
