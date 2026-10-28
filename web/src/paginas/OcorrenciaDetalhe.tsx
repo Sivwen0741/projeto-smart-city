@@ -7,6 +7,7 @@ import { MapaPonto } from '../componentes/MapaPonto';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import { DetalheOcorrencia, ocorrenciasApi, RegistroHistorico, SITUACOES_OCORRENCIA, tempoEmAberto } from '../ocorrencias/modelo';
 import { ErroApi } from '../sessao/api';
+import { useSessao } from '../sessao/sessao';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
 import estilos from './OcorrenciaDetalhe.module.css';
 
@@ -53,6 +54,7 @@ export function OcorrenciaDetalhe() {
   const [texto, setTexto] = useState('');
   const [erroTexto, setErroTexto] = useState<string | null>(null);
   const [enviando, setEnviando] = useState<'providencia' | 'encerrar' | null>(null);
+  const { usuario, pode } = useSessao();
 
   const carregar = useCallback(async () => {
     try {
@@ -106,6 +108,8 @@ export function OcorrenciaDetalhe() {
 
   const o = ocorrencia;
   const encerrada = o?.situacao === 'encerrada';
+  const outroOrgao = !!o?.orgaoId && o.orgaoId !== usuario?.orgaoId && !pode('administrar');
+  const bloqueio = !pode('operar') ? 'Seu perfil permite consultar, não atualizar ocorrências.' : outroOrgao ? `Só ${o?.orgao} atualiza esta ocorrência.` : null;
   const fimDaContagem = o?.dataEncerramento ? new Date(o.dataEncerramento).getTime() : agora;
 
   return (
@@ -235,6 +239,8 @@ export function OcorrenciaDetalhe() {
               <h2 className={estilos.tituloLateral}>Atualizar atendimento</h2>
               {encerrada ? (
                 <p className={estilos.encerrada}>Encerrada em {diaHora(o.dataEncerramento!)}. A ocorrência continua consultável, sem novas atualizações.</p>
+              ) : bloqueio ? (
+                <p className={estilos.encerrada}>{bloqueio}</p>
               ) : (
                 <form className={estilos.atualizar} onSubmit={(e) => enviar('providencia', e)} noValidate>
                   <label className={estilos.rotulo} htmlFor={idProvidencia}>

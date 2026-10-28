@@ -101,3 +101,16 @@ teste recriado. Decisão em
 | **US26-1** | encontra a ocorrência pelo protocolo<br>encontra a ocorrência e o dispositivo pelo endereço<br>encontra pelo bairro<br>encontra o dispositivo pelo código<br>recusa menos de três caracteres, sem contar os espaços<br>trata % e _ como texto, não como curinga<br>exige autenticação | 27/10/2026, ambiente de desenvolvimento: `GET /api/busca?q=cara` devolveu o EA-03 (Cará-Cará). | Verificado pela API |
 | **US26-2** | separa ocorrências e dispositivos, e cada resultado abre o seu detalhe | A lista agrupada sob a caixa do cabeçalho e a abertura do detalhe na tela não foram conferidas no navegador (o navegador disponível não alcançava o ambiente local) e não têm teste automatizado (DT05). | Pendente de conferência na tela |
 | **US26-3** | sem acento e em maiúsculas encontra o mesmo que o texto original | | Verificado |
+
+## US21 - Gerenciar usuários e perfis de acesso por órgão
+
+Branch `sprint-6-us21`, sobre a da US26, PR aberto para revisão. Suíte completa: 201 testes
+passando num banco de teste recriado, sem mudança nos testes anteriores. Decisão em
+[`2026-10-27-usuarios-e-perfis.md`](decisoes/2026-10-27-usuarios-e-perfis.md).
+
+| Critério | Teste automatizado (`us21.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US21-1** | cadastra com nome, e-mail funcional, órgão e perfil, e a senha provisória entra<br>recusa e-mail fora do domínio funcional, e-mail repetido, órgão ou perfil inexistente e campo vazio<br>edita nome, órgão e perfil<br>inativa sem excluir: o usuário deixa de entrar, a sessão aberta cai e ele continua na lista<br>o administrador não inativa nem muda o próprio perfil<br>nova senha provisória substitui a anterior | 27/10/2026, banco de desenvolvimento reaproveitado: o administrador existente recebeu as quatro permissões na subida. A tela não foi conferida no navegador (DT05). | Verificado pela API |
+| **US21-2** | os quatro perfis acumulam consultar, operar, configurar e administrar<br>perfil consulta/operador/gestor/administrador: consultar, operar, configurar dispositivo, configurar regra e administrar<br>o perfil de consulta não reconhece alerta nem registra providência, e a recusa explica o motivo | Botões desabilitados por perfil na tela não conferidos no navegador (DT05). | Verificado pela API |
+| **US21-3** | operador da Defesa Civil vê a ocorrência da Mobilidade e não a atualiza; atualiza a da Defesa Civil<br>ocorrência sem órgão pode ser atualizada por qualquer operador, e o administrador atualiza a de qualquer órgão | | Verificado |
+| **US21-4** | cadastro, edição de perfil e órgão, inativação e nova senha ficam no log com o autor | | Verificado |

@@ -1,15 +1,46 @@
 import { DataSource } from 'typeorm';
+import { Permissao } from '../../auth/permissao.decorator';
 import { gerarHashSenha } from '../../auth/senha';
+
+const PERMISSOES_DESCRITAS: { codigo: Permissao; descricao: string }[] = [
+  { codigo: 'consultar', descricao: 'Ver painel, mapa, alertas, ocorrências, dispositivos e regras' },
+  { codigo: 'operar', descricao: 'Reconhecer alertas, registrar ocorrências e providências' },
+  { codigo: 'configurar', descricao: 'Cadastrar dispositivos e regras de alerta' },
+  { codigo: 'administrar', descricao: 'Gerenciar usuários e perfis' },
+];
+
+// perfis fixos da prancheta da sprint 6, cada um com as permissões do anterior
+export const PERFIS: { nome: string; descricao: string; permissoes: Permissao[] }[] = [
+  { nome: 'consulta', descricao: 'Acompanha a cidade sem alterar dados', permissoes: ['consultar'] },
+  { nome: 'operador', descricao: 'Atende alertas e ocorrências', permissoes: ['consultar', 'operar'] },
+  { nome: 'gestor', descricao: 'Configura dispositivos e regras de alerta', permissoes: ['consultar', 'operar', 'configurar'] },
+  { nome: 'administrador', descricao: 'Cadastros, regras de alerta e controle de acesso', permissoes: ['consultar', 'operar', 'configurar', 'administrar'] },
+];
 
 export async function carregarAcesso(fonte: DataSource): Promise<void> {
   const [orgao] = await fonte.query(
     `INSERT INTO orgao (nome, sigla) VALUES ('Departamento de Tecnologia da Informação', 'DTI')
      ON CONFLICT (sigla) DO UPDATE SET nome = EXCLUDED.nome RETURNING id`,
   );
-  const [perfil] = await fonte.query(
-    `INSERT INTO perfil (nome, descricao) VALUES ('administrador', 'Cadastros, regras de alerta e controle de acesso')
-     ON CONFLICT (nome) DO UPDATE SET descricao = EXCLUDED.descricao RETURNING id`,
-  );
+  for (const p of PERMISSOES_DESCRITAS) {
+    await fonte.query(
+      `INSERT INTO permissao (codigo, descricao) VALUES ($1, $2) ON CONFLICT (codigo) DO UPDATE SET descricao = EXCLUDED.descricao`,
+      [p.codigo, p.descricao],
+    );
+  }
+  for (const p of PERFIS) {
+    await fonte.query(
+      `INSERT INTO perfil (nome, descricao) VALUES ($1, $2) ON CONFLICT (nome) DO UPDATE SET descricao = EXCLUDED.descricao`,
+      [p.nome, p.descricao],
+    );
+    await fonte.query(
+      `INSERT INTO perfil_permissao (perfil_id, permissao_id)
+       SELECT pf.id, pm.id FROM perfil pf, permissao pm WHERE pf.nome = $1 AND pm.codigo = ANY($2)
+       ON CONFLICT DO NOTHING`,
+      [p.nome, p.permissoes],
+    );
+  }
+  const [perfil] = await fonte.query(`SELECT id FROM perfil WHERE nome = 'administrador'`);
 
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const senha = process.env.ADMIN_SENHA;

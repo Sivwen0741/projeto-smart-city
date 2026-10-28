@@ -4,6 +4,8 @@ import { Alerta, alertasApi, fixoAteReconhecer, GRAVIDADES, limite, lugar, medic
 import { AbrirOcorrencia } from '../componentes/AbrirOcorrencia';
 import { Aviso } from '../componentes/Aviso';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { Previsao, Previsto, textoPrevisao } from '../componentes/Previsto';
 import { Simulado } from '../componentes/Simulado';
 import { useAlertasAoVivo } from '../tempo-real/tempoReal';
@@ -43,6 +45,7 @@ const VISOES: { visao: Visao; rotulo: string; contagem: (r: ResumoAlertas) => nu
 
 export function Alertas() {
   const [visao, setVisao] = useState<Visao>('ativos');
+  const { pode } = useSessao();
   const [alertas, setAlertas] = useState<Alerta[] | null>(null);
   const [resumo, setResumo] = useState<ResumoAlertas | null>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -193,7 +196,7 @@ export function Alertas() {
                   </td>
                   <td className={estilos.acoes}>
                     {a.situacao === 'aberto' ? (
-                      <Botao variante="primario" onClick={() => setSelecionado(a)}>
+                      <Botao variante="primario" disabled={!pode('operar')} title={pode('operar') ? undefined : SEM_PERMISSAO} onClick={() => setSelecionado(a)}>
                         Reconhecer
                       </Botao>
                     ) : (

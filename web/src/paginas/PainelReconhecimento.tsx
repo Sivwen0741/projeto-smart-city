@@ -1,6 +1,8 @@
 import { FormEvent, useId, useState } from 'react';
 import { Alerta, alertasApi, GRAVIDADES, limite, lugar, medicao, SITUACOES_ALERTA, textoComposicao } from '../alertas/modelo';
 import { Botao } from '../componentes/Botao';
+import { useSessao } from '../sessao/sessao';
+import { SEM_PERMISSAO } from '../componentes/Moldura';
 import { CaixaSelecao } from '../componentes/CaixaSelecao';
 import { Simulado } from '../componentes/Simulado';
 import { tempoDesde } from '../dispositivos/modelo';
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) {
+  const { pode } = useSessao();
   const id = useId();
   const [providencia, setProvidencia] = useState('');
   const [tentou, setTentou] = useState(false);
@@ -178,7 +181,7 @@ export function PainelReconhecimento({ alerta, aoReconhecer, aoFechar }: Props) 
         </div>
         <footer className={estilos.rodape}>
           <Botao onClick={aoFechar}>Cancelar</Botao>
-          <Botao type="submit" variante="primario" disabled={enviando}>
+          <Botao type="submit" variante="primario" disabled={enviando || !pode('operar')} title={pode('operar') ? undefined : SEM_PERMISSAO}>
             {enviando ? 'Reconhecendo…' : 'Confirmar reconhecimento'}
           </Botao>
         </footer>

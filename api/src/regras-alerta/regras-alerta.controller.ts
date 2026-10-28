@@ -9,6 +9,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Exige } from '../auth/permissao.decorator';
 import { UsuarioAtual } from '../auth/usuario-atual.decorator';
 import { Usuario } from '../usuarios/usuario.entity';
 import { AlteracaoRegraDto, AtualizarRegraAlertaDto, CriarRegraAlertaDto, RegraAlertaDto } from './dto/regra-alerta.dto';
@@ -35,6 +36,7 @@ export class RegrasAlertaController {
   }
 
   @Post()
+  @Exige('configurar')
   @ApiOperation({ summary: 'Cadastra uma regra de alerta' })
   @ApiCreatedResponse({ type: RegraAlertaDto })
   @ApiBadRequestResponse({ description: 'Limite vazio, operador não selecionado, duração negativa ou outro campo inválido' })
@@ -43,6 +45,7 @@ export class RegrasAlertaController {
   }
 
   @Patch(':id')
+  @Exige('configurar')
   @ApiOperation({ summary: 'Altera a regra, inclusive o limite; "ativa": false desativa sem excluir' })
   @ApiOkResponse({ type: RegraAlertaDto })
   @ApiNotFoundResponse()

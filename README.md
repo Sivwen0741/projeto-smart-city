@@ -96,7 +96,9 @@ use o PowerShell: os comandos são os mesmos.
 
    Na primeira subida é criado um usuário administrador com o `ADMIN_EMAIL` e a `ADMIN_SENHA`
    do `.env`. Use essas credenciais para entrar na interface web. Se o e-mail já existir, o
-   usuário não é alterado.
+   usuário não é alterado. Os demais usuários são cadastrados por ele na aba Usuários, com um
+   dos quatro perfis (Consulta, Operador, Gestor, Administrador) e uma senha provisória gerada na
+   hora.
 
 3. Suba tudo:
 
