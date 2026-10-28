@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { alertasApi, ResumoAlertas } from '../alertas/modelo';
 import { FaixaGrave } from './FaixaGrave';
+import { ocorrenciasApi } from '../ocorrencias/modelo';
 import { useRegistroOcorrencia } from '../ocorrencias/registro';
 import { FormularioOcorrencia } from '../paginas/FormularioOcorrencia';
 import { useSessao } from '../sessao/sessao';
@@ -21,7 +22,7 @@ interface Aba {
 export const ABAS: Aba[] = [
   { rotulo: 'Painel', caminho: '/painel' },
   { rotulo: 'Alertas', caminho: '/alertas' },
-  { rotulo: 'Ocorrências', previsao: { historia: 'US06', sprint: 'sprint 6' } },
+  { rotulo: 'Ocorrências', caminho: '/ocorrencias' },
   { rotulo: 'Mapa', caminho: '/mapa' },
   { rotulo: 'Dispositivos', caminho: '/dispositivos' },
   { rotulo: 'Regras', caminho: '/regras' },
@@ -50,6 +51,25 @@ function useResumoAlertas() {
   return resumo;
 }
 
+function useOcorrenciasAbertas() {
+  const [abertas, setAbertas] = useState<number | null>(null);
+  const carregar = useCallback(
+    () =>
+      ocorrenciasApi
+        .listar('andamento')
+        .then((lista) => setAbertas(lista.filter((o) => o.situacao === 'aberta').length))
+        .catch(() => undefined),
+    [],
+  );
+  useAlertasAoVivo(carregar);
+  useEffect(() => {
+    carregar();
+    const intervalo = setInterval(carregar, 15_000);
+    return () => clearInterval(intervalo);
+  }, [carregar]);
+  return abertas;
+}
+
 function useAgora() {
   const [agora, setAgora] = useState(() => new Date());
   useEffect(() => {
@@ -63,6 +83,7 @@ export function Moldura() {
   const { usuario, sair } = useSessao();
   const agora = useAgora();
   const resumo = useResumoAlertas();
+  const ocorrenciasAbertas = useOcorrenciasAbertas();
   const registro = useRegistroOcorrencia();
   const alertasAtivos = resumo?.ativos ?? null;
   const data = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })
@@ -106,6 +127,7 @@ export function Moldura() {
                 >
                   {aba.rotulo}
                   {aba.caminho === '/alertas' && alertasAtivos !== null && <span className={estilos.contador}>{alertasAtivos}</span>}
+                  {aba.caminho === '/ocorrencias' && ocorrenciasAbertas !== null && <span className={estilos.contador}>{ocorrenciasAbertas}</span>}
                 </NavLink>
               ) : (
                 <span

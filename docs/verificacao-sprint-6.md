@@ -18,3 +18,21 @@ em [`2026-10-25-dados-do-simulador.md`](decisoes/2026-10-25-dados-do-simulador.m
 | Critério | Teste automatizado (`tt02.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
 |---|---|---|---|
 | **TT02-9** | a leitura do simulador é gravada com origem simulador e o dispositivo e o alerta aparecem como simulados | 25/10/2026, ambiente de desenvolvimento com o simulador: 9 dos 13 dispositivos com a marca "simulado" na lista (os 4 sem marca, EA-07, SN-014, SN-019 e SN-027, estão inativos ou sem comunicação) e na chamada do mapa (CAM-08). Uma leitura de chuva de 72 mm publicada com origem `simulador` em EA-02 gerou o alerta grave com a marca na tela de alertas e na fila do painel. A marca na tela não tem teste automatizado (DT05). | Verificado, tela manual |
+
+## US06 - Atualizar a situação de uma ocorrência até a resolução
+
+Branch `sprint-6-us06`, PR aberto para revisão. Suíte completa: 139 testes passando num banco de
+teste recriado. Decisões de tela em
+[`2026-10-25-prancheta-sprint-6.md`](decisoes/2026-10-25-prancheta-sprint-6.md).
+
+| Critério | Teste automatizado (`us06.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US06-1** | cada ocorrência tem protocolo, gravidade, categoria, bairro, órgão, situação e abertura<br>em andamento, abertas vêm antes das em atendimento; depois a mais grave e a mais antiga<br>visão inválida é recusada | 25/10/2026, ambiente de desenvolvimento: aba "Ocorrências" com as duas visões e o tempo em aberto. | Verificado |
+| **US06-2** | o histórico junta a geração e o reconhecimento do alerta com os registros do atendimento<br>ocorrência inexistente responde 404 | Detalhe conferido contra `04-ocorrencia.svg`. | Verificado |
+| **US06-3** | a primeira providência de uma ocorrência aberta passa para em atendimento<br>providência em atendimento mantém a situação e também entra no histórico<br>providência vazia ou situação inválida é recusada | Na tela, a providência passou 2026-10-0001 para em atendimento e entrou no histórico com autor e hora. | Verificado |
+| **US06-4** | sem observação o encerramento é recusado<br>encerrar grava a data e encerra só os alertas vinculados em atendimento<br>ocorrência encerrada não aceita outra atualização | Na tela, "Encerrar ocorrência" com a caixa vazia mostrou "Escreva a observação de encerramento.". | Verificado |
+| **US06-5** | a encerrada sai da lista em andamento e do mapa, e continua consultável | O mapa usa a mesma lista em andamento. | Verificado |
+| **US06-6** | providência e encerramento geram registros no log de atividades<br>a atualização e o alerta encerrado chegam às outras telas | Contador da aba passou de 1 para 0 sem recarregar a página. | Verificado |
+
+O botão "Abrir" da tela de alertas e da fila do painel, antes marcado como previsto para a US06,
+abre a ocorrência vinculada ou, sem vínculo, o registro da US05 com o alerta.

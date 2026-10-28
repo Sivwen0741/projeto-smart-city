@@ -30,6 +30,7 @@ export function ProvedorTempoReal({ children }: { children: ReactNode }) {
     socket.on('alerta:novo', avisar);
     socket.on('alerta:atualizado', avisar);
     socket.on('ocorrencia:nova', () => avisar(null));
+    socket.on('ocorrencia:atualizada', () => avisar(null));
     return () => {
       socket.disconnect();
       setConectado(false);

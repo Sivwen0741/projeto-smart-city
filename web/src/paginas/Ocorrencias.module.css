@@ -1,0 +1,122 @@
+.pagina {
+  composes: pagina from './Dispositivos.module.css';
+}
+
+.principal {
+  composes: principal from './Alertas.module.css';
+}
+
+.titulo {
+  composes: titulo from './Dispositivos.module.css';
+}
+
+.resumo {
+  composes: resumo from './Dispositivos.module.css';
+}
+
+.visoes {
+  composes: visoes from './Alertas.module.css';
+  height: auto;
+}
+
+.visao {
+  composes: visao from './Alertas.module.css';
+}
+
+.atual {
+  composes: atual from './Alertas.module.css';
+}
+
+.contagem {
+  composes: contagem from './Alertas.module.css';
+}
+
+.ferramentas {
+  composes: ferramentas from './Alertas.module.css';
+}
+
+.busca {
+  composes: busca from './Alertas.module.css';
+}
+
+.filtro {
+  composes: filtro from './Alertas.module.css';
+}
+
+.exportar {
+  composes: exportar from './Alertas.module.css';
+}
+
+.tabela {
+  composes: tabela from './Alertas.module.css';
+}
+
+.protocolo {
+  font-family: var(--fonte-numero);
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-seminegrito);
+  white-space: nowrap;
+}
+
+.abrir {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.gravidade {
+  composes: gravidade from './Alertas.module.css';
+}
+
+.grave {
+  composes: grave from './Alertas.module.css';
+}
+
+.atencao {
+  composes: atencao from './Alertas.module.css';
+}
+
+.informativo {
+  composes: informativo from './Alertas.module.css';
+}
+
+.ocorrencia {
+  max-width: 420px;
+}
+
+.nome {
+  composes: nome from './Alertas.module.css';
+}
+
+.apoio {
+  composes: apoio from './Alertas.module.css';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.etiqueta {
+  composes: etiqueta from './Alertas.module.css';
+}
+
+.aberta {
+  composes: aberto from './Alertas.module.css';
+}
+
+.emAtendimento {
+  composes: em_atendimento from './Alertas.module.css';
+}
+
+.encerrada {
+  composes: encerrado from './Alertas.module.css';
+}
+
+.tempo {
+  white-space: nowrap;
+}
+
+.semDados {
+  composes: semDados from './Alertas.module.css';
+}
