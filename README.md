@@ -112,10 +112,10 @@ use o PowerShell: os comandos são os mesmos.
    api-1  | migração aplicada: ...
    api-1  | território carregado: 5 distritos, 16 bairros
    api-1  | usuário administrador inicial criado: admin@pontagrossa.pr.gov.br
-   api-1  | dispositivos de exemplo carregados: 13
+   api-1  | dispositivos de exemplo carregados: 14
    api-1  | regras de alerta de exemplo carregadas: 7
    api-1  | ... [IngestaoService] conectado ao broker, assinando scoc/dispositivos/+/leituras
-   simulador-1  | simulador conectado a mqtt://mosquitto:1883: 10 dispositivos a cada 30 s
+   simulador-1  | simulador conectado a mqtt://mosquitto:1883: 11 dispositivos a cada 30 s
    ```
 
    Nas subidas seguintes, a carga inicial só mostra a linha do território. Para deixar o

@@ -5,6 +5,7 @@ const TIPOS = [
   { nome: 'Sensor de nível', categoria: 'sensor_urbano', intervalo: 30 },
   { nome: 'Sensor de tráfego', categoria: 'sensor_urbano', intervalo: 30 },
   { nome: 'Sensor de ruído', categoria: 'sensor_urbano', intervalo: 30 },
+  { nome: 'Sensor de vagas', categoria: 'sensor_urbano', intervalo: 30 },
   { nome: 'Câmera', categoria: 'camera_monitoramento', intervalo: 30 },
   { nome: 'Semáforo inteligente', categoria: 'semaforo_inteligente', intervalo: 30 },
   { nome: 'Estação ambiental', categoria: 'estacao_ambiental', intervalo: 30 },

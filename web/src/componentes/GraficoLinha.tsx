@@ -9,11 +9,15 @@ interface Props {
   serie: Ponto[];
   // trecho tracejado depois da série, como a previsão de vazão
   continuacao?: Ponto[];
+  // série de comparação, tracejada e em cinza, como a média do painel
+  referencia?: Ponto[];
   limite?: { valor: number; rotulo: string } | null;
   xMinimo: number;
   xMaximo: number;
   rotulosX: { x: number; texto: string }[];
   altura?: number;
+  // contagens começam no zero
+  piso?: number;
   casas?: number;
   rotulo: string;
 }
@@ -23,24 +27,25 @@ const ESQUERDA = 32;
 const BAIXO = 18;
 const TOPO = 6;
 
-export function GraficoLinha({ serie, continuacao = [], limite, xMinimo, xMaximo, rotulosX, altura = 120, casas = 1, rotulo }: Props) {
-  const valores = [...serie, ...continuacao].map((p) => p.y);
+export function GraficoLinha({ serie, continuacao = [], referencia = [], limite, xMinimo, xMaximo, rotulosX, altura = 120, casas = 1, piso, rotulo }: Props) {
+  const valores = [...serie, ...continuacao, ...referencia].map((p) => p.y);
   if (limite) valores.push(limite.valor);
   const direita = limite ? 8 + limite.rotulo.length * 6 : 8;
   let minimo = valores.length ? Math.min(...valores) : 0;
   let maximo = valores.length ? Math.max(...valores) : 1;
+  if (piso !== undefined) minimo = Math.min(piso, minimo);
   if (maximo === minimo) {
-    minimo -= 1;
+    if (piso === undefined) minimo -= 1;
     maximo += 1;
   }
   const folga = (maximo - minimo) * 0.1;
-  minimo -= folga;
+  if (piso === undefined) minimo -= folga;
   maximo += folga;
   const x = (v: number) => ESQUERDA + ((v - xMinimo) / (xMaximo - xMinimo || 1)) * (LARGURA - ESQUERDA - direita);
   const y = (v: number) => TOPO + (1 - (v - minimo) / (maximo - minimo)) * (altura - TOPO - BAIXO);
   const linha = (pontos: Ponto[]) => pontos.map((p) => `${x(p.x).toFixed(1)},${y(p.y).toFixed(1)}`).join(' ');
   const numero = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
-  const marcas = [minimo + folga, (minimo + maximo) / 2, maximo - folga];
+  const marcas = [piso === undefined ? minimo + folga : minimo, (minimo + maximo) / 2, maximo - folga];
 
   return (
     <svg className={estilos.grafico} viewBox={`0 0 ${LARGURA} ${altura}`} role="img" aria-label={rotulo}>
@@ -71,6 +76,7 @@ export function GraficoLinha({ serie, continuacao = [], limite, xMinimo, xMaximo
           <polyline className={estilos.previsao} points={linha([serie[serie.length - 1], ...continuacao])} />
         </>
       )}
+      {referencia.length > 1 && <polyline className={estilos.referencia} points={linha(referencia)} />}
       {serie.length > 1 && <polyline className={estilos.linha} points={linha(serie)} />}
       {serie.length === 1 && <circle className={estilos.ponto} cx={x(serie[0].x)} cy={y(serie[0].y)} r={2.5} />}
     </svg>

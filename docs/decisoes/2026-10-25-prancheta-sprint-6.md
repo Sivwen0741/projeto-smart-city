@@ -30,7 +30,8 @@ parte de usuários.
   arroio com o nível do sensor, a vazão do Open-Meteo, a tendência da última hora e a cota.
 - **Qualidade do ar (US17):** linha nova no painel "Camadas"; bairros pintados com as cores de
   estado do guia pelas faixas do índice de qualidade do ar dos EUA (até 50 boa, até 100 moderada,
-  acima insalubre, sem coleta em parado).
+  acima insalubre, sem coleta em parado). Substituído em 27/10/2026 pelo IQAr da Resolução Conama
+  nº 506/2024 (`2026-10-27-indice-de-qualidade-do-ar.md`); as cores da camada serão desenhadas de novo.
 - **Histórico (US19):** rota `/dispositivos/:id/historico`; 24 h com média por 5 min, 7 e 30 dias com
   média por hora e a faixa entre mínimo e máximo; linha tracejada por regra ativa.
 - **Usuários (US21):** perfis fixos Consulta, Operador, Gestor e Administrador; inativar no lugar de

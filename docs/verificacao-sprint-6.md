@@ -75,3 +75,17 @@ num banco de teste recriado. Decisão em
 | **US10-1** | a regra de risco de enchente vem na carga inicial: cota 3,5 m, chuva 50 mm, vazão prevista 15 m³/s, janela de 24 h<br>nível acima da cota com chuva forte no mesmo bairro dentro da janela abre o alerta<br>só o nível acima da cota não basta<br>chuva em outro bairro ou fora da janela não conta<br>nível abaixo da cota não dispara, mesmo com chuva<br>a vazão prevista do Open-Meteo acima do limite também compõe o alerta<br>enquanto o alerta está ativo, novas leituras não abrem outro | Cópia isolada da branch (`docker compose -p ensaio-us10`), 25/10/2026: o simulador publicou chuva de 53,3 mm em EA-02 às 19:53 e, um minuto depois, nível de 3,87 m em SN-014, os dois em Olarias; o alerta grave "Risco de enchente" apareceu na tela de alertas e no painel de reconhecimento com as duas leituras. O formulário da regra mostra os três campos da condição complementar. | Verificado |
 | **US10-2** | o alerta informa a leitura de nível e a de chuva que o compõem | — | Verificado |
 | **US10-3** | mudar o limite de chuva muda o disparo e fica no histórico da regra<br>limites inválidos, troca de grandeza e campos de enchente numa regra simples são recusados | — | Verificado |
+
+## US12 - Painel com os indicadores-chave da cidade
+
+Branch `sprint-6-us12`, sobre a da US10, PR aberto para revisão. Suíte completa: 177 testes passando
+num banco de teste recriado. Decisão em
+[`2026-10-25-indicadores-do-painel.md`](decisoes/2026-10-25-indicadores-do-painel.md).
+
+| Critério | Teste automatizado (`us12.e2e-spec.ts` › caso) | Verificação manual ou observação | Situação |
+|---|---|---|---|
+| **US12-1** | a faixa traz os seis indicadores do protótipo, na ordem<br>nível dos rios é o maior nível medido na última hora<br>qualidade do ar é o pior IQAr (CONAMA 506/2024) da média de 24 h do PM2.5 das estações<br>iluminação pública é a parcela de pontos de luz respondendo<br>fluxo de veículos é a velocidade média dos sensores de tráfego e ruído é o maior nível sonoro | Cópia isolada da branch com o simulador, 25/10/2026: 3,01 m, 37 km/h, AQI 114, 0,0 % (IL-118 com os 9 pontos apagados), 61 dB e vagas sem dados. O AQI do ensaio foi trocado pelo IQAr em 27/10/2026 (`2026-10-27-indice-de-qualidade-do-ar.md`). | Verificado |
+| **US12-2** | cada indicador traz valor, unidade, variação e nota, e fica grave com alerta grave ativo da grandeza | A variação aparece quando há leitura de uma hora antes. | Verificado |
+| **US12-3** | indicador sem leitura na última hora aparece sem dados, sem valor inventado | Vagas públicas aparece com "–" e "sem leitura na última hora". | Verificado |
+| **US12-4** | "abertas hoje" acumula as de hoje por hora contra a média das quatro semanas anteriores<br>"por bairro" conta as ocorrências das últimas 24 horas | Três ocorrências registradas na cópia isolada apareceram nos dois gráficos. | Verificado |
+| **US12-5** | a leitura nova avisa as telas e muda o indicador na consulta seguinte | Na cópia isolada, os valores mudaram sem recarregar a página. | Verificado |
