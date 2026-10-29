@@ -160,7 +160,9 @@ Preparação: Terminal com `mosquitto_pub` (ou `docker compose exec mosquitto mo
 
 | Integrante | Grupos | Estimativa |
 |---|---|---|
-| Bryan Charles | | |
-| Guilherme Eidam | | |
-| Guilherme Sartori | | |
-| Taynah Cruz | | |
+| Bryan Charles | Alertas e faixa grave; Publicação MQTT nas fronteiras | 17 casos, 2 h 50 min |
+| Guilherme Eidam | Mapa e painel; Dispositivos e histórico; Regras de alerta | 22 casos, 2 h 50 min |
+| Guilherme Sartori | Ambiente e repositório; Login e sessão; Elementos do backlog | 6 casos, 2 h 20 min (carga menor porque ele acumula a revisão de código registrada como DT06) |
+| Taynah Cruz | Ocorrências; Usuários e perfis; Rios; Busca do cabeçalho | 19 casos, 2 h 45 min |
+
+Há duas dependências de ordem. O grupo de usuários e perfis é executado antes do grupo de ocorrências, porque o CT-120 consome os usuários criados no CT-118 e no CT-119, e também antes do CT-050, do grupo de alertas, que precisa de um segundo usuário. O CT-005, ensaio em máquina limpa, é executado na primeira semana de execução, porque um defeito no manual de instalação gera correção no repositório e reteste.

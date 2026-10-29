@@ -8,7 +8,7 @@ Ele alimenta as seções 1 e 6 do modelo de documentação de teste. A especific
 
 | Campo | Valor |
 |---|---|
-| Equipe | [número da equipe] · Bryan Charles, Guilherme Eidam, Guilherme Sartori, Taynah Cruz |
+| Equipe | Equipe 4 — Bryan Charles Diniz, Guilherme Eidam, Guilherme Sartori, Taynah Cruz |
 | Sistema | Smart City Operations Center (SCOC): central de operações urbanas da Prefeitura de Ponta Grossa. Recebe as leituras dos dispositivos da cidade por MQTT e de fontes públicas, dispara alertas por regras configuráveis, mostra tudo em mapa e painel em tempo real e registra as ocorrências até a resolução. |
 | Tecnologias | TypeScript · NestJS 11 (Node 24) · React com Vite · Leaflet sobre OpenStreetMap · PostgreSQL 16 com PostGIS 3.4 · Socket.IO · Mosquitto (MQTT) · Swagger · Docker Compose |
 
