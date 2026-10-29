@@ -299,6 +299,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O ambiente sobe, o login do administrador funciona e o painel abre com os dispositivos de exemplo. Pendente desde a Sprint 4 (DT06). |
 | Teste automatizado | não há |
 | Execução | manual; manual: Ensaio em máquina limpa por outro integrante. Tela: Ambiente e repositório, cerca de 90 min. |
+| Observação | Nesta execução, o caso não atende ao requisito de independência: por indisponibilidade dos demais integrantes, é executado pelo próprio autor do README. Continua verificando que o ambiente sobe pelo Compose numa máquina sem Node e sem PostgreSQL, mas não a suficiência do README para um leitor novo (DT08). |
 | Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
 
 ### CT-006 — Exigir e-mail funcional e senha em toda rota, exceto as públicas

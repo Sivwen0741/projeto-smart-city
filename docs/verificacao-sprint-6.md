@@ -154,3 +154,8 @@ administrador e os 215 testes da suíte e2e passando. O ensaio rodou na máquina
 imagens do Docker em cache; não substitui a execução em máquina limpa por outro integrante (TT01-5,
 DT06).
 
+## Pendências da Sprint 6
+
+| Origem | Pendência | Encaminhamento |
+|---|---|---|
+| TT01-5, CT-005 | O ensaio em máquina limpa é executado pelo próprio autor do README, por indisponibilidade dos demais integrantes; não verifica a suficiência do manual para um leitor novo. Registro em [`2026-10-28-dt08-ensaio-sem-independencia.md`](decisoes/2026-10-28-dt08-ensaio-sem-independencia.md). | DT08, próxima entrega |
