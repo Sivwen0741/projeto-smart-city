@@ -22,19 +22,19 @@ As estimativas incluem preparar os dados do caso, executar, conferir o resultado
 | Elementos do backlog | 1 | 1 | 0 | 0 | 10 min |
 | **Total** | **64** | **7** | **27** | **29** | **10 h 45 min** |
 
-Divididos igualmente, são cerca de 2,7 h por integrante. O ensaio em máquina limpa (CT-005) precisa ser de quem não escreveu o README, e o grupo de usuários e perfis precisa de um administrador e de quatro usuários de teste.
+Divididos igualmente, são cerca de 2,7 h por integrante. O ensaio em máquina limpa (CT-005) fica com o autor do manual nesta execução, pela indisponibilidade dos demais integrantes (DT08), e o grupo de usuários e perfis precisa de um administrador e de quatro usuários de teste.
 
 ## Casos por grupo
 
 ### Ambiente e repositório — 4 casos, cerca de 2 h 05 min
 
-Preparação: Máquina com Docker; para o CT de máquina limpa, um computador de outro integrante, sem Node nem PostgreSQL.
+Preparação: Máquina com Docker; para o CT de máquina limpa, um computador sem Node nem PostgreSQL. O ensaio em máquina limpa fica com o autor do manual nesta execução, pela indisponibilidade dos demais integrantes (DT08).
 
 | ID | História | Objetivo | Prioridade | Execução | O que se verifica à mão | Min |
 |---|---|---|---|---|---|---|
 | CT-001 | TT01 | Subir todo o ambiente com um único comando | alta | automatizado e manual | Subida pelo Compose e serviços saudáveis. | 15 |
 | CT-004 | TT01 | Versionar só o exemplo de variáveis de ambiente, sem credencial real | alta | manual | Inspeção do repositório. | 10 |
-| CT-005 | TT01 | Executar o projeto numa máquina limpa seguindo só o README, por quem não escreveu o manual | alta | manual | Ensaio em máquina limpa por outro integrante. | 90 |
+| CT-005 | TT01 | Executar o projeto numa máquina limpa seguindo só o README, por quem não escreveu o manual | alta | manual | Ensaio em máquina limpa por outro integrante. Nesta execução, executado por Bryan Charles, autor do manual (DT08). | 90 |
 | CT-033 | TT02 | Subir o simulador com o Compose, publicando as leituras dos exemplos | média | automatizado e manual | Simulador em execução e dispositivos operando na tela. | 10 |
 
 ### Login e sessão — 1 caso, cerca de 5 min
@@ -160,9 +160,9 @@ Preparação: Terminal com `mosquitto_pub` (ou `docker compose exec mosquitto mo
 
 | Integrante | Grupos | Estimativa |
 |---|---|---|
-| Bryan Charles | Alertas e faixa grave; Publicação MQTT nas fronteiras | 17 casos, 2 h 50 min |
+| Bryan Charles | Alertas e faixa grave; Publicação MQTT nas fronteiras; CT-005, do grupo Ambiente e repositório (DT08) | 18 casos, 4 h 20 min |
 | Guilherme Eidam | Mapa e painel; Dispositivos e histórico; Regras de alerta | 22 casos, 2 h 50 min |
-| Guilherme Sartori | Ambiente e repositório; Login e sessão; Elementos do backlog | 6 casos, 2 h 20 min (carga menor porque ele acumula a revisão de código registrada como DT06) |
+| Guilherme Sartori | Ambiente e repositório, sem o CT-005; Login e sessão; Elementos do backlog | 5 casos, 50 min (carga menor porque ele acumula a revisão de código registrada como DT06) |
 | Taynah Cruz | Ocorrências; Usuários e perfis; Rios; Busca do cabeçalho | 19 casos, 2 h 45 min |
 
 Há duas dependências de ordem. O grupo de usuários e perfis é executado antes do grupo de ocorrências, porque o CT-120 consome os usuários criados no CT-118 e no CT-119, e também antes do CT-050, do grupo de alertas, que precisa de um segundo usuário. O CT-005, ensaio em máquina limpa, é executado na primeira semana de execução, porque um defeito no manual de instalação gera correção no repositório e reteste.
