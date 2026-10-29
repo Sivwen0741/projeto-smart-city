@@ -879,7 +879,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 |---|---|
 | História | US28 · núcleo |
 | Prioridade · técnica | média · Particionamento (classe válida) |
-| Pré-condições | Ambiente completo no ar; administrador do `.env` autenticado na tela. |
+| Pré-condições | Ambiente completo no ar; administrador do `.env` autenticado na tela; um segundo usuário ativo, para sair e entrar com outro login. |
 | Entradas e passos | Com grave sem reconhecimento, recarregar; sair; entrar com outro usuário. |
 | Resultado esperado | A faixa continua, porque o estado está no servidor. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-3 a faixa vem do servidor: outro usuário, com outro login, vê o mesmo alerta grave |
@@ -1791,7 +1791,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 |---|---|
 | História | US21 · estendido |
 | Prioridade · técnica | alta · Particionamento de equivalência |
-| Pré-condições | Ambiente completo no ar; administrador do `.env` autenticado na tela. |
+| Pré-condições | Ambiente completo no ar; administrador do `.env` autenticado na tela; os usuários de perfil criados no CT-118 e no CT-119, incluindo o de órgão diferente. |
 | Entradas e passos | Operador da Defesa Civil abre uma ocorrência da Mobilidade e uma da Defesa Civil; registra providência nas duas. |
 | Resultado esperado | Vê as duas; na da Mobilidade, 403 e a tela mostra quem pode atualizar; na da Defesa Civil, aceita. Sem órgão, qualquer operador atualiza; o administrador atualiza qualquer uma. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-3 operador da Defesa Civil vê a ocorrência da Mobilidade e não a atualiza; atualiza a da Defesa Civil<br>`us21.e2e-spec.ts` › US21-3 ocorrência sem órgão pode ser atualizada por qualquer operador, e o administrador atualiza a de qualquer órgão |
