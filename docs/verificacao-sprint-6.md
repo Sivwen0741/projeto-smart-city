@@ -21,7 +21,7 @@ em [`2026-10-25-dados-do-simulador.md`](decisoes/2026-10-25-dados-do-simulador.m
 
 ## US06 - Atualizar a situação de uma ocorrência até a resolução
 
-Branch `sprint-6-us06`, PR aberto para revisão. Suíte completa: 139 testes passando num banco de
+Mesclada na `main` em 27/10/2026 (PR #16), sem revisão de outro integrante (DT06). Suíte completa: 139 testes passando num banco de
 teste recriado. Decisões de tela em
 [`2026-10-25-prancheta-sprint-6.md`](decisoes/2026-10-25-prancheta-sprint-6.md).
 
@@ -39,7 +39,7 @@ abre a ocorrência vinculada ou, sem vínculo, o registro da US05 com o alerta.
 
 ## US07 - Aviso quando um dispositivo parar de enviar dados
 
-Branch `sprint-6-us07`, sobre a da US06, PR aberto para revisão. Suíte completa: 149 testes passando
+Mesclada na `main` em 27/10/2026 (PR #17), sem revisão de outro integrante (DT06). Suíte completa: 149 testes passando
 num banco de teste recriado. Decisão em
 [`2026-10-25-alerta-sem-comunicacao.md`](decisoes/2026-10-25-alerta-sem-comunicacao.md).
 
@@ -52,7 +52,7 @@ num banco de teste recriado. Decisão em
 
 ## US09 - Nível e vazão dos rios em tempo real
 
-Branch `sprint-6-us09`, sobre a da US07, PR aberto para revisão. Suíte completa: 157 testes passando
+Mesclada na `main` em 27/10/2026 (PR #18), sem revisão de outro integrante (DT06). Suíte completa: 157 testes passando
 num banco de teste recriado. Decisão em
 [`2026-10-25-coleta-open-meteo.md`](decisoes/2026-10-25-coleta-open-meteo.md). Os testes usam
 respostas simuladas da Flood API.
@@ -66,7 +66,7 @@ respostas simuladas da Flood API.
 
 ## US10 - Alerta automático de risco de enchente
 
-Branch `sprint-6-us10`, sobre a da US09, PR aberto para revisão. Suíte completa: 167 testes passando
+Mesclada na `main` em 27/10/2026 (PR #19), sem revisão de outro integrante (DT06). Suíte completa: 167 testes passando
 num banco de teste recriado. Decisão em
 [`2026-10-25-risco-de-enchente.md`](decisoes/2026-10-25-risco-de-enchente.md).
 
@@ -78,7 +78,7 @@ num banco de teste recriado. Decisão em
 
 ## US12 - Painel com os indicadores-chave da cidade
 
-Branch `sprint-6-us12`, sobre a da US10, PR aberto para revisão. Suíte completa: 177 testes passando
+Mesclada na `main` em 27/10/2026 (PR #20), sem revisão de outro integrante (DT06). Suíte completa: 177 testes passando
 num banco de teste recriado. Decisão em
 [`2026-10-25-indicadores-do-painel.md`](decisoes/2026-10-25-indicadores-do-painel.md).
 
@@ -92,7 +92,7 @@ num banco de teste recriado. Decisão em
 
 ## US26 - Localizar uma ocorrência pelo protocolo, endereço ou dispositivo
 
-Branch `sprint-6-us26`, PR aberto para revisão. Suíte completa: 186 testes passando num banco de
+Mesclada na `main` em 27/10/2026 (PR #21), sem revisão de outro integrante (DT06). Suíte completa: 186 testes passando num banco de
 teste recriado. Decisão em
 [`2026-10-27-busca-do-cabecalho.md`](decisoes/2026-10-27-busca-do-cabecalho.md).
 
@@ -104,7 +104,7 @@ teste recriado. Decisão em
 
 ## US21 - Gerenciar usuários e perfis de acesso por órgão
 
-Branch `sprint-6-us21`, sobre a da US26, PR aberto para revisão. Suíte completa: 201 testes
+Mesclada na `main` em 27/10/2026 (PR #22), sem revisão de outro integrante (DT06). Suíte completa: 201 testes
 passando num banco de teste recriado, sem mudança nos testes anteriores. Decisão em
 [`2026-10-27-usuarios-e-perfis.md`](decisoes/2026-10-27-usuarios-e-perfis.md).
 
@@ -117,7 +117,7 @@ passando num banco de teste recriado, sem mudança nos testes anteriores. Decis�
 
 ## US18 - Alerta quando a poluição ultrapassar o limite configurado
 
-Branch `sprint-6-us18`, sobre a da US21, PR aberto para revisão. Suíte completa: 208 testes
+Mesclada na `main` em 27/10/2026 (PR #23), sem revisão de outro integrante (DT06). Suíte completa: 208 testes
 passando num banco de teste recriado. Decisão em
 [`2026-10-27-poluicao-por-bairro.md`](decisoes/2026-10-27-poluicao-por-bairro.md), que inclui a
 coleta do critério US17-1.
@@ -130,7 +130,7 @@ coleta do critério US17-1.
 
 ## US19 - Gráfico histórico de uma variável monitorada
 
-Branch `sprint-6-us19`, sobre a da US18, PR aberto para revisão. Suíte completa: 215 testes
+Mesclada na `main` em 27/10/2026 (PR #24), sem revisão de outro integrante (DT06). Suíte completa: 215 testes
 passando num banco de teste recriado. Decisão em
 [`2026-10-27-grafico-historico.md`](decisoes/2026-10-27-grafico-historico.md).
 
@@ -140,3 +140,22 @@ passando num banco de teste recriado. Decisão em
 | **US19-2** | traz as regras ativas da grandeza, sem as desativadas | Na mesma consulta veio a regra "Material particulado elevado" (> 55 µg/m³). | Verificado pela API |
 | **US19-3** | nove médias de 20 min na grandeza da última leitura, nulas onde não houve leitura | Na lista do ambiente de desenvolvimento, EA-02, EA-03 e IL-118 trouxeram as séries; dispositivos sem leitura vieram nulos. A barrinha na tela não foi conferida no navegador (DT05). | Verificado pela API |
 | **US19-4** | mil leituras em 30 dias chegam como no máximo um ponto por hora | | Verificado |
+
+## Merge da Sprint 6 e ensaio da `main`
+
+Em 27/10/2026, por decisão do autor, os PRs #16 a #24 foram mesclados na `main` na ordem da pilha,
+sem revisão de outro integrante, como já previsto no DT06. Depois do merge, a `main` (`2bf4549`)
+ficou idêntica à ponta da pilha. Num clone limpo da `main`, subido com `docker compose -p
+ensaio-main up --build` em portas próprias e com `.env` novo: os cinco serviços saudáveis, as 13
+migrações aplicadas, a carga inicial completa (5 distritos, 16 bairros, administrador, 14
+dispositivos, 7 regras), o simulador publicando para 11 dispositivos, a coleta do Open-Meteo de
+vazão e de qualidade do ar concluída sem erro, as rotas principais respondendo 200 com o token do
+administrador e os 215 testes da suíte e2e passando. O ensaio rodou na máquina do autor, com as
+imagens do Docker em cache; não substitui a execução em máquina limpa por outro integrante (TT01-5,
+DT06).
+
+## Pendências da Sprint 6
+
+| Origem | Pendência | Encaminhamento |
+|---|---|---|
+| TT01-5, CT-005 | O ensaio em máquina limpa é executado pelo próprio autor do README, por indisponibilidade dos demais integrantes; não verifica a suficiência do manual para um leitor novo. Registro em [`2026-10-28-dt08-ensaio-sem-independencia.md`](decisoes/2026-10-28-dt08-ensaio-sem-independencia.md). | DT08, próxima entrega |
