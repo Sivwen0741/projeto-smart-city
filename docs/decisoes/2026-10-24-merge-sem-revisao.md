@@ -53,3 +53,6 @@ outra pessoa. A falta de revisão, o TT01-5 e a AM04 ficam registrados como pend
   sprint precisa tratar isso como pendência, não como item concluído.
 - Os apontamentos da revisão, quando vierem, entram como correções sobre a `main`, e não mais
   antes do merge.
+- **Atualização de 27/10/2026:** pela mesma decisão, os PRs #16 a #24 da Sprint 6 (US06, US07, US09,
+  US10, US12, US26, US21, US18 e US19) foram mesclados na `main` sem revisão, para fechar o escopo de
+  teste da Sprint 6 antes do corte de 31/10/2026. Eles entram no mesmo débito.
