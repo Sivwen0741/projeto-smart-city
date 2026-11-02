@@ -73,7 +73,7 @@ PR #26 na mesma noite. Nenhum item saiu do escopo na conferência.
 
 ### 1.2 Riscos
 
-Riscos da seção 3.5 do replanejamento da Sprint 4, com a situação em 27/10/2026, e os que
+Riscos da seção 3.5 do replanejamento da Sprint 4, com a situação em 02/11/2026, e os que
 apareceram depois.
 
 | Risco | Tipo | Grau | Efeito no teste | Tratamento |
