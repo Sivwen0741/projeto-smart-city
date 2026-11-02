@@ -16,14 +16,15 @@ Ele alimenta as seções 1 e 6 do modelo de documentação de teste. A especific
 
 ### 1.1 Contexto e escopo
 
-**Versão testada.** A `main` no fim do dia 31/10/2026, identificada pelo commit e pela tag
-`v1.0-sprint-6`, criada no corte. Nenhuma funcionalidade entra depois do corte. Depois dele, a
-`main` só recebe correção de incidente registrado e teste automatizado.
+**Versão testada.** A `main` no corte de 31/10/2026, commit `01ecf29`, identificada pela tag
+`v1.0-sprint-6`. A `main` não recebeu commit entre 28 e 31/10; a tag foi criada sobre esse commit em
+02/11. Nenhuma funcionalidade entra depois do corte. Depois dele, a `main` só recebe correção de
+incidente registrado, teste automatizado e documentação.
 
-**Situação do escopo em 27/10/2026, a fechar no corte.** O núcleo obrigatório e todos os itens do
-escopo estendido abaixo estão na `main`: os PRs #16 a #24 da Sprint 6 foram mesclados em 27/10,
-sem revisão de outro integrante, como registrado no DT06. Em 01/11 esta seção é conferida com o
-`git log` da tag do corte; item que sair até lá passa para "fora do escopo", com os seus casos.
+**Escopo conferido com a tag em 02/11/2026.** O núcleo obrigatório e todos os itens do escopo
+estendido abaixo estão na tag: os PRs #16 a #24 da Sprint 6 foram mesclados em 27/10, sem revisão de
+outro integrante, como registrado no DT06, e a suíte de unidade com a coleção do Postman entrou pelo
+PR #26 na mesma noite. Nenhum item saiu do escopo na conferência.
 
 **Núcleo obrigatório** (Sprints 1 a 5, prioridade alta no backlog revisado da Sprint 4):
 
@@ -41,7 +42,7 @@ sem revisão de outro integrante, como registrado no DT06. Em 01/11 esta seção
 | US04 Reconhecimento de alerta | `alertas` | 4 |
 | US05 Ocorrência manual | `ocorrencias` | 6 |
 
-**Escopo estendido** (Sprint 6, entra o que estiver na `main` no corte de 31/10/2026):
+**Escopo estendido** (Sprint 6, o que estava na `main` no corte de 31/10/2026):
 
 | Item | Módulo | Critérios | Na `main` |
 |---|---|---|---|
@@ -61,8 +62,6 @@ sem revisão de outro integrante, como registrado no DT06. Em 01/11 esta seção
 - **US17 (qualidade do ar por região) e US27 (camadas do mapa):** não ficaram prontas até o corte.
   Vão para o backlog da Sprint 7 como não entregues. A coleta de qualidade do ar por bairro (critério
   US17-1) entrou com a US18 e é testada nela; a camada do mapa (US17-2 e US17-3) não existe.
-- **Item da Sprint 6 que não entrar na `main` até o corte:** vai para o backlog da Sprint 7, como
-  não entregue.
 - **Histórias de prioridade baixa do backlog de evolução** (US08, US11, US13, US14, US15, US16,
   US24 e US25): o Documento de Visão e o replanejamento da Sprint 4 as deixam sem compromisso para o
   semestre. Os elementos de tela delas aparecem desabilitados com a marca "backlog", e o caso de
@@ -86,7 +85,7 @@ apareceram depois.
 | DT06: sem revisão cruzada | projeto | Alto | Nenhum item teve leitura de código por outro integrante, e os PRs da Sprint 6 foram mesclados sem revisão em 27/10; o teste é a única barreira. | Execução dos casos manuais por outros integrantes (distribuição em `distribuicao-manual.md`); o DT06 segue registrado. |
 | DT07: suítes acopladas pela ordem de execução | produto | Médio | Com o banco de teste reaproveitado, duas suítes falham por dados de rodadas anteriores (US12-ruído e US10-3), o que pode ser lido como regressão. | Toda rodada oficial recria o banco de teste antes de rodar; falha intermitente é comparada primeiro com o DT07, antes de virar incidente. |
 | DT08: ensaio em máquina limpa sem independência | projeto | Alto | Lacunas no manual de instalação podem não ser detectadas, porque o CT-005 é executado pelo próprio autor do README. O leitor novo do manual é o avaliador do trabalho: uma lacuna não detectada impede a execução do projeto por quem avalia. | O CT-005 continua verificando a subida pelo Compose numa máquina sem Node e sem PostgreSQL; a execução por um leitor novo fica para a próxima entrega (DT08). |
-| Escopo ainda em revisão no corte | projeto | Médio | Item sem merge até 31/10 sai do escopo e os casos dele deixam de valer. | Corte rígido em 31/10; esta seção e os casos são conferidos com a `main` em 01/11. |
+| Escopo ainda em revisão no corte | projeto | Encerrado | — | Superado: no corte de 31/10 todos os itens do escopo estendido estavam na `main`, conferidos com a tag em 02/11. |
 | Verificação de tela em navegador fora da máquina do ambiente | projeto | Baixo | Em 27/10, o navegador disponível para a verificação assistida não alcançava o `localhost` da máquina do ambiente. | Execução manual no Chrome da própria máquina que sobe o ambiente. |
 
 ### 1.3 Estratégia
@@ -248,8 +247,8 @@ o registro dos incidentes fica com o responsável por qualidade.
 |---|---|---|
 | 27/10 (terça) | Aula da Sprint 6; início do plano | Este plano e a especificação dos casos, em rascunho |
 | 27/10 | Merge da Sprint 6 na `main`; suíte de unidade com cobertura; coleção do Postman com as rotas da Sprint 6 | `main` com o escopo estendido |
-| 28 a 31/10 | Correções que aparecerem antes do corte; corte em 31/10 | Tag `v1.0-sprint-6` na `main` |
-| 01 e 02/11 | Escopo congelado e conferido com a tag; divisão dos casos manuais entre os integrantes | Plano e casos finais |
+| 28 a 31/10 | Correções que aparecerem antes do corte (nenhuma); corte em 31/10 | `main` em `01ecf29` |
+| 01 e 02/11 | Tag `v1.0-sprint-6` sobre o commit do corte; escopo conferido com a tag; divisão dos casos manuais entre os integrantes | Plano e casos finais |
 | 03/11 (terça) | Checkpoint 1 | Plano de teste e casos especificados |
 | 04 a 07/11 | Execução: suíte automatizada em banco recriado, suíte de unidade com cobertura, Newman, casos manuais pela tela | Log de execução e evidências |
 | 06 a 09/11 | Registro de incidentes, correção, reteste e regressão | Relatórios de incidente |

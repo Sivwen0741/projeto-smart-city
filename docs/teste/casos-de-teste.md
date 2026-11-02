@@ -18,7 +18,7 @@ Versão testada: a tag do corte (`v1.0-sprint-6`). Casos com execução manual: 
 | Automatizado e manual (API automatizada, tela manual) | 29 | 28 | 57 |
 | Só manual | 6 | 1 | 7 |
 
-Os casos do escopo estendido só valem para os itens que estiverem na `main` no corte de 31/10/2026; os demais passam a "fora do escopo" na revisão de 01/11 (seção 1.1 do plano).
+Todos os itens do escopo estendido estavam na `main` no corte de 31/10/2026; a conferência com a tag, em 02/11, não tirou nenhum caso do escopo (seção 1.1 do plano).
 
 ## Tabela da seção 2 do modelo
 
