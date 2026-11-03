@@ -20,13 +20,14 @@ interface Props {
   xMaximo: number;
   rotulosX: { x: number; texto: string }[];
   altura?: number;
+  // largura em pixels do contêiner; com ela o svg fica em escala 1, sem ampliar fonte e altura (inc-004)
+  largura?: number;
   // contagens começam no zero
   piso?: number;
   casas?: number;
   rotulo: string;
 }
 
-const LARGURA = 400;
 const ESQUERDA = 32;
 const BAIXO = 18;
 const TOPO = 6;
@@ -42,6 +43,7 @@ export function GraficoLinha({
   xMaximo,
   rotulosX,
   altura = 120,
+  largura = 400,
   casas = 1,
   piso,
   rotulo,
@@ -61,17 +63,17 @@ export function GraficoLinha({
   const folga = (maximo - minimo) * 0.1;
   if (piso === undefined) minimo -= folga;
   maximo += folga;
-  const x = (v: number) => ESQUERDA + ((v - xMinimo) / (xMaximo - xMinimo || 1)) * (LARGURA - ESQUERDA - direita);
+  const x = (v: number) => ESQUERDA + ((v - xMinimo) / (xMaximo - xMinimo || 1)) * (largura - ESQUERDA - direita);
   const y = (v: number) => TOPO + (1 - (v - minimo) / (maximo - minimo)) * (altura - TOPO - BAIXO);
   const linha = (pontos: Ponto[]) => pontos.map((p) => `${x(p.x).toFixed(1)},${y(p.y).toFixed(1)}`).join(' ');
   const numero = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const marcas = [piso === undefined ? minimo + folga : minimo, (minimo + maximo) / 2, maximo - folga];
 
   return (
-    <svg className={estilos.grafico} viewBox={`0 0 ${LARGURA} ${altura}`} role="img" aria-label={rotulo}>
+    <svg className={estilos.grafico} viewBox={`0 0 ${largura} ${altura}`} role="img" aria-label={rotulo}>
       {marcas.map((m) => (
         <g key={m}>
-          <line className={estilos.grade} x1={ESQUERDA} x2={LARGURA - direita} y1={y(m)} y2={y(m)} />
+          <line className={estilos.grade} x1={ESQUERDA} x2={largura - direita} y1={y(m)} y2={y(m)} />
           <text className={estilos.eixo} x={ESQUERDA - 6} y={y(m) + 3} textAnchor="end">
             {numero.format(m)}
           </text>
@@ -87,8 +89,8 @@ export function GraficoLinha({
       )}
       {limites.map((l) => (
         <g key={`${l.valor}-${l.rotulo}`}>
-          <line className={estilos.limite} x1={ESQUERDA} x2={LARGURA - direita} y1={y(l.valor)} y2={y(l.valor)} />
-          <text className={estilos.rotuloLimite} x={LARGURA - direita + 6} y={y(l.valor) + 3}>
+          <line className={estilos.limite} x1={ESQUERDA} x2={largura - direita} y1={y(l.valor)} y2={y(l.valor)} />
+          <text className={estilos.rotuloLimite} x={largura - direita + 6} y={y(l.valor) + 3}>
             {l.rotulo}
           </text>
         </g>
