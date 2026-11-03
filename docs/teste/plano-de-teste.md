@@ -19,7 +19,11 @@ Ele alimenta as seções 1 e 6 do modelo de documentação de teste. A especific
 **Versão testada.** A `main` no corte de 31/10/2026, commit `01ecf29`, identificada pela tag
 `v1.0-sprint-6`. A `main` não recebeu commit entre 28 e 31/10; a tag foi criada sobre esse commit em
 02/11. Nenhuma funcionalidade entra depois do corte. Depois dele, a `main` só recebe correção de
-incidente registrado, teste automatizado e documentação.
+incidente registrado, teste automatizado e documentação. Cada correção de incidente entra na `main`
+depois do corte numa branch própria, com o número do incidente na mensagem do commit. As correções
+são reunidas na tag `v1.0.1-sprint-6`, criada sobre a `main` depois dos retestes. A versão sob teste
+continua sendo a `v1.0-sprint-6`. O reteste de cada incidente roda na versão corrigida,
+identificada pelo commit.
 
 **Escopo conferido com a tag em 02/11/2026.** O núcleo obrigatório e todos os itens do escopo
 estendido abaixo estão na tag: os PRs #16 a #24 da Sprint 6 foram mesclados em 27/10, sem revisão de

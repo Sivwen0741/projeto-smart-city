@@ -1,0 +1,23 @@
+Reteste do INC-002 pelo CT-005 · 02/11/2026 21:30:25 a 21:33:08 (BRT)
+Versão corrigida: commit 1a64496 (branch sprint-6-inc-002, PR #28), clone novo da branch numa pasta separada.
+A branch parte da main com a correção do INC-001.
+
+Passos, seguindo só o README da versão corrigida:
+1. Leitura da seção "Situação": descreve a Sprint 6 como sprint em andamento, a tag v1.0-sprint-6
+   (commit 01ecf29, corte de 31/10/2026), os itens entregues, a US17 e a US27 no backlog da Sprint 7
+   e a documentação de teste em docs/teste/. Não cita mais a Sprint 4 como sprint em andamento.
+   Os oito links da seção apontam para arquivos que existem no clone.
+2. cp .env.example .env; segredos com openssl rand -hex 32; bloco da segunda cópia do README
+   (COMPOSE_PROJECT_NAME=scoc-teste e portas 8180, 3100, 1983, 5532), porque o ambiente da versão
+   sob teste ocupa as portas padrão.
+3. docker compose up --build -d (até 21:30:51): db, mosquitto e api saudáveis; simulador e web em
+   execução; 13 migrações; http://localhost:8180 respondeu 200; health em 3100 respondeu 200;
+   login do administrador do .env devolveu o token.
+4. Regressão com o banco de teste recriado: unidade 53/53 (unidade.txt). Integração e sistema:
+   1ª execução 215/216, com falha no US02-3 (integracao-1.txt); 2ª execução, de novo com o banco
+   recriado e a mesma ordem de suítes, 216/216 (integracao-2.txt).
+5. docker compose --profile teste down -v: removeu só os volumes de scoc-teste; volumes das outras
+   cópias iguais aos de antes do reteste.
+
+Resultado do CT-005 na versão corrigida: passou. A falha intermitente do US02-3 não envolve o README,
+único arquivo alterado pela correção, e está registrada para decisão (DT07 ou novo incidente).
