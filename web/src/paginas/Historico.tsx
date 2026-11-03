@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { medida } from '../alertas/modelo';
 import { Aviso } from '../componentes/Aviso';
@@ -17,6 +17,7 @@ const PERIODOS: { valor: PeriodoHistorico; rotulo: string }[] = [
 ];
 
 const HORA_MS = 3_600_000;
+const ALTURA_GRAFICO = 320;
 
 const hora = (t: number) => new Date(t).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 const dia = (t: number) => new Date(t).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
@@ -34,6 +35,14 @@ export function Historico() {
   const [grandeza, setGrandeza] = useState<string | undefined>(undefined);
   const [dados, setDados] = useState<DadosHistorico | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [largura, setLargura] = useState<number>();
+  const observador = useRef<ResizeObserver | null>(null);
+  const medir = useCallback((area: HTMLDivElement | null) => {
+    observador.current?.disconnect();
+    if (!area) return;
+    observador.current = new ResizeObserver(([e]) => setLargura(Math.round(e.contentRect.width)));
+    observador.current.observe(area);
+  }, []);
 
   const carregar = useCallback(async () => {
     try {
@@ -98,17 +107,22 @@ export function Historico() {
                   {dados.pontos.length === 1 ? 'ponto' : 'pontos'} de {dados.pontos.reduce((s, p) => s + p.leituras, 0)} leituras
                 </span>
               </div>
-              <GraficoLinha
-                rotulo={`${dados.rotulo} de ${dados.identificador}`}
-                serie={dados.pontos.map((p) => ({ x: new Date(p.inicio).getTime() + (dados.blocoMinutos * 60_000) / 2, y: p.media }))}
-                faixa={agregado ? dados.pontos.map((p) => ({ x: new Date(p.inicio).getTime() + (dados.blocoMinutos * 60_000) / 2, minimo: p.minimo, maximo: p.maximo })) : []}
-                limites={dados.limites.map((l) => ({ valor: l.valor, rotulo: medida(l.valor, dados.unidade) }))}
-                xMinimo={new Date(dados.inicio).getTime()}
-                xMaximo={new Date(dados.fim).getTime()}
-                rotulosX={rotulosX(dados)}
-                altura={220}
-                casas={casas}
-              />
+              <div ref={medir}>
+                {largura && (
+                  <GraficoLinha
+                    rotulo={`${dados.rotulo} de ${dados.identificador}`}
+                    serie={dados.pontos.map((p) => ({ x: new Date(p.inicio).getTime() + (dados.blocoMinutos * 60_000) / 2, y: p.media }))}
+                    faixa={agregado ? dados.pontos.map((p) => ({ x: new Date(p.inicio).getTime() + (dados.blocoMinutos * 60_000) / 2, minimo: p.minimo, maximo: p.maximo })) : []}
+                    limites={dados.limites.map((l) => ({ valor: l.valor, rotulo: medida(l.valor, dados.unidade) }))}
+                    xMinimo={new Date(dados.inicio).getTime()}
+                    xMaximo={new Date(dados.fim).getTime()}
+                    rotulosX={rotulosX(dados)}
+                    altura={ALTURA_GRAFICO}
+                    largura={largura}
+                    casas={casas}
+                  />
+                )}
+              </div>
             </>
           )}
           <footer className={estilos.rodape}>
