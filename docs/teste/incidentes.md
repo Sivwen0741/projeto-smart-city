@@ -12,6 +12,8 @@ texto, aparência ou incômodo sem efeito no resultado.
 | INC-001 | O README não informa como subir uma segunda cópia isolada na mesma máquina, e a saída que ele dá (`docker compose down -v`) apaga o banco da outra cópia | CT-005 | baixa | média | fechado |
 | INC-002 | A seção "Situação" do README está desatualizada: diz que a Sprint 4 é a sprint em andamento | CT-005 | baixa | baixa | fechado |
 | INC-003 | O teste US02-3 conta todos os dispositivos sem comunicação do banco, e não só os que ele cria, o que o torna não determinístico mesmo com o banco recriado | CT-042 | baixa | alta | fechado |
+| INC-004 | Gráfico histórico fora de escala: rótulos dos eixos com cerca de 40 px e gráfico com mais de 1200 px de altura; não cabe sem rolagem na resolução de teste | CT-129 | baixa | média | aberto |
+| INC-005 | Campo "Instalado em" do formulário de dispositivo mostra a data em formato americano (03/14/2024) | CT-013 | baixa | baixa | aberto |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
 
@@ -61,3 +63,31 @@ texto, aparência ou incômodo sem efeito no resultado.
 | Correção | Commit `6439f63` (branch `sprint-6-inc-003`, PR #29, mesclado na `main` em `757b68e`). O resumo só devolve contagens por tipo, então o teste cria um tipo de dispositivo próprio, com nome único, e três dispositivos desse tipo: um que nunca se comunicou, um com a última comunicação há 2 h e um com comunicação agora. Ele confere a situação de cada dispositivo pelo identificador em `GET /api/dispositivos`, confere que o resumo conta 2 sem comunicação nesse tipo e que o total é a soma dos tipos, e apaga no fim o tipo e os dispositivos. Só o teste mudou. |
 | Reteste | 02/11/2026, 21:42 a 21:46, na versão `6439f63`, por Bryan Charles. Clone novo da branch; três execuções seguidas da suíte de integração, com o banco recriado antes de cada uma: 216/216, 216/216 e 216/216. **Passou.** Evidência: `evidencias/2026-11-02-reteste-INC-003/`. |
 | Status e responsável | Fechado em 02/11/2026, depois do reteste. Bryan Charles. |
+
+## INC-004 — Gráfico histórico fora de escala
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 02/11/2026, Bryan Charles, por inspeção das telas |
+| Item testado e versão | US19 (gráfico histórico), `v1.0-sprint-6`, no clone da tag |
+| Caso de teste relacionado | CT-129 (a correção também é retestada pelo CT-130) |
+| Passos para reproduzir | 1. Abrir <http://localhost:8080> numa janela de 1456 × 817 e entrar com o administrador. 2. Dispositivos › SN-014 › Ver histórico. 3. Período 24 h. |
+| O que aconteceu | Os rótulos dos eixos aparecem com cerca de 40 px, e o gráfico passa de 1200 px de altura. Foi preciso rolar duas vezes para ver o eixo do tempo. |
+| O que era esperado | O gráfico inteiro, com o eixo do tempo e a legenda dos limites, cabendo sem rolagem na resolução de teste do plano (1440 × 900, seção 1.4). |
+| Ambiente | Clone da tag `v1.0-sprint-6` em http://localhost:8080; Google Chrome numa janela de 1456 × 817. |
+| Severidade e prioridade | Baixa: não há perda de função. Média: o gráfico não cabe na tela na resolução em que o sistema é testado. |
+| Status e responsável | Aberto. |
+
+## INC-005 — Data de instalação em formato americano
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 02/11/2026, Bryan Charles, por inspeção das telas |
+| Item testado e versão | US22 (cadastro de dispositivo), `v1.0-sprint-6`, no clone da tag |
+| Caso de teste relacionado | CT-013 |
+| Passos para reproduzir | 1. Abrir <http://localhost:8080> num Chrome com o idioma em inglês e entrar com o administrador. 2. Dispositivos › abrir um dispositivo com data de instalação, ou Cadastrar dispositivo. 3. Ver o campo "Instalado em". |
+| O que aconteceu | O campo mostra 03/14/2024, no formato mês/dia/ano. É um `input type="date"` nativo, e o navegador da máquina está em inglês. |
+| O que era esperado | Data em dd/mm/aaaa, como no resto do sistema, inclusive no cabeçalho e nas colunas das listas. |
+| Ambiente | Clone da tag `v1.0-sprint-6` em http://localhost:8080; Google Chrome com o idioma em inglês. |
+| Severidade e prioridade | Baixa. Baixa. |
+| Status e responsável | Aberto. |
