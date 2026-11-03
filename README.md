@@ -141,10 +141,27 @@ As portas publicadas ficam restritas ao `localhost`. Se alguma já estiver em us
 Para parar, use `docker compose down`. Para apagar também o banco e recomeçar do zero, use
 `docker compose down -v`.
 
-O nome do projeto é fixo (`scoc`), então qualquer cópia do repositório na mesma máquina usa o
-mesmo banco. O PostgreSQL só aplica a senha do `.env` quando o banco é criado. Se você já subiu o
-projeto antes, ou trocou `DB_PASSWORD` depois da primeira subida, a interface de programação para
-com `password authentication failed`. Nesse caso, rode `docker compose down -v` e suba de novo.
+O nome do projeto do Compose é `scoc`, e o banco fica no volume desse projeto. Por isso, duas
+cópias do repositório na mesma máquina dividem o banco, a menos que uma delas tenha outro nome de
+projeto. Para subir uma segunda cópia isolada, com banco, broker e volumes próprios, defina no
+`.env` dela o `COMPOSE_PROJECT_NAME` e quatro portas que não estejam em uso:
+
+```sh
+COMPOSE_PROJECT_NAME=scoc-teste
+WEB_PORTA_LOCAL=8180
+API_PORTA_LOCAL=3100
+MQTT_PORTA_LOCAL=1983
+DB_PORTA_LOCAL=5532
+```
+
+Os comandos continuam os mesmos (`docker compose up --build`, `docker compose down`) e passam a
+valer só para essa cópia, que fica em <http://localhost:8180>.
+
+O PostgreSQL só aplica a senha do `.env` quando o banco é criado. Se você já subiu o projeto antes
+com o mesmo nome de projeto, ou trocou `DB_PASSWORD` depois da primeira subida, a interface de
+programação para com `password authentication failed`. Nesse caso, rode `docker compose down -v`
+e suba de novo. O `-v` apaga o banco do projeto com o nome definido no `.env`: confira o nome
+antes, para não apagar o banco de outra cópia.
 
 ### Usar a interface de programação (Swagger ou Postman)
 

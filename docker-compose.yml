@@ -1,4 +1,4 @@
-name: scoc
+name: ${COMPOSE_PROJECT_NAME:-scoc}
 
 x-banco: &banco
   image: postgis/postgis:16-3.4-alpine
