@@ -18,6 +18,10 @@ plano.
 | 1 | 02/11/2026 21:15:47 a 21:15:55 | Coleção do Postman pelo Newman 6.2.1, contra o ambiente no ar | 74 requisições, 133 verificações | 133 | 0 | `2026-11-02-rodada-1/newman.txt` |
 
 | Reteste INC-001 | 02/11/2026 21:25:36 a 21:28:32 | CT-005 na versão corrigida `0c48fd4`, segunda instância isolada pelo `.env`, com regressão: unidade e integração, banco de teste recriado | 1 caso; 53 + 216 testes | 1; 53 + 216 | 0 | `2026-11-02-reteste-INC-001/` |
+| Reteste INC-002 | 02/11/2026 21:30:25 a 21:34:54 | CT-005 na versão corrigida `1a64496`, com regressão: unidade e duas execuções da integração, banco de teste recriado em cada uma | 1 caso; 53 testes; 216 + 216 testes | 1; 53; 215 + 216 | 1 na 1ª execução da integração (US02-3, INC-003) | `2026-11-02-reteste-INC-002/` |
+| Reteste INC-003, execução 1 | 02/11/2026 21:42:10 a 21:43:46 | Integração e sistema na versão corrigida `6439f63`, banco de teste recriado | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-1.txt` |
+| Reteste INC-003, execução 2 | 02/11/2026 21:43:46 a 21:45:20 | Idem, banco de teste recriado de novo | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-2.txt` |
+| Reteste INC-003, execução 3 | 02/11/2026 21:45:20 a 21:46:48 | Idem, banco de teste recriado de novo | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-3.txt` |
 
 Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
 98,79% das linhas.
@@ -34,9 +38,9 @@ reconhecido.
 
 ## Casos
 
-Linhas dos casos executados na rodada 1. Situação segue o plano: passou, falhou ou bloqueado.
-Caso com parte ainda não executada fica "pendente", valor que o plano não prevê: nos casos
-"automatizado e manual", a parte da tela fica pendente até a execução manual. Os casos só manuais ainda não executados (CT-004, CT-038, CT-039,
+Linhas dos casos executados na rodada 1 e nos retestes. Situação segue o vocabulário do plano:
+passou, falhou, bloqueado ou pendente (tela). O último valor foi acrescentado durante a execução e
+marca o caso cuja parte automatizada passou e cuja verificação de tela ainda não foi executada. Os casos só manuais ainda não executados (CT-004, CT-038, CT-039,
 CT-043, CT-082 e CT-107) entram quando forem executados.
 
 | Caso | Data | Versão (tag ou commit) | Quem executou | Resultado obtido | Situação | Evidência | Incidente |
@@ -44,8 +48,9 @@ CT-043, CT-082 e CT-107) entram quando forem executados.
 | CT-001 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-002 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
 | CT-003 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
-| CT-005 | 02/11 | `v1.0-sprint-6` | Bryan Charles, autor do README (DT08) | Ambiente subiu e login do administrador funcionou seguindo o README, com `-p` de fora dele (INC-001); painel na tela não conferido. Pré-condição atendida parcialmente: máquina com Node 24.1.0 (Homebrew) e sem PostgreSQL; nenhum passo do README usou o Node (registro abaixo). | pendente (tela) | Registro do CT-005, abaixo | INC-001, INC-002 |
+| CT-005 | 02/11 | `v1.0-sprint-6` | Bryan Charles, autor do README (DT08) | Ambiente subiu seguindo o README, com `-p` de fora dele (INC-001); login do administrador funcionou pelo comando do README; a interface web respondeu 200 e a API listou os 14 dispositivos de exemplo. Pré-condição atendida parcialmente: máquina com Node 24.1.0 (Homebrew) e sem PostgreSQL; nenhum passo do README usou o Node (registro abaixo). | passou | Registro do CT-005, abaixo | INC-001, INC-002 |
 | CT-005 (reteste do INC-001) | 02/11 | `0c48fd4` | Bryan Charles, autor do README (DT08) | Segunda instância subiu isolada sem `-p`, com `COMPOSE_PROJECT_NAME` e portas no `.env`, como o README corrigido manda; outras cópias intactas; `down -v` removeu só os volumes dela; regressão 53/53 e 216/216. | passou | `2026-11-02-reteste-INC-001/reteste.txt` | INC-001 |
+| CT-005 (reteste do INC-002) | 02/11 | `1a64496` | Bryan Charles, autor do README (DT08) | A seção "Situação" descreve a Sprint 6 e a tag `v1.0-sprint-6`, sem citar a Sprint 4 como sprint em andamento, e os oito links existem; o ambiente subiu isolado pelo `.env`, e o login funcionou. Regressão: unidade 53/53; integração 215/216 na 1ª execução (US02-3) e 216/216 na 2ª. | passou | `2026-11-02-reteste-INC-002/reteste.txt` | INC-002, INC-003 |
 | CT-006 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-007 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts` |  |
 | CT-008 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts` |  |
@@ -81,6 +86,7 @@ CT-043, CT-082 e CT-107) entram quando forem executados.
 | CT-040 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-041 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts` |  |
 | CT-042 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts` |  |
+| CT-042 (reteste do INC-003) | 02/11 | `6439f63` | Bryan Charles | Parte automatizada: o US02-3 corrigido conta só os dispositivos do próprio teste e passou nas três execuções seguidas, com o banco recriado em cada uma (216/216 nas três). Parte da tela: não executada. | pendente (tela) | `2026-11-02-reteste-INC-003/` | INC-003 |
 | CT-044 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts` |  |
 | CT-045 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts`, `us04.e2e-spec.ts` |  |
 | CT-046 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts` |  |
@@ -205,7 +211,7 @@ ambiente de desenvolvimento foi parado antes, com `docker compose down`, sem `-v
 | Como executar, 1 | `git clone https://github.com/Sivwen0741/projeto-smart-city.git` e `cd projeto-smart-city` | Pela pré-condição do caso, o clone foi da tag: `git clone --branch v1.0-sprint-6`, numa pasta separada. Clone sem alteração, no commit `01ecf29`. | Nenhuma para quem executa a `main`. |
 | Como executar, 2 | `cp .env.example .env`; trocar a senha do banco, o `JWT_SEGREDO` e a senha do administrador; `openssl rand -hex 32` para gerar os valores | Os três valores foram gerados com o `openssl`. O `.env` é ignorado pelo git, e nenhum arquivo versionado mudou. | Nenhuma. |
 | Como executar, 3 | `docker compose up --build`, ou `docker compose up --build -d` | O README avisa que o nome do projeto é fixo (`scoc`) e que qualquer cópia na mesma máquina usa o mesmo banco. Para senha que não bate, a única saída que ele dá é `docker compose down -v`, que apagaria o banco da cópia de desenvolvimento. Para não tocar nesse banco, os comandos rodaram com `-p teste-sprint-6`, opção que o README não traz. Subida em 1 min 16 s (21:10:23 a 21:11:39). `db`, `mosquitto` e `api` ficaram saudáveis; `simulador` e `web` ficaram em execução, porque não têm verificação de saúde no Compose. Todas as linhas de log que o README cita apareceram: 13 migrações, território com 5 distritos e 16 bairros, administrador criado, 14 dispositivos, 7 regras, ingestão assinando o tópico e simulador com 11 dispositivos a cada 30 s. | Como subir uma segunda cópia isolada na mesma máquina, com outro nome de projeto (INC-001). |
-| Como executar, 4 | Abrir <http://localhost:8080> e entrar com o `ADMIN_EMAIL` e a `ADMIN_SENHA` do `.env` | A interface web respondeu 200, com o título "Centro Integrado de Operações Urbanas". Health em `/api/health` respondeu 200 com PostGIS 3.4.3, e o Swagger em `/api/docs` respondeu 200. A tela de login e o painel não foram conferidos no navegador: a tela é da execução manual. | Nenhuma. |
+| Como executar, 4 | Abrir <http://localhost:8080> e entrar com o `ADMIN_EMAIL` e a `ADMIN_SENHA` do `.env` | A interface web respondeu 200, com o título "Centro Integrado de Operações Urbanas". Health em `/api/health` respondeu 200 com PostGIS 3.4.3, e o Swagger em `/api/docs` respondeu 200. A tela de login e o painel não foram vistos no navegador. A interface de programação listou os 14 dispositivos de exemplo. | Nenhuma. |
 | Usar a interface de programação, 1 | `curl -X POST http://localhost:3000/api/auth/login ...` com o administrador do `.env` | Devolveu o token, com validade de 8 h, e o usuário com perfil administrador. | Nenhuma. |
 
 Encontrado na leitura, fora do caminho de execução: a seção "Situação" do README ainda diz que a
@@ -214,4 +220,5 @@ em andamento (INC-002).
 
 Resultado: o ambiente subiu e o login do administrador funcionou seguindo o README. Isso dependeu
 de uma informação que o README não dá, a opção `-p`, necessária só porque a máquina já tinha outra
-cópia do projeto. O painel na tela fica para a execução manual.
+cópia do projeto. Situação: passou. O caso não tem etapa de tela. Do painel, foi conferido que a
+interface web respondeu e que a interface de programação listou os 14 dispositivos de exemplo.

@@ -46,3 +46,8 @@ seguidas no mesmo banco, esses dois testes falham sempre, não de forma aleatór
 
 Falha intermitente em qualquer teste que envolva vazão, ocorrências ou alertas de sem comunicação
 tem esta causa como primeira suspeita.
+
+Registrado em 02/11/2026: o US02-3 (contagem de dispositivos sem comunicação por tipo) falhou uma
+vez também com o banco de teste recriado. Isso está fora do mecanismo descrito aqui, que é o
+acoplamento por dados de rodadas anteriores. Foi tratado como incidente, no INC-003
+(`docs/teste/incidentes.md`), e não como ponto deste débito.

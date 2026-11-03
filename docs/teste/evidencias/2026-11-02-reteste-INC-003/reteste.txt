@@ -1,0 +1,20 @@
+Reteste do INC-003 · 02/11/2026 21:42:10 a 21:46:48 (BRT)
+Versão corrigida: commit 6439f63 (branch sprint-6-inc-003, PR #29), clone novo da branch numa pasta
+separada, com COMPOSE_PROJECT_NAME=scoc-teste no .env, como o README manda para uma segunda cópia.
+
+Critério de fechamento, definido antes do reteste: três execuções seguidas da suíte de integração e
+sistema, com o banco de teste recriado antes de cada uma, todas com 216/216.
+
+Execução 1: 21:42:10 a 21:43:46, 216/216 (integracao-1.txt)
+Execução 2: 21:43:46 a 21:45:20, 216/216 (integracao-2.txt)
+Execução 3: 21:45:20 a 21:46:48, 216/216 (integracao-3.txt)
+
+Cada saída mostra as 13 migrações aplicadas uma vez, a evidência de que o banco foi recriado.
+Nenhuma suíte falhou. O teste corrigido, "US02-3 os dispositivos sem comunicação são contados por
+tipo", passou nas três.
+
+Antes do reteste, só a suíte da US02 rodou num projeto descartável (scoc-inc003): 6/6.
+
+Remoção: docker compose --profile teste down -v, só com os volumes de scoc-teste.
+
+Resultado: passou.

@@ -207,7 +207,13 @@ do caso (`CT-034.png`). Abaixo, a tabela por caso que a aula pede (p. 12 e 14):
 
 | Caso | Data | Versão (tag ou commit) | Quem executou | Resultado obtido | Situação | Evidência | Incidente |
 |---|---|---|---|---|---|---|---|
-| CT-___ | dd/mm | `v1.0-sprint-6` | | | passou, falhou ou bloqueado | arquivo ou nome do teste | INC-___ |
+| CT-___ | dd/mm | `v1.0-sprint-6` | | | passou, falhou, bloqueado ou pendente (tela) | arquivo ou nome do teste | INC-___ |
+
+**Situação.** Passou: o resultado obtido é o esperado. Falhou: o resultado obtido difere do
+esperado, e o caso registra o incidente. Bloqueado: o caso não pôde ser executado por causa
+externa a ele. Pendente (tela): a parte automatizada do caso passou, e a verificação de tela ainda
+não foi executada. Esse último valor foi acrescentado em 02/11/2026, durante a execução (seção 5.3
+do relatório de conclusão).
 
 **4. Relatórios de incidente.** Primeiro, a tabela-resumo do modelo:
 

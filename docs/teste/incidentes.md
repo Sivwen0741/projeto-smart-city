@@ -10,7 +10,8 @@ texto, aparência ou incômodo sem efeito no resultado.
 | ID | Resumo | Caso | Severidade | Prioridade | Status |
 |---|---|---|---|---|---|
 | INC-001 | O README não informa como subir uma segunda cópia isolada na mesma máquina, e a saída que ele dá (`docker compose down -v`) apaga o banco da outra cópia | CT-005 | baixa | média | fechado |
-| INC-002 | A seção "Situação" do README está desatualizada: diz que a Sprint 4 é a sprint em andamento | CT-005 | baixa | baixa | aberto |
+| INC-002 | A seção "Situação" do README está desatualizada: diz que a Sprint 4 é a sprint em andamento | CT-005 | baixa | baixa | fechado |
+| INC-003 | O teste US02-3 conta todos os dispositivos sem comunicação do banco, e não só os que ele cria, o que o torna não determinístico mesmo com o banco recriado | CT-042 | baixa | alta | fechado |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
 
@@ -40,4 +41,23 @@ texto, aparência ou incômodo sem efeito no resultado.
 | O que era esperado | Que a seção descrevesse a versão entregue, a Sprint 6, e apontasse para os critérios e verificações das Sprints 5 e 6, que já estão na tabela de documentação do próprio README. |
 | Ambiente | Leitura do arquivo; não depende do ambiente. |
 | Severidade e prioridade | Baixa: texto, sem efeito na execução. Baixa. |
-| Status e responsável | Aberto. Correção no repositório de trabalho, não no clone da versão sob teste. |
+| Correção | Commit `1a64496` (branch `sprint-6-inc-002`, PR #28, mesclado na `main` em `b8f76b8`). A seção "Situação" agora descreve a Sprint 6 como sprint em andamento: a tag `v1.0-sprint-6` (commit `01ecf29`, corte de 31/10/2026), os itens entregues, a US17 e a US27 no backlog da Sprint 7, a documentação de teste em `docs/teste/` e a regra das correções depois do corte. Teste automatizado: não se aplica, porque é texto. |
+| Reteste | 02/11/2026, 21:30 a 21:33, pelo CT-005, na versão `1a64496`, por Bryan Charles. Clone novo da branch, que já tinha a correção do INC-001. A seção "Situação" não cita mais a Sprint 4 como sprint em andamento, e os oito links dela apontam para arquivos que existem. O ambiente subiu isolado pelo `.env`, e a interface, o health e o login responderam. **Passou.** Na regressão, a unidade deu 53/53. A integração deu 215/216 na 1ª execução, com falha no US02-3, e 216/216 na 2ª, as duas com o banco recriado. A falha não envolve o README, único arquivo alterado, e foi registrada como INC-003. Evidência: `evidencias/2026-11-02-reteste-INC-002/`. |
+| Status e responsável | Fechado em 02/11/2026, depois do reteste. Bryan Charles. |
+
+## INC-003 — US02-3 não determinístico na contagem de dispositivos sem comunicação
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 02/11/2026, Bryan Charles |
+| Item testado e versão | Suíte de integração, `us02.e2e-spec.ts`, na versão `1a64496` (correção do INC-002), mesmo código de teste da `v1.0-sprint-6` |
+| Caso de teste relacionado | CT-042 (indicadores do topo da tela de alertas, critério US02-3) |
+| Passos para reproduzir | 1. Recriar o banco de teste: `docker compose --profile teste rm -sf db-teste`. 2. Rodar a suíte em série: `docker compose --profile teste run --rm --build api-teste`. 3. Repetir; a falha não aparece em toda execução. |
+| O que aconteceu | Na regressão do reteste do INC-002, a 1ª execução deu 215/216: `US02-3 os dispositivos sem comunicação são contados por tipo` falhou em `us02.e2e-spec.ts:153`, com o esperado 1 e o recebido 2 na diferença do total de dispositivos sem comunicação. A 2ª execução, de novo com o banco recriado e as suítes na mesma ordem, deu 216/216. O teste lia o resumo antes e depois de inserir uma câmera e comparava a contagem de todos os dispositivos do banco. Um dispositivo criado por outra suíte que cruzasse o limite de comunicação entre as duas leituras entrava na diferença. |
+| O que era esperado | Que o teste desse o mesmo resultado em toda execução com o banco recriado, contando só os dispositivos que ele mesmo cria. O comportamento do sistema estava correto nas duas execuções: o resumo contou corretamente os dispositivos sem comunicação de cada momento. |
+| Relação com o DT07 | Não é um ponto conhecido do DT07. O DT07 descreve acoplamento por dados de rodadas anteriores, com o banco reaproveitado. Esta falha ocorreu com o banco recriado: é uma dependência de tempo dentro da mesma rodada. |
+| Ambiente | macOS 15.7 (arm64), Docker 28.1.1, Compose 2.35.1; clone da branch `sprint-6-inc-002` com `COMPOSE_PROJECT_NAME=scoc-teste`; banco de teste em `tmpfs`, recriado antes de cada execução. |
+| Severidade e prioridade | Baixa: não há defeito no produto. Alta: o critério de conclusão do plano exige a suíte verde num banco recriado na versão final, e um teste não determinístico torna esse critério não verificável. |
+| Correção | Commit `6439f63` (branch `sprint-6-inc-003`, PR #29, mesclado na `main` em `757b68e`). O resumo só devolve contagens por tipo, então o teste cria um tipo de dispositivo próprio, com nome único, e três dispositivos desse tipo: um que nunca se comunicou, um com a última comunicação há 2 h e um com comunicação agora. Ele confere a situação de cada dispositivo pelo identificador em `GET /api/dispositivos`, confere que o resumo conta 2 sem comunicação nesse tipo e que o total é a soma dos tipos, e apaga no fim o tipo e os dispositivos. Só o teste mudou. |
+| Reteste | 02/11/2026, 21:42 a 21:46, na versão `6439f63`, por Bryan Charles. Clone novo da branch; três execuções seguidas da suíte de integração, com o banco recriado antes de cada uma: 216/216, 216/216 e 216/216. **Passou.** Evidência: `evidencias/2026-11-02-reteste-INC-003/`. |
+| Status e responsável | Fechado em 02/11/2026, depois do reteste. Bryan Charles. |
