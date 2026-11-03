@@ -1,0 +1,40 @@
+Rodada 1 · smoke test da seção 1.3 · 02/11/2026 21:13:10 a 21:13:39 (BRT)
+Versão: v1.0-sprint-6 (01ecf29), ambiente do clone (projeto do Compose teste-sprint-6)
+Executado pela interface de programação e pelo broker do ambiente no ar; a parte de tela dos casos fica para a execução manual.
+
+== CT-001 02/11 21:13:10
+api running healthy
+db running healthy
+mosquitto running healthy
+simulador running 
+web running 
+web 200 health 200 {"situacao":"ok","postgis":"3.4.3"}
+== CT-006 02/11 21:13:11
+login válido: token obtido
+sem token 401 | token adulterado 401 | token válido 200 | /api/docs sem token 200 | senha errada 401
+== CT-026 02/11 21:13:11
+Primeira tentativa: erro do script de smoke, não do sistema. O script procurou o campo "codigo"
+na lista de dispositivos (o campo é "identificador") e publicou num tópico sem código, que a
+interface de programação descartou como esperado ("mensagem descartada de : dispositivo não cadastrado").
+Segunda tentativa, 21:13:29: SN-027 gravou; a mensagem da EA-02 incluía "umidade", que a estação
+não mede, e foi descartada como esperado ("o dispositivo não mede umidade").
+Terceira tentativa, 21:13:38, só a EA-02, com as grandezas que ela mede.
+Publicações que valem para o caso:
+21:13:29 mosquitto_pub -q 1 -t scoc/dispositivos/SN-027/leituras -m '{"leituras": [{"grandeza": "nivel_agua", "valor": 2.4}]}'
+21:13:38 mosquitto_pub -q 1 -t scoc/dispositivos/EA-02/leituras -m '{"leituras": [{"grandeza": "temperatura", "valor": 21.7}, {"grandeza": "precipitacao", "valor": 0.4}]}'
+GET /api/dispositivos/12/leituras (SN-027): [('nivel_agua', 2.4, 'm', 'mqtt', '2026-11-03T00:13:29.294Z')]
+GET /api/dispositivos/11/leituras (EA-02): [('temperatura', 21.7, '°C', 'mqtt', '2026-11-03T00:13:39.068Z'), ('precipitacao', 0.4, 'mm', 'mqtt', '2026-11-03T00:13:39.068Z')]
+== CT-040 02/11 21:13:14
+ativos 200 1 alertas campos: bairro,bairroId,composicao,criticidade,dataEncerramento,dataHora,dataReconhecimento,dispositivo,dispositivoId,endereco,fonte,id,latitude,longitude,ocorrenciaId,operador,orgao,orgaoSugeridoId,providencia,reconhecidoPor,regra,regraId,simulado,situacao,tipoDispositivo,tipoGrandeza,unidade,valorLimite,valorObservado
+em_atendimento 200 0 alertas 
+encerrados_hoje 200 1 alertas campos: bairro,bairroId,composicao,criticidade,dataEncerramento,dataHora,dataReconhecimento,dispositivo,dispositivoId,endereco,fonte,id,latitude,longitude,ocorrenciaId,operador,orgao,orgaoSugeridoId,providencia,reconhecidoPor,regra,regraId,simulado,situacao,tipoDispositivo,tipoGrandeza,unidade,valorLimite,valorObservado
+== CT-056 02/11 21:13:15
+categorias ["Risco hidrológico","Alagamento","Trânsito e acidente","Iluminação pública","Qualidade do ar","Ruído","Infraestrutura urbana","Outra"]
+órgãos ['Defesa Civil', 'Departamento de Tecnologia da Informação', 'Infraestrutura', 'Meio Ambiente', 'Mobilidade']
+urbano 201 {'protocolo': '2026-11-0001', 'categoria': 'Alagamento', 'criticidade': 'atencao', 'orgao': 'Defesa Civil', 'bairro': 'Centro', 'situacao': 'aberta', 'origem': 'telefone'}
+rural 201 {'protocolo': '2026-11-0002', 'categoria': 'Alagamento', 'criticidade': 'atencao', 'orgao': 'Defesa Civil', 'bairro': None, 'situacao': 'aberta', 'origem': 'telefone'}
+
+Resultado: CT-001, CT-006, CT-026, CT-040 e CT-056 passaram na parte automatizável; a rodada pode começar.
+Observação do CT-001: web e simulador não têm verificação de saúde no Compose; aparecem em execução,
+sem estado "healthy". A interface web respondeu 200 e o simulador publicou leituras (origem simulador).
+Dados criados no ambiente do clone pelo smoke: leituras acima e as ocorrências 2026-11-0001 e 2026-11-0002.
