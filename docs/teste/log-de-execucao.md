@@ -22,6 +22,7 @@ plano.
 | Reteste INC-003, execução 1 | 02/11/2026 21:42:10 a 21:43:46 | Integração e sistema na versão corrigida `6439f63`, banco de teste recriado | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-1.txt` |
 | Reteste INC-003, execução 2 | 02/11/2026 21:43:46 a 21:45:20 | Idem, banco de teste recriado de novo | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-2.txt` |
 | Reteste INC-003, execução 3 | 02/11/2026 21:45:20 a 21:46:48 | Idem, banco de teste recriado de novo | 216 testes | 216 | 0 | `2026-11-02-reteste-INC-003/integracao-3.txt` |
+| Reteste INC-004 | 02/11/2026 21:52 a 21:58:39 | CT-129 e CT-130 na versão corrigida `a73fdd9`, Chrome em 1440 × 900, e regressão: unidade e integração, banco de teste recriado | 2 casos; 53 + 216 testes | 2; 53 + 216 | 0 | `2026-11-02-reteste-INC-004/` |
 
 Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
 98,79% das linhas.
@@ -48,7 +49,7 @@ CT-043, CT-082 e CT-107) entram quando forem executados.
 | CT-001 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-002 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
 | CT-003 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
-| CT-005 | 02/11 | `v1.0-sprint-6` | Bryan Charles, autor do README (DT08) | Ambiente subiu seguindo o README, com `-p` de fora dele (INC-001); login do administrador funcionou pelo comando do README; a interface web respondeu 200 e a API listou os 14 dispositivos de exemplo. Pré-condição atendida parcialmente: máquina com Node 24.1.0 (Homebrew) e sem PostgreSQL; nenhum passo do README usou o Node (registro abaixo). | passou | Registro do CT-005, abaixo | INC-001, INC-002 |
+| CT-005 | 02/11 | `v1.0-sprint-6` | Bryan Charles, autor do README (DT08) | Ambiente subiu seguindo o README, com `-p` de fora dele (INC-001); login do administrador funcionou pelo comando do README; a interface web respondeu 200 e a API listou os 14 dispositivos de exemplo. "O painel abre com os dispositivos de exemplo" fica para o registro de quem executa o caso pela tela. Pré-condição atendida parcialmente: máquina com Node 24.1.0 (Homebrew) e sem PostgreSQL; nenhum passo do README usou o Node (registro abaixo). | pendente (tela) | Registro do CT-005, abaixo | INC-001, INC-002 |
 | CT-005 (reteste do INC-001) | 02/11 | `0c48fd4` | Bryan Charles, autor do README (DT08) | Segunda instância subiu isolada sem `-p`, com `COMPOSE_PROJECT_NAME` e portas no `.env`, como o README corrigido manda; outras cópias intactas; `down -v` removeu só os volumes dela; regressão 53/53 e 216/216. | passou | `2026-11-02-reteste-INC-001/reteste.txt` | INC-001 |
 | CT-005 (reteste do INC-002) | 02/11 | `1a64496` | Bryan Charles, autor do README (DT08) | A seção "Situação" descreve a Sprint 6 e a tag `v1.0-sprint-6`, sem citar a Sprint 4 como sprint em andamento, e os oito links existem; o ambiente subiu isolado pelo `.env`, e o login funcionou. Regressão: unidade 53/53; integração 215/216 na 1ª execução (US02-3) e 216/216 na 2ª. | passou | `2026-11-02-reteste-INC-002/reteste.txt` | INC-002, INC-003 |
 | CT-006 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
@@ -171,7 +172,9 @@ CT-043, CT-082 e CT-107) entram quando forem executados.
 | CT-127 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us18.e2e-spec.ts` |  |
 | CT-128 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us18.e2e-spec.ts` |  |
 | CT-129 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
+| CT-129 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: o gráfico de 24 h do SN-014 cabe sem rolagem em 1440 × 900, com 320 px de altura, eixos em 11 px, eixo do tempo e legenda dos limites visíveis. Os outros períodos e a troca de grandeza ficam para a execução manual. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-129.png` | INC-004 |
 | CT-130 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
+| CT-130 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: no histórico de PM2.5 da EA-03, a linha tracejada de 55 µg/m³ e a legenda aparecem sem rolagem em 1440 × 900. A verificação de que as regras desativadas não aparecem fica para a execução manual. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-130.png` | INC-004 |
 | CT-131 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
 | CT-132 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
 | CT-133 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us06.e2e-spec.ts` |  |
@@ -220,5 +223,6 @@ em andamento (INC-002).
 
 Resultado: o ambiente subiu e o login do administrador funcionou seguindo o README. Isso dependeu
 de uma informação que o README não dá, a opção `-p`, necessária só porque a máquina já tinha outra
-cópia do projeto. Situação: passou. O caso não tem etapa de tela. Do painel, foi conferido que a
-interface web respondeu e que a interface de programação listou os 14 dispositivos de exemplo.
+cópia do projeto. Do painel, foi conferido que a interface web respondeu e que a interface de
+programação listou os 14 dispositivos de exemplo. A conferência do painel aberto na tela, com os
+dispositivos de exemplo no mapa, fica pendente para o registro de quem executa o caso pela tela.

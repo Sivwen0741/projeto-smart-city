@@ -12,7 +12,7 @@ texto, aparência ou incômodo sem efeito no resultado.
 | INC-001 | O README não informa como subir uma segunda cópia isolada na mesma máquina, e a saída que ele dá (`docker compose down -v`) apaga o banco da outra cópia | CT-005 | baixa | média | fechado |
 | INC-002 | A seção "Situação" do README está desatualizada: diz que a Sprint 4 é a sprint em andamento | CT-005 | baixa | baixa | fechado |
 | INC-003 | O teste US02-3 conta todos os dispositivos sem comunicação do banco, e não só os que ele cria, o que o torna não determinístico mesmo com o banco recriado | CT-042 | baixa | alta | fechado |
-| INC-004 | Gráfico histórico fora de escala: rótulos dos eixos com cerca de 40 px e gráfico com mais de 1200 px de altura; não cabe sem rolagem na resolução de teste | CT-129 | baixa | média | aberto |
+| INC-004 | Gráfico histórico fora de escala: rótulos dos eixos com cerca de 40 px e gráfico com mais de 1200 px de altura; não cabe sem rolagem na resolução de teste | CT-129 | baixa | média | fechado |
 | INC-005 | Campo "Instalado em" do formulário de dispositivo mostra a data em formato americano (03/14/2024) | CT-013 | baixa | baixa | aberto |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
@@ -76,7 +76,10 @@ texto, aparência ou incômodo sem efeito no resultado.
 | O que era esperado | O gráfico inteiro, com o eixo do tempo e a legenda dos limites, cabendo sem rolagem na resolução de teste do plano (1440 × 900, seção 1.4). |
 | Ambiente | Clone da tag `v1.0-sprint-6` em http://localhost:8080; Google Chrome numa janela de 1456 × 817. |
 | Severidade e prioridade | Baixa: não há perda de função. Média: o gráfico não cabe na tela na resolução em que o sistema é testado. |
-| Status e responsável | Aberto. |
+| Causa | O `GraficoLinha` desenhava num `viewBox` de 400 unidades de largura e ocupava 100% da largura do contêiner, com altura automática. O SVG inteiro, fonte e altura juntas, escalava na proporção da largura da área do gráfico dividida por 400. Na tela de histórico, que é larga, a fonte de legenda de 11 px chegava perto dos 40 px observados, e a altura crescia na mesma proporção. |
+| Correção | Commit `a73fdd9` (branch `sprint-6-inc-004`, PR #30, mesclado na `main` em `686ed19`). O `GraficoLinha` aceita a largura em pixels, e o `viewBox` acompanha o contêiner (escala 1). A tela de histórico mede a área do gráfico com `ResizeObserver` e desenha com 320 px de altura. Painel e Rios mantêm o comportamento anterior. Teste automatizado: não se aplica, porque a interface web não tem executor de teste (DT05). |
+| Reteste | 02/11/2026, 21:52 a 21:58, na versão `a73fdd9`, por Bryan Charles, numa instância separada da versão corrigida, com o Chrome em 1440 × 900. CT-129 (SN-014, 24 h): gráfico com 320 px de altura, eixos em 11 px, e a seção com o eixo do tempo e a legenda termina a 634 px do topo, sem rolagem. CT-130 (PM2.5 da EA-03): linha tracejada de 55 µg/m³ com o rótulo e a legenda, sem rolagem. Regressão: unidade 53/53, integração 216/216. **Passou.** Evidência: `evidencias/2026-11-02-reteste-INC-004/` (`CT-129.png`, `CT-130.png`, `reteste.txt`). |
+| Status e responsável | Fechado em 02/11/2026, depois do reteste. Bryan Charles. |
 
 ## INC-005 — Data de instalação em formato americano
 
@@ -90,4 +93,6 @@ texto, aparência ou incômodo sem efeito no resultado.
 | O que era esperado | Data em dd/mm/aaaa, como no resto do sistema, inclusive no cabeçalho e nas colunas das listas. |
 | Ambiente | Clone da tag `v1.0-sprint-6` em http://localhost:8080; Google Chrome com o idioma em inglês. |
 | Severidade e prioridade | Baixa. Baixa. |
-| Status e responsável | Aberto. |
+| Investigação | O documento já declara `lang="pt-BR"` (`web/index.html`) desde a primeira versão, e o campo continua em mês/dia/ano. O Chrome formata o `input type="date"` pelo idioma da interface do navegador, não pelo `lang` da página. A única correção na aplicação é trocar o campo nativo por um componente próprio de data. |
+| Decisão | Não corrigir nesta entrega (decisão de 02/11/2026). A duas semanas da entrega, trocar um componente de formulário traz risco maior que o defeito. O incidente fica aberto e entra nos riscos residuais (seção 5.4 do relatório de conclusão). |
+| Status e responsável | Aberto. Bryan Charles. |

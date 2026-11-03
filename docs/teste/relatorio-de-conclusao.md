@@ -14,3 +14,13 @@ subseções sem registro ainda ficam para o fechamento.
   com "pendente (tela)": a parte automatizada passou, e a verificação de tela ainda não foi
   executada. Um plano que não consegue expressar execução parcial está incompleto, e o certo é
   completá-lo, não forçar o log a registrar um resultado que não ocorreu.
+
+## 5.4 Riscos residuais
+
+- **INC-005, data de instalação em formato americano (aberto, severidade baixa).** Num navegador
+  com a interface em inglês, o campo "Instalado em" do formulário de dispositivo mostra a data em
+  mês/dia/ano. O resto do sistema mostra dia/mês. O `lang="pt-BR"` do documento não muda isso no
+  Chrome, e a correção exige trocar o campo nativo por um componente próprio. Em 02/11/2026 isso
+  foi julgado mais arriscado que o defeito, a duas semanas da entrega. Efeito: quem usa o
+  navegador em inglês pode ler ou digitar a data com dia e mês trocados; com o navegador em
+  português, o campo já aparece em dia/mês.

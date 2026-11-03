@@ -247,7 +247,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Banco PostGIS, Mosquitto, interface de programação, interface web e simulador em execução e saudáveis; a tela de login abre; o health responde 200 com o banco disponível. |
 | Teste automatizado | `tt01.e2e-spec.ts` › TT01-1 a interface de programação responde com o banco PostGIS habilitado |
 | Execução | automatizado e manual; manual: Subida pelo Compose e serviços saudáveis. Tela: Ambiente e repositório, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-002 — Criar o esquema por migração versionada, sem comando manual
 
@@ -260,7 +260,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Todas as migrações de `api/src/database/migrations/` aplicadas na primeira subida; a segunda subida não reaplica migração nem duplica a carga. |
 | Teste automatizado | `tt01.e2e-spec.ts` › TT01-2 o esquema é criado por migração versionada<br>`tt01.e2e-spec.ts` › TT01-2 uma nova subida não reaplica migrações nem duplica a carga |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-003 — Carregar a base territorial de Ponta Grossa
 
@@ -273,7 +273,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 5 distritos com o código do IBGE e 16 bairros do OpenStreetMap, cada um dentro de um distrito; a consulta espacial devolve o bairro do ponto. Desvio registrado: o IBGE não tem bairros (`2026-10-20-bairros-ibge-osm.md`). |
 | Teste automatizado | `tt01.e2e-spec.ts` › TT01-3 os distritos de Ponta Grossa vêm com o código da API de Localidades do IBGE<br>`tt01.e2e-spec.ts` › TT01-3 os dezesseis bairros do OpenStreetMap estão carregados, cada um dentro de um distrito<br>`tt01.e2e-spec.ts` › TT01-3 a consulta espacial resolve o bairro de um ponto |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-004 — Versionar só o exemplo de variáveis de ambiente, sem credencial real
 
@@ -286,7 +286,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Só `.env.example` versionado; `.env` nunca entrou no histórico; nenhuma credencial real no código. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Inspeção do repositório. Tela: Ambiente e repositório, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-005 — Executar o projeto numa máquina limpa seguindo só o README, por quem não escreveu o manual
 
@@ -300,7 +300,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Teste automatizado | não há |
 | Execução | manual; manual: Ensaio em máquina limpa por outro integrante. Tela: Ambiente e repositório, cerca de 90 min. |
 | Observação | Nesta execução, o caso não atende ao requisito de independência: por indisponibilidade dos demais integrantes, é executado pelo próprio autor do README. Continua verificando que o ambiente sobe pelo Compose numa máquina sem Node e sem PostgreSQL, mas não a suficiência do README para um leitor novo (DT08). |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-006 — Exigir e-mail funcional e senha em toda rota, exceto as públicas
 
@@ -313,7 +313,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Com credencial válida, abre o painel; sem token ou com token adulterado, 401; com token válido, a rota responde; Swagger e health públicos, como exceção registrada. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-1 autentica com e-mail e senha e acessa rota protegida com o token<br>`us20.e2e-spec.ts` › US20-1 toda rota documentada fora login e health responde 401 sem token<br>`us20.e2e-spec.ts` › US20-1 token adulterado ou assinado com outro segredo é recusado<br>`us20.e2e-spec.ts` › US20-1 a documentação Swagger é pública, como exceção registrada<br>`us20.e2e-spec.ts` › US20-1 requisição de login sem senha é recusada com 400 |
 | Execução | automatizado e manual; manual: Login pela tela e redirecionamento para o painel. Tela: Login e sessão, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-007 — Gravar a senha só como hash e verificar no servidor
 
@@ -326,7 +326,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Hash argon2id no banco, nunca a senha; nenhuma resposta expõe o hash. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-2 o banco guarda hash argon2id, nunca a senha em texto puro<br>`us20.e2e-spec.ts` › US20-2 a resposta da API nunca expõe o hash da senha |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-008 — Responder de forma genérica à credencial inválida
 
@@ -339,7 +339,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | As duas tentativas recebem 401 com a mesma mensagem, "E-mail ou senha inválidos.". |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-3 e-mail inexistente e senha errada têm a mesma resposta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-009 — Expirar o token em oito horas
 
@@ -352,7 +352,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O token vale exatamente 8 h; vencido, é recusado com 401. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-4 o token emitido vale exatamente oito horas<br>`us20.e2e-spec.ts` › US20-4 token vencido é recusado |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-010 — Impedir a autenticação do usuário inativo
 
@@ -365,7 +365,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Login recusado com a mensagem genérica; o token anterior deixa de valer. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-5 usuário inativo com a senha correta recebe a mesma mensagem genérica<br>`us20.e2e-spec.ts` › US20-5 o token de um usuário inativado deixa de valer |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-011 — Atualizar o último acesso a cada login bem-sucedido
 
@@ -378,7 +378,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O último acesso muda no sucesso e não muda na falha. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-6 o último acesso muda no login com sucesso e não muda na falha |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-012 — Registrar toda tentativa de acesso no log de atividades
 
@@ -391,7 +391,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Três registros com data, hora, endereço de origem e resultado; o de e-mail inexistente sem usuário. |
 | Teste automatizado | `us20.e2e-spec.ts` › US20-7 sucesso e falha de um usuário existente ficam registrados<br>`us20.e2e-spec.ts` › US20-7 tentativa com e-mail inexistente também é registrada |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-013 — Cadastrar dispositivo com todos os campos
 
@@ -404,7 +404,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Cadastro aceito com todos os campos devolvidos e o bairro calculado; sem código, sem tipo ou com coordenada inválida, recusado com mensagem. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-1 cadastra com todos os campos e devolve cada um deles<br>`us22.e2e-spec.ts` › US22-1 a situação pode ser cadastrada como manutenção ou inativo<br>`us22.e2e-spec.ts` › US22-1 recusa cadastro sem código, sem tipo ou com coordenada inválida<br>`us22.e2e-spec.ts` › US22-1 recusa tipo inexistente<br>`us22.e2e-spec.ts` › US22-1 cadastro sem token é recusado |
 | Execução | automatizado e manual; manual: Formulário da tela e mensagens de campo. Tela: Dispositivos e histórico, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-014 — Recusar código identificador repetido
 
@@ -417,7 +417,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 409 com mensagem que cita o dispositivo existente; nos simultâneos, só um é aceito. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-2 código repetido, mesmo com outra caixa, é recusado com 409 e a mensagem cita o existente<br>`us22.e2e-spec.ts` › US22-2 editar para o código de outro dispositivo também é recusado<br>`us22.e2e-spec.ts` › US22-2 dois cadastros simultâneos com o mesmo código: só um é aceito |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-015 — Gravar a coordenada como geography e calcular o bairro por consulta espacial
 
@@ -430,7 +430,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Coluna `geography(Point,4326)`; bairro do polígono que contém o ponto, recalculado ao mover; zona rural sem bairro e com distrito; fora do município, 422; bairro informado é ignorado. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-3 a coluna localizacao é geography(Point,4326)<br>`us22.e2e-spec.ts` › US22-3 o bairro gravado é o que contém a coordenada<br>`us22.e2e-spec.ts` › US22-3 o bairro não pode ser digitado<br>`us22.e2e-spec.ts` › US22-3 mudar a coordenada recalcula o bairro<br>`us22.e2e-spec.ts` › US22-3 ponto na zona rural fica sem bairro e com o distrito calculado<br>`us22.e2e-spec.ts` › US22-3 ponto fora do município é recusado<br>`us22.e2e-spec.ts` › US22-3 a consulta de localização devolve bairro e distrito antes de salvar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-016 — Gravar os atributos de cada tipo no campo jsonb
 
@@ -443,7 +443,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Atributos em `atributos_especificos`; recusa com mensagem nos inválidos; troca de tipo exige atributos compatíveis. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-4 cada tipo grava os próprios atributos em atributos_especificos<br>`us22.e2e-spec.ts` › US22-4 os tipos expõem os campos próprios, inclusive os do controlador de iluminação definidos no DT01<br>`us22.e2e-spec.ts` › US22-4 atributo de outro tipo, valor inválido ou obrigatório ausente é recusado<br>`us22.e2e-spec.ts` › US22-4 trocar o tipo exige atributos compatíveis com o novo tipo |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-017 — Inativar sem excluir, mantendo o histórico de leituras
 
@@ -456,7 +456,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Registro mantido com situação inativo; leituras consultáveis; sem rota de exclusão; inexistente, 404. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-5 não existe rota de exclusão<br>`us22.e2e-spec.ts` › US22-5 inativar mantém o registro e o histórico de leituras<br>`us22.e2e-spec.ts` › US22-5 dispositivo inexistente responde 404 |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-018 — Listar com as colunas do protótipo e ordenar por qualquer uma
 
@@ -469,7 +469,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Código, tipo, localização, situação e última comunicação; ordem crescente e decrescente em cada coluna; ordenação desconhecida, 400. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-6 cada item traz as colunas da listagem<br>`us22.e2e-spec.ts` › US22-6 ordena por código, tipo, localização, situação e comunicação, nos dois sentidos<br>`us22.e2e-spec.ts` › US22-6 ordenação desconhecida é recusada |
 | Execução | automatizado e manual; manual: Colunas e ordenação na tela. Tela: Dispositivos e histórico, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-019 — Registrar criação, edição e inativação no log com o autor
 
@@ -482,7 +482,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Um registro por operação, com o autor e os valores anterior e novo; a recusada não gera registro. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-7 registra cadastro, edição e inativação com autor e valores anterior e novo<br>`us22.e2e-spec.ts` › US22-7 o autor registrado é quem fez a alteração<br>`us22.e2e-spec.ts` › US22-7 operação recusada não gera registro |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-020 — Cadastrar regra com nome, grandeza, operador, limite, duração e gravidade
 
@@ -495,7 +495,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Regra salva e listada; os seis operadores e as três gravidades aceitos; grandeza desconhecida, gravidade inválida e nome vazio recusados. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-1 cadastra com todos os campos e devolve cada um deles<br>`us23.e2e-spec.ts` › US23-1 aceita os seis operadores e as três gravidades<br>`us23.e2e-spec.ts` › US23-1 recusa grandeza desconhecida, gravidade inválida e nome vazio<br>`us23.e2e-spec.ts` › US23-1 sem token é recusado |
 | Execução | automatizado e manual; manual: Formulário de regra na tela. Tela: Regras de alerta, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-021 — Alterar o valor limite pela interface, sem mudar código
 
@@ -508,7 +508,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O novo limite vale na hora; decimal, negativo e zero aceitos; inexistente, 404. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-2 o novo limite vale imediatamente na regra gravada<br>`us23.e2e-spec.ts` › US23-2 aceita limite decimal, negativo e zero<br>`us23.e2e-spec.ts` › US23-2 regra inexistente responde 404<br>`unidade/regra.spec.ts` › US23-2 limite negativo e zero |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-022 — Ativar e desativar sem excluir, preservando os alertas
 
@@ -521,7 +521,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Regra e alertas preservados; sem rota de exclusão; regra pode nascer desativada. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-3 desativar e reativar mantém a regra e os alertas já gerados<br>`us23.e2e-spec.ts` › US23-3 não existe rota de exclusão<br>`us23.e2e-spec.ts` › US23-3 a regra pode nascer desativada |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-023 — Não alterar retroativamente os alertas já emitidos
 
@@ -534,7 +534,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O alerta mantém operador, limite e gravidade da época do disparo. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-4 o alerta guarda operador, limite e gravidade da época do disparo |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-024 — Impedir salvar com limite vazio, operador não escolhido ou duração negativa
 
@@ -547,7 +547,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Botão de salvar desabilitado com a lista do que corrigir; a API recusa com 400 e a mensagem de cada caso, sem alterar a regra. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-5 cadastro recusado com mensagem para cada caso<br>`us23.e2e-spec.ts` › US23-5 edição recusada nos mesmos casos, sem alterar a regra |
 | Execução | automatizado e manual; manual: Bloqueio do botão e mensagens na tela. Tela: Regras de alerta, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-025 — Registrar cada alteração de regra com valor anterior e novo
 
@@ -560,7 +560,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Registro com autor, antes e depois; histórico mostra autor e valores; edição sem mudança e recusada não geram registro. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-6 registra cadastro e cada edição com autor, antes e depois<br>`us23.e2e-spec.ts` › US23-6 o histórico de alterações da regra mostra o autor e os valores<br>`us23.e2e-spec.ts` › US23-6 edição sem mudança e edição recusada não geram registro |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-026 — Gravar cada leitura válida recebida pelo MQTT
 
@@ -573,7 +573,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Leituras gravadas com grandeza, valor, unidade, origem `mqtt` e horário da medição. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-1 grava grandeza, valor, unidade, origem mqtt e o horário da medição<br>`tt02.e2e-spec.ts` › TT02-1 a estação ambiental envia várias grandezas na mesma mensagem |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-027 — Atualizar a última comunicação a cada mensagem aceita
 
@@ -586,7 +586,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O dispositivo passa a operando; câmera e semáforo atualizam a comunicação sem gravar leitura. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-2 o dispositivo passa de sem comunicação a operando<br>`tt02.e2e-spec.ts` › TT02-2 câmera e semáforo mandam só sinal de vida, sem leitura |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-028 — Descartar mensagem inválida sem derrubar o assinante
 
@@ -599,7 +599,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | As inválidas são descartadas e registradas no log da aplicação; a válida seguinte é gravada. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-3 mensagem inválida é descartada sem derrubar o assinante e fica registrada no log |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-029 — Avaliar a leitura contra as regras ativas da mesma grandeza
 
@@ -612,7 +612,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O alerta só é emitido quando todas as condições da regra R1 são verdadeiras. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 a condição precisa durar o tempo mínimo da regra, e a duração zero dispara na primeira leitura<br>`tt02.e2e-spec.ts` › TT02-4 uma leitura dentro do limite reinicia a contagem da duração<br>`tt02.e2e-spec.ts` › TT02-4 regra desativada e regra de outra grandeza não disparam<br>`tt02.e2e-spec.ts` › TT02-4 dispositivo em manutenção grava a leitura e não gera alerta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-030 — Gravar no alerta a cópia da regra vigente no disparo
 
@@ -625,7 +625,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta com regra, dispositivo, leitura, valor observado e cópia de operador, limite e gravidade. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-5 o alerta guarda regra, dispositivo, leitura, valor observado e a cópia de operador, limite e gravidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-031 — Não abrir outro alerta da mesma regra e dispositivo enquanto houver um ativo
 
@@ -638,7 +638,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Continua um único alerta ativo. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-6 enquanto o alerta está ativo, novas leituras fora do limite não abrem outro |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-032 — Reconectar sozinho quando o broker cair
 
@@ -651,7 +651,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A interface de programação reconecta sem reinício e grava a leitura. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-7 depois de uma queda da conexão com o broker, reconecta sozinho e volta a gravar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-033 — Subir o simulador com o Compose, publicando as leituras dos exemplos
 
@@ -664,7 +664,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Os 11 dispositivos do simulador passam a operando com leituras de origem `simulador`; a última comunicação dos exemplos só muda pela ingestão. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-6 a subida não renova a última comunicação dos exemplos: só a ingestão a atualiza |
 | Execução | automatizado e manual; manual: Simulador em execução e dispositivos operando na tela. Tela: Ambiente e repositório, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-034 — Mostrar os dispositivos não inativos no mapa com a cor da legenda
 
@@ -677,7 +677,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Grave e atenção pela maior gravidade ativa, normal e sem comunicação; inativos fora do mapa. |
 | Teste automatizado | `us01.e2e-spec.ts` › US01-1 a cor do marcador sai da maior gravidade entre os alertas ativos<br>`us01.e2e-spec.ts` › US01-1 a listagem informa o estado, para o mapa deixar de fora os inativos |
 | Execução | automatizado e manual; manual: Cores e legenda na tela. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-035 — Mostrar as ocorrências abertas com marcador próprio
 
@@ -690,7 +690,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A ocorrência não encerrada aparece com marcador de ocorrência; a encerrada some; a lista exige token. |
 | Teste automatizado | `us01.e2e-spec.ts` › US01-2 lista as não encerradas, com coordenada, e deixa de fora as encerradas<br>`us01.e2e-spec.ts` › US01-2 a listagem de ocorrências exige token |
 | Execução | automatizado e manual; manual: Marcador de ocorrência na tela. Tela: Mapa e painel, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-036 — Mostrar o resumo ao clicar no marcador
 
@@ -703,7 +703,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Dispositivo: código, tipo, bairro, última leitura e situação. Ocorrência: protocolo, categoria, gravidade e situação. |
 | Teste automatizado | `us01.e2e-spec.ts` › US01-3 o dispositivo traz código, tipo, bairro, situação e a última leitura<br>`us01.e2e-spec.ts` › US01-3 a ocorrência traz protocolo, categoria, gravidade e situação |
 | Execução | automatizado e manual; manual: Balão de resumo na tela. Tela: Mapa e painel, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-037 — Desenhar limites e nomes dos bairros a partir da base territorial
 
@@ -716,7 +716,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Os 16 bairros desenhados, cada nome dentro do próprio polígono. |
 | Teste automatizado | `us01.e2e-spec.ts` › US01-4 os limites dos bairros vêm da base territorial, com o ponto do rótulo dentro de cada um |
 | Execução | automatizado e manual; manual: Desenho dos bairros na tela. Tela: Mapa e painel, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-038 — Agrupar marcadores próximos com a contagem
 
@@ -729,7 +729,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Marcadores próximos agrupados com a contagem; grave e atenção ficam fora dos grupos; o grupo se desfaz ao aproximar. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Agrupamento na tela. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-039 — Mudar a cor dos marcadores e mostrar ocorrência nova sem recarregar
 
@@ -742,7 +742,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A cor do marcador e a ocorrência nova aparecem sem recarregar a página. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Atualização do mapa em tempo real. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-040 — Listar os alertas ativos com as colunas do protótipo
 
@@ -755,7 +755,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Gravidade, regra, dispositivo, bairro, medição com o limite, detecção, órgão (da ocorrência vinculada) e situação; as visões separam os conjuntos. |
 | Teste automatizado | `us02.e2e-spec.ts` › US02-1 cada alerta traz gravidade, regra, dispositivo, bairro, medição com limite, detecção, órgão e situação<br>`us02.e2e-spec.ts` › US02-1 o órgão vem da ocorrência vinculada ao alerta<br>`us02.e2e-spec.ts` › US02-1 as visões separam ativos, em atendimento e encerrados hoje |
 | Execução | automatizado e manual; manual: Colunas e visões na tela. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-041 — Ordenar por gravidade e, na mesma gravidade, do mais recente
 
@@ -768,7 +768,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Grave, atenção e informativo; dentro de cada gravidade, o mais recente primeiro. |
 | Teste automatizado | `us02.e2e-spec.ts` › US02-2 a ordem é grave, atenção e informativo, e o mais recente primeiro na mesma gravidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-042 — Calcular os indicadores do topo da tela de alertas
 
@@ -781,7 +781,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Ativos, graves sem reconhecimento, em atendimento, encerrados hoje, tempo médio até o reconhecimento, alertas em 24 h e sem comunicação por tipo. |
 | Teste automatizado | `us02.e2e-spec.ts` › US02-3 os indicadores contam ativos, graves sem reconhecimento, em atendimento, encerrados, tempo até o reconhecimento e 24 h<br>`us02.e2e-spec.ts` › US02-3 os dispositivos sem comunicação são contados por tipo |
 | Execução | automatizado e manual; manual: Indicadores na tela. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-043 — Mostrar no painel os mesmos alertas na mesma ordem
 
@@ -794,7 +794,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Mesmos alertas, na mesma ordem. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Comparação das duas telas. Tela: Mapa e painel, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-044 — Mostrar o alerta novo em até 2 segundos, sem recarregar
 
@@ -807,7 +807,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O alerta aparece na lista, no painel, no mapa e no contador do menu em até 2 s. |
 | Teste automatizado | `us03.e2e-spec.ts` › US03-1 o alerta novo chega à tela em até 2 segundos depois da leitura que o disparou |
 | Execução | automatizado e manual; manual: Tempo de chegada nas quatro áreas da tela. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-045 — Mostrar em tempo real o reconhecimento e o encerramento feitos por outro operador
 
@@ -820,7 +820,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A segunda recebe a mudança de situação sem recarregar. |
 | Teste automatizado | `us03.e2e-spec.ts` › US03-2 a mudança de situação feita por outro operador também chega em tempo real<br>`us04.e2e-spec.ts` › US03-2 o reconhecimento feito por um operador chega aos outros em tempo real |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-046 — Exigir o token na conexão em tempo real
 
@@ -833,7 +833,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Recusada nos três primeiros; aceita com token válido. |
 | Teste automatizado | `us03.e2e-spec.ts` › US03-3 sem token, com token adulterado ou de usuário inativo, a conexão é recusada<br>`us03.e2e-spec.ts` › US03-3 com token válido, a conexão é aceita |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-047 — Reconectar sozinho sem perder alerta emitido no intervalo
 
@@ -846,7 +846,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A tela reconecta e a lista traz o alerta emitido enquanto estava desconectada. |
 | Teste automatizado | `us03.e2e-spec.ts` › US03-4 o alerta emitido com a tela desconectada está na lista consultada ao reconectar |
 | Execução | automatizado e manual; manual: Reconexão da tela. Tela: Alertas e faixa grave, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-048 — Encerrar sozinhos só os não graves sem reconhecimento
 
@@ -859,7 +859,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Atenção e informativo sem reconhecimento encerram ao normalizar; grave nunca; reconhecido não; vale o limite copiado no disparo. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-1 atenção e informativo sem reconhecimento são encerrados quando a leitura volta ao normal<br>`us28.e2e-spec.ts` › US28-1 o alerta grave sem reconhecimento nunca é encerrado automaticamente<br>`us28.e2e-spec.ts` › US28-1 o alerta já reconhecido não é encerrado pela normalização<br>`us28.e2e-spec.ts` › US28-1 a normalização usa o limite copiado no disparo, não o da regra editada |
 | Execução | automatizado e manual; manual: Saída do alerta da lista na tela. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-049 — Mostrar a faixa fixa enquanto houver grave sem reconhecimento
 
@@ -872,7 +872,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Faixa em todas as telas autenticadas, com a quantidade e o acesso ao mais antigo, sem botão de fechar; some ao reconhecer. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-2 o resumo informa a quantidade e o grave sem reconhecimento mais antigo, para a faixa |
 | Execução | automatizado e manual; manual: Faixa em todas as telas. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-050 — Manter a faixa depois de recarregar, sair e entrar com outro usuário
 
@@ -885,7 +885,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | A faixa continua, porque o estado está no servidor. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-3 a faixa vem do servidor: outro usuário, com outro login, vê o mesmo alerta grave |
 | Execução | automatizado e manual; manual: Persistência da faixa na tela. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-051 — Manter o grave sem reconhecimento no topo da lista
 
@@ -898,7 +898,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O grave sem reconhecimento fica acima de tudo. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-4 o grave sem reconhecimento fica no topo, acima até de um grave mais recente já em atendimento |
 | Execução | automatizado e manual; manual: Ordem na tela. Tela: Alertas e faixa grave, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-052 — Exigir a providência no reconhecimento
 
@@ -911,7 +911,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Reconhecimento recusado com a mensagem pedindo a providência. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-1 o reconhecimento exige a providência adotada |
 | Execução | automatizado e manual; manual: Painel de reconhecimento na tela. Tela: Alertas e faixa grave, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-053 — Gravar usuário, data, hora e providência, e passar a em atendimento
 
@@ -924,7 +924,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta em atendimento com o usuário, a data e a hora e a providência. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-2 grava o usuário, a data e a hora e a providência, e o alerta passa a em atendimento |
 | Execução | automatizado e manual; manual: Estado de sucesso do painel. Tela: Alertas e faixa grave, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-054 — Recusar o segundo reconhecimento, mesmo simultâneo
 
@@ -937,7 +937,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Só um aceito; o outro recebe a mensagem com quem reconheceu e quando; encerrado e inexistente recusados. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-3 a segunda tentativa é recusada com a mensagem de quem reconheceu e quando<br>`us04.e2e-spec.ts` › US04-3 duas tentativas simultâneas: só uma é aceita<br>`us04.e2e-spec.ts` › US04-3 alerta encerrado ou inexistente não é reconhecido |
 | Execução | automatizado e manual; manual: Estado de recusa do painel. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-055 — Registrar o reconhecimento no log de atividades
 
@@ -950,7 +950,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Registro com o autor, o alerta e a providência. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-4 o reconhecimento gera registro no log de atividades |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-056 — Registrar ocorrência com categoria, descrição, localização, gravidade e órgão
 
@@ -963,7 +963,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Ocorrência gravada com o bairro calculado; zona rural sem bairro; listas de categoria e órgão vêm da API. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-1 grava os campos e calcula o bairro pela localização<br>`us05.e2e-spec.ts` › US05-1 as listas de categorias e de órgãos vêm da interface de programação<br>`us05.e2e-spec.ts` › US05-1 ponto na zona rural fica sem bairro |
 | Execução | automatizado e manual; manual: Formulário de ocorrência na tela. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-057 — Gerar protocolo único no formato do protótipo
 
@@ -976,7 +976,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Protocolo no formato `AAAA-MM-sequência`, sem repetição. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-2 o protocolo segue o formato do protótipo e é único, mesmo com registros simultâneos |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-058 — Gravar quem registrou, a origem telefone, a situação aberta e o primeiro histórico
 
@@ -989,7 +989,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Usuário que registrou, origem "telefone", situação "aberta" e o primeiro registro do histórico. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-3 grava quem registrou, a origem telefone, a situação aberta e o primeiro registro do histórico |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-059 — Recusar o cadastro sem categoria, gravidade ou localização, ou fora do município
 
@@ -1002,7 +1002,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Recusado com mensagem nos quatro primeiros; órgão e descrição são opcionais. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-4 sem categoria, sem gravidade ou sem localização é recusado com mensagem<br>`us05.e2e-spec.ts` › US05-4 ponto fora do município é recusado<br>`us05.e2e-spec.ts` › US05-4 órgão e descrição são opcionais |
 | Execução | automatizado e manual; manual: Mensagens do formulário. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-060 — Abrir ocorrência a partir de um alerta, que fica vinculado
 
@@ -1015,7 +1015,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta vinculado e origem "alerta"; alerta já vinculado ou inexistente não abre outra. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-5 o alerta fica vinculado e a origem é alerta<br>`us05.e2e-spec.ts` › US05-5 alerta já vinculado ou inexistente não abre outra ocorrência |
 | Execução | automatizado e manual; manual: Registro a partir do alerta na tela. Tela: Ocorrências, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-061 — Registrar no log e mostrar a ocorrência no mapa em tempo real
 
@@ -1028,7 +1028,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Entrada no log; a ocorrência aparece no mapa sem recarregar. |
 | Teste automatizado | `us05.e2e-spec.ts` › US05-6 o registro gera entrada no log de atividades<br>`us05.e2e-spec.ts` › US05-6 a ocorrência nova chega às telas e aparece na lista do mapa |
 | Execução | automatizado e manual; manual: Marcador novo no mapa. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-062 — Regra R1 do disparo: todas as condições verdadeiras abrem o alerta
 
@@ -1041,7 +1041,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta aberto na primeira leitura. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 a condição precisa durar o tempo mínimo da regra, e a duração zero dispara na primeira leitura |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-063 — Regra R2 do disparo: regra desativada não dispara
 
@@ -1054,7 +1054,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 regra desativada e regra de outra grandeza não disparam |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-064 — Regra R3 do disparo: regra de outra grandeza não dispara
 
@@ -1067,7 +1067,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 regra desativada e regra de outra grandeza não disparam |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-065 — Regra R4 do disparo: leitura dentro do limite não dispara e reinicia a duração
 
@@ -1080,7 +1080,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta até a sequência fora do limite completar 10 min desde a leitura dentro. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 uma leitura dentro do limite reinicia a contagem da duração |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-066 — Regra R5 do disparo: duração mínima não cumprida não dispara
 
@@ -1093,7 +1093,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta em t0 + 5 min. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 a condição precisa durar o tempo mínimo da regra, e a duração zero dispara na primeira leitura |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-067 — Regra R6 do disparo: dispositivo em manutenção grava e não dispara
 
@@ -1106,7 +1106,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Leitura gravada, nenhum alerta. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 dispositivo em manutenção grava a leitura e não gera alerta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-068 — Regra R7 do disparo: alerta ativo da mesma regra e dispositivo impede outro
 
@@ -1119,7 +1119,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Continua um único alerta. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-6 enquanto o alerta está ativo, novas leituras fora do limite não abrem outro |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-069 — Duração mínima: −1 é recusada e 0 é aceita
 
@@ -1132,7 +1132,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | −1 recusada com "A duração mínima não pode ser negativa."; 0 aceita e dispara na primeira leitura. |
 | Teste automatizado | `us23.e2e-spec.ts` › US23-5 duração zero é aceita: dispara na primeira leitura |
 | Execução | automatizado e manual; manual: Recusa de −1 (o teste automatizado usa −5, da mesma classe). Tela: Regras de alerta, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-070 — Duração mínima de 10 min: em t0 + 5 não dispara, em t0 + 10 dispara
 
@@ -1145,7 +1145,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta só na leitura de t0 + 10 min. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 a condição precisa durar o tempo mínimo da regra, e a duração zero dispara na primeira leitura |
 | Execução | automatizado e manual; manual: Borda exata em t0 + 9 min 59 s, que o teste automatizado não cobre. Tela: Publicação MQTT nas fronteiras, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-071 — Operador na fronteira: leitura igual ao limite
 
@@ -1158,7 +1158,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | `>`: 3,5 não dispara, 3,51 dispara. `>=`: 3,49 não dispara, 3,5 dispara. |
 | Teste automatizado | `unidade/regra.spec.ts` › US23-1 valor limite: leitura %s 3,5 com %d dá %s |
 | Execução | automatizado e manual; manual: Publicação MQTT ponta a ponta, que inclui o encerramento por normalização, feito em SQL. Tela: Publicação MQTT nas fronteiras, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-072 — Alerta T1: aberto, reconhecer com providência, em atendimento
 
@@ -1171,7 +1171,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Situação em atendimento. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-2 grava o usuário, a data e a hora e a providência, e o alerta passa a em atendimento |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-073 — Alerta T2: em atendimento, reconhecer de novo, recusado
 
@@ -1184,7 +1184,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 409 com quem reconheceu e quando; situação inalterada. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-3 a segunda tentativa é recusada com a mensagem de quem reconheceu e quando |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-074 — Alerta T3: encerrado, reconhecer, recusado
 
@@ -1197,7 +1197,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Recusado; situação inalterada. |
 | Teste automatizado | `us04.e2e-spec.ts` › US04-3 alerta encerrado ou inexistente não é reconhecido |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-075 — Alerta T4: aberto não grave, leitura normal, encerrado
 
@@ -1210,7 +1210,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Situação encerrado, com data de encerramento. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-1 atenção e informativo sem reconhecimento são encerrados quando a leitura volta ao normal |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-076 — Alerta T5: aberto grave, leitura normal, continua aberto
 
@@ -1223,7 +1223,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Situação aberto. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-1 o alerta grave sem reconhecimento nunca é encerrado automaticamente |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-077 — Alerta T6: em atendimento, leitura normal, continua em atendimento
 
@@ -1236,7 +1236,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Situação em atendimento. |
 | Teste automatizado | `us28.e2e-spec.ts` › US28-1 o alerta já reconhecido não é encerrado pela normalização |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-078 — Situação operando: comunicação dentro de duas vezes o intervalo
 
@@ -1249,7 +1249,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Situação operando. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-2 o dispositivo passa de sem comunicação a operando<br>`unidade/comunicacao.spec.ts` › US22-6 o limite é duas vezes o intervalo do dispositivo, senão o do tipo, senão 30 minutos<br>`unidade/comunicacao.spec.ts` › US22-6 valor limite: no limite exato continua operando, um segundo depois fica sem comunicação<br>`unidade/comunicacao.spec.ts` › US22-6 partições: nunca comunicou, manutenção e inativo<br>`us22.e2e-spec.ts` › US22-6 a situação e o limite calculados no banco batem com a regra de referência da suíte de unidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-079 — Situação sem comunicação: além de duas vezes o intervalo, ou nunca comunicou
 
@@ -1262,7 +1262,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Sem comunicação depois de 2 × intervalo do dispositivo, do tipo ou, sem nenhum, de 30 min; o que nunca comunicou também. |
 | Teste automatizado | `us22.e2e-spec.ts` › US22-6 sem comunicação passa de duas vezes o intervalo do dispositivo, do tipo ou, sem nenhum, de 30 minutos<br>`unidade/comunicacao.spec.ts` › US22-6 o limite é duas vezes o intervalo do dispositivo, senão o do tipo, senão 30 minutos<br>`unidade/comunicacao.spec.ts` › US22-6 valor limite: no limite exato continua operando, um segundo depois fica sem comunicação<br>`unidade/comunicacao.spec.ts` › US22-6 partições: nunca comunicou, manutenção e inativo<br>`us22.e2e-spec.ts` › US22-6 a situação e o limite calculados no banco batem com a regra de referência da suíte de unidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-080 — Situação manutenção: grava a leitura e não dispara alerta
 
@@ -1275,7 +1275,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Leitura gravada, nenhum alerta, situação manutenção. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-4 dispositivo em manutenção grava a leitura e não gera alerta<br>`unidade/comunicacao.spec.ts` › US22-6 partições: nunca comunicou, manutenção e inativo<br>`us22.e2e-spec.ts` › US22-6 a situação e o limite calculados no banco batem com a regra de referência da suíte de unidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-081 — Situação inativo: mensagem descartada e dispositivo fora do mapa
 
@@ -1288,7 +1288,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Mensagem descartada e registrada no log; dispositivo marcado como inativo para o mapa deixar de fora. |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-3 mensagem inválida é descartada sem derrubar o assinante e fica registrada no log<br>`us01.e2e-spec.ts` › US01-1 a listagem informa o estado, para o mapa deixar de fora os inativos<br>`unidade/comunicacao.spec.ts` › US22-6 partições: nunca comunicou, manutenção e inativo<br>`us22.e2e-spec.ts` › US22-6 a situação e o limite calculados no banco batem com a regra de referência da suíte de unidade |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-082 — Manter desabilitados, com a marca "backlog", os elementos das histórias de prioridade baixa
 
@@ -1301,7 +1301,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Visíveis, desabilitados e com a marca "backlog" no título. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Inspeção das telas. Tela: Elementos do backlog, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ## Casos do escopo estendido
 
@@ -1316,7 +1316,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Leituras gravadas com origem `simulador`; dispositivos e alertas que vêm dele com a marca "simulado". |
 | Teste automatizado | `tt02.e2e-spec.ts` › TT02-9 a leitura do simulador é gravada com origem simulador e o dispositivo e o alerta aparecem como simulados |
 | Execução | automatizado e manual; manual: Marca "simulado" nas três telas. Tela: Dispositivos e histórico, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-084 — Listar as ocorrências com as colunas e as visões do protótipo
 
@@ -1329,7 +1329,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Protocolo, gravidade, categoria, bairro, órgão, situação e abertura; abertas antes das em atendimento, depois a mais grave e a mais antiga; visão inválida, 400. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-1 cada ocorrência tem protocolo, gravidade, categoria, bairro, órgão, situação e abertura<br>`us06.e2e-spec.ts` › US06-1 em andamento, abertas vêm antes das em atendimento; depois a mais grave e a mais antiga<br>`us06.e2e-spec.ts` › US06-1 visão inválida é recusada |
 | Execução | automatizado e manual; manual: Lista e visões na tela. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-085 — Mostrar no detalhe o histórico do atendimento com os alertas
 
@@ -1342,7 +1342,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Histórico com a geração e o reconhecimento do alerta e os registros do atendimento, em ordem; inexistente, 404. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-2 o histórico junta a geração e o reconhecimento do alerta com os registros do atendimento<br>`us06.e2e-spec.ts` › US06-2 ocorrência inexistente responde 404 |
 | Execução | automatizado e manual; manual: Detalhe na tela. Tela: Ocorrências, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-086 — Registrar providência e mudar a situação
 
@@ -1355,7 +1355,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Primeira providência passa a em atendimento; as seguintes mantêm; vazia ou situação inválida recusada. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-3 a primeira providência de uma ocorrência aberta passa para em atendimento<br>`us06.e2e-spec.ts` › US06-3 providência em atendimento mantém a situação e também entra no histórico<br>`us06.e2e-spec.ts` › US06-3 providência vazia ou situação inválida é recusada |
 | Execução | automatizado e manual; manual: Caixa de providência na tela. Tela: Ocorrências, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-087 — Encerrar com observação obrigatória
 
@@ -1368,7 +1368,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Sem observação, recusado; encerrar grava a data e encerra só os alertas em atendimento; encerrada não aceita atualização. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-4 sem observação o encerramento é recusado<br>`us06.e2e-spec.ts` › US06-4 encerrar grava a data e encerra só os alertas vinculados em atendimento<br>`us06.e2e-spec.ts` › US06-4 ocorrência encerrada não aceita outra atualização |
 | Execução | automatizado e manual; manual: Encerramento na tela. Tela: Ocorrências, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-088 — Tirar a encerrada da lista em andamento e do mapa, mantendo a consulta
 
@@ -1381,7 +1381,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Sai de Em andamento e do mapa; aparece em Encerradas e abre o detalhe. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-5 a encerrada sai da lista em andamento e do mapa, e continua consultável |
 | Execução | automatizado e manual; manual: Lista e mapa na tela. Tela: Ocorrências, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-089 — Registrar providência e encerramento no log e em tempo real
 
@@ -1394,7 +1394,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Registros no log; a segunda sessão recebe as mudanças sem recarregar. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-6 providência e encerramento geram registros no log de atividades<br>`us06.e2e-spec.ts` › US06-6 a atualização e o alerta encerrado chegam às outras telas |
 | Execução | automatizado e manual; manual: Atualização da segunda sessão. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-090 — Avisar quando um dispositivo ativo parar de enviar dados
 
@@ -1407,7 +1407,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta com o tempo e o limite em minutos; sem valor para quem nunca comunicou; nenhum para quem está no limite; regra de sistema visível e não editável. |
 | Teste automatizado | `us07.e2e-spec.ts` › US07-1 a rotina é agendada a cada 60 s quando nada é configurado<br>`us07.e2e-spec.ts` › US07-1 dispositivo ativo além do limite da US22 recebe o alerta, com o tempo e o limite em minutos<br>`us07.e2e-spec.ts` › US07-1 dispositivo que nunca se comunicou recebe o alerta sem valor, e não uma contagem desde a instalação<br>`us07.e2e-spec.ts` › US07-1 dispositivo dentro do limite não recebe alerta<br>`us07.e2e-spec.ts` › US07-1 a regra de sistema aparece na tela de regras, marcada, e não pode ser editada nem desativada<br>`us07.e2e-spec.ts` › US07-1 o alerta não muda a cor do dispositivo, que continua sem comunicação |
 | Execução | automatizado e manual; manual: Regra de sistema marcada na tela de regras. Tela: Regras de alerta, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-091 — Manter no máximo um alerta de sem comunicação por dispositivo
 
@@ -1420,7 +1420,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Um único alerta ativo. |
 | Teste automatizado | `us07.e2e-spec.ts` › US07-2 há no máximo um alerta de sem comunicação ativo por dispositivo |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-092 — Encerrar o aviso quando o dispositivo voltar
 
@@ -1433,7 +1433,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O aberto encerra; o reconhecido continua em atendimento. |
 | Teste automatizado | `us07.e2e-spec.ts` › US07-3 o sinal de vida encerra o alerta aberto<br>`us07.e2e-spec.ts` › US07-3 alerta já reconhecido continua em atendimento |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-093 — Não avisar dispositivo em manutenção ou inativo
 
@@ -1446,7 +1446,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `us07.e2e-spec.ts` › US07-4 dispositivo em manutenção ou inativo não gera o alerta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-094 — Coletar a vazão do Open-Meteo Flood API
 
@@ -1459,7 +1459,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Vazão até hoje como leitura de origem `open-meteo` e os dias seguintes como previsão, sem duplicar; não muda a comunicação do sensor. |
 | Teste automatizado | `us09.e2e-spec.ts` › US09-1 a rotina é agendada a cada 60 min quando nada é configurado<br>`us09.e2e-spec.ts` › US09-1 grava a vazão diária até hoje como leitura e os dias seguintes como previsão, sem duplicar<br>`us09.e2e-spec.ts` › US09-1 a vazão externa não muda a última comunicação nem a última leitura do sensor |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-095 — Mostrar cada ponto do rio com nível, tendência, série e vazão
 
@@ -1472,7 +1472,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Por arroio: nível atual, tendência da última hora, série de 6 h, vazão de hoje e a cota da menor regra ativa de nível; sensor inativo sem nível e com vazão. |
 | Teste automatizado | `us09.e2e-spec.ts` › US09-2 cada ponto traz o nível atual, a tendência da última hora, a série de 6 h e a vazão de hoje<br>`us09.e2e-spec.ts` › US09-2 a cota vem da menor regra ativa de nível acima de um limite<br>`us09.e2e-spec.ts` › US09-2 sensor inativo continua como ponto, sem nível, e com a vazão do Open-Meteo |
 | Execução | automatizado e manual; manual: Cartões dos rios na tela. Tela: Rios, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-096 — Atualizar a tela dos rios em tempo real
 
@@ -1485,7 +1485,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O cartão muda sem recarregar. |
 | Teste automatizado | `us09.e2e-spec.ts` › US09-3 leitura de nível nova e coleta concluída chegam às telas em tempo real |
 | Execução | automatizado e manual; manual: Atualização da tela. Tela: Rios, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-097 — Registrar a falha da fonte sem derrubar a rotina
 
@@ -1498,7 +1498,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Erro registrado na fonte; a rotina não lança; a última coleta boa continua valendo. |
 | Teste automatizado | `us09.e2e-spec.ts` › US09-4 erro de rede ou HTTP é registrado, a rotina não lança e a última coleta boa continua |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-098 — Disparar o risco de enchente pela combinação de nível e chuva ou vazão
 
@@ -1511,7 +1511,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O alerta só abre com nível acima da cota e chuva ou vazão prevista acima do limite, no mesmo bairro e na janela. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 a regra de risco de enchente vem na carga inicial: cota 3,5 m, chuva 50 mm, vazão prevista 15 m³/s, janela de 24 h |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-099 — Informar no alerta as duas leituras que o compõem
 
@@ -1524,7 +1524,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Leitura de nível e de chuva (ou vazão prevista), com valores, limites e dispositivos. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-2 o alerta informa a leitura de nível e a de chuva que o compõem |
 | Execução | automatizado e manual; manual: Composição no painel do alerta. Tela: Alertas e faixa grave, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-100 — Ajustar os limites da regra de enchente pela tela
 
@@ -1537,7 +1537,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | O novo limite muda o disparo e entra no histórico; os inválidos são recusados. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-3 mudar o limite de chuva muda o disparo e fica no histórico da regra<br>`us10.e2e-spec.ts` › US10-3 limites inválidos, troca de grandeza e campos de enchente numa regra simples são recusados |
 | Execução | automatizado e manual; manual: Bloco de três campos no formulário. Tela: Regras de alerta, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-101 — Regra E1 da enchente: nível acima da cota e chuva forte no bairro, na janela, abre
 
@@ -1550,7 +1550,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta aberto. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 nível acima da cota com chuva forte no mesmo bairro dentro da janela abre o alerta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-102 — Regra E2 da enchente: nível acima da cota e vazão prevista acima do limite, sem chuva, abre
 
@@ -1563,7 +1563,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta aberto. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 a vazão prevista do Open-Meteo acima do limite também compõe o alerta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-103 — Regra E3 da enchente: só o nível acima da cota não abre
 
@@ -1576,7 +1576,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 só o nível acima da cota não basta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-104 — Regra E4 da enchente: nível abaixo da cota não abre, mesmo com chuva
 
@@ -1589,7 +1589,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 nível abaixo da cota não dispara, mesmo com chuva |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-105 — Regra E5 da enchente: chuva em outro bairro ou fora da janela não conta
 
@@ -1602,7 +1602,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nenhum alerta. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 chuva em outro bairro ou fora da janela não conta |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-106 — Regra E6 da enchente: com alerta ativo, novas leituras não abrem outro
 
@@ -1615,7 +1615,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Continua um único alerta. |
 | Teste automatizado | `us10.e2e-spec.ts` › US10-1 enquanto o alerta está ativo, novas leituras não abrem outro |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-107 — Cota do rio na fronteira: nível igual à cota
 
@@ -1628,7 +1628,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 3,5 não abre o alerta nem marca "acima da cota"; 3,51 abre e marca. |
 | Teste automatizado | não há |
 | Execução | manual; manual: Publicação MQTT e conferência na tela dos rios. Tela: Publicação MQTT nas fronteiras, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-108 — Calcular os seis indicadores a partir das leituras
 
@@ -1641,7 +1641,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Nível dos rios, fluxo, qualidade do ar (IQAr), iluminação, ruído e vagas, na ordem do protótipo, calculados das leituras da última hora. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-1 a faixa traz os seis indicadores do protótipo, na ordem<br>`us12.e2e-spec.ts` › US12-1 nível dos rios é o maior nível medido na última hora<br>`us12.e2e-spec.ts` › US12-1 qualidade do ar é o pior IQAr (CONAMA 506/2024) da média de 24 h do PM2.5 das estações<br>`us12.e2e-spec.ts` › US12-1 iluminação pública é a parcela de pontos de luz respondendo<br>`us12.e2e-spec.ts` › US12-1 fluxo de veículos é a velocidade média dos sensores de tráfego e ruído é o maior nível sonoro<br>`unidade/indicadores.spec.ts` › US12-1 os seis indicadores vêm na ordem do protótipo<br>`unidade/indicadores.spec.ts` › US12-1 nível dos rios: o maior nível, a variação por hora e o ponto acima da cota<br>`unidade/indicadores.spec.ts` › US12-1 nível dos rios: abaixo da cota conta os pontos e sem cota não tem barra<br>`unidade/indicadores.spec.ts` › US12-1 fluxo: média das velocidades e variação contra a média de uma hora antes<br>`unidade/indicadores.spec.ts` › US12-1 qualidade do ar: pior IQAr pela média de 24 h, com a qualidade e os bairros<br>`unidade/indicadores.spec.ts` › US12-1 qualidade do ar: sem média usa a última leitura, e a variação acima de 5 pontos aparece com sinal<br>`unidade/indicadores.spec.ts` › US12-1 iluminação: parcela de pontos respondendo pelo total dos controladores<br>`unidade/indicadores.spec.ts` › US12-1 ruído: o maior nível, dentro ou acima do limite da regra<br>`unidade/indicadores.spec.ts` › US12-1 vagas: soma das vagas livres e variação |
 | Execução | automatizado e manual; manual: Faixa de indicadores na tela. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-109 — Mostrar valor, unidade, variação e nota, em vermelho com alerta ativo
 
@@ -1654,7 +1654,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Valor, unidade, variação e nota em cada indicador; com alerta grave, o indicador fica vermelho; com atenção, só a barra fica âmbar. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-2 cada indicador traz valor, unidade, variação e nota, e fica grave com alerta grave ativo da grandeza<br>`unidade/indicadores.spec.ts` › US12-2 tabela de decisão do estado: grave vence atenção, atenção vence estável, só da mesma grandeza |
 | Execução | automatizado e manual; manual: Cores do indicador na tela. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-110 — Mostrar "sem dados" sem leitura na última hora
 
@@ -1667,7 +1667,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Indicador "sem dados", sem valor. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-3 indicador sem leitura na última hora aparece sem dados, sem valor inventado<br>`unidade/indicadores.spec.ts` › US12-3 sem leitura, todos ficam sem dados e sem valor |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-111 — Montar os gráficos de ocorrências a partir das ocorrências registradas
 
@@ -1680,7 +1680,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | "Ocorrências abertas hoje" com o acumulado por hora e a média das quatro semanas; "por bairro" com os cinco maiores das 24 h. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-4 "abertas hoje" acumula as de hoje por hora contra a média das quatro semanas anteriores<br>`us12.e2e-spec.ts` › US12-4 "por bairro" conta as ocorrências das últimas 24 horas |
 | Execução | automatizado e manual; manual: Gráficos na tela. Tela: Mapa e painel, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-112 — Atualizar o painel em tempo real
 
@@ -1693,7 +1693,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Os indicadores mudam sem recarregar. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-5 a leitura nova avisa as telas e muda o indicador na consulta seguinte |
 | Execução | automatizado e manual; manual: Atualização da tela. Tela: Mapa e painel, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-113 — Faixas do IQAr do PM2.5 nas bordas e no arredondamento
 
@@ -1706,7 +1706,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Índices 0, 40, 41, 80, 81, 120, 121, 200, 201, 400 e 400; 40, 41 e 41 (x,5 vai para o par); boa, moderada, moderada, ruim, ruim, muito ruim, muito ruim, péssima e péssima. |
 | Teste automatizado | `us12.e2e-spec.ts` › US12-1 qualidade do ar é o pior IQAr (CONAMA 506/2024) da média de 24 h do PM2.5 das estações<br>`unidade/iqar.spec.ts` › US12-1 valor limite: %d µg/m³ dá índice %d<br>`unidade/iqar.spec.ts` › US12-1 a concentração é arredondada antes, e x,5 vai para o par<br>`unidade/iqar.spec.ts` › US12-1 partições inválidas: negativa vale zero e acima de 300 fica no teto de 400<br>`unidade/iqar.spec.ts` › US12-1 valor limite: índice %d é %s, %s |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-114 — Buscar por protocolo, endereço, bairro e código de dispositivo
 
@@ -1719,7 +1719,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Resultados correspondentes; `%` e `_` tratados como texto; sem token, 401. |
 | Teste automatizado | `us26.e2e-spec.ts` › US26-1 encontra a ocorrência pelo protocolo<br>`us26.e2e-spec.ts` › US26-1 encontra a ocorrência e o dispositivo pelo endereço<br>`us26.e2e-spec.ts` › US26-1 encontra pelo bairro<br>`us26.e2e-spec.ts` › US26-1 encontra o dispositivo pelo código<br>`us26.e2e-spec.ts` › US26-1 trata % e _ como texto, não como curinga<br>`us26.e2e-spec.ts` › US26-1 exige autenticação |
 | Execução | automatizado e manual; manual: Lista sob a caixa na tela. Tela: Busca do cabeçalho, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-115 — Agrupar os resultados e abrir o detalhe
 
@@ -1732,7 +1732,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Grupos Ocorrências e Dispositivos; Enter abre a ocorrência; o dispositivo abre no painel de edição; Esc fecha. |
 | Teste automatizado | `us26.e2e-spec.ts` › US26-2 separa ocorrências e dispositivos, e cada resultado abre o seu detalhe |
 | Execução | automatizado e manual; manual: Navegação pelo teclado e abertura do detalhe. Tela: Busca do cabeçalho, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-116 — Ignorar maiúsculas e acentos
 
@@ -1745,7 +1745,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Mesmos resultados. |
 | Teste automatizado | `us26.e2e-spec.ts` › US26-3 sem acento e em maiúsculas encontra o mesmo que o texto original |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-117 — Mínimo de três caracteres na busca
 
@@ -1758,7 +1758,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Com 2 caracteres, a tela pede pelo menos 3 e a API responde 400, sem contar os espaços; com 3, busca. |
 | Teste automatizado | `us26.e2e-spec.ts` › US26-1 recusa menos de três caracteres, sem contar os espaços<br>`us26.e2e-spec.ts` › US26-1 trata % e _ como texto, não como curinga |
 | Execução | automatizado e manual; manual: Aviso de mínimo na tela. Tela: Busca do cabeçalho, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-118 — Cadastrar, editar e inativar usuários, sem excluir
 
@@ -1771,7 +1771,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Senha provisória mostrada uma vez e válida; inativo não entra e a sessão aberta cai; continua na lista; nova senha invalida a anterior; recusas com mensagem; o administrador não inativa nem rebaixa a si mesmo. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-1 cadastra com nome, e-mail funcional, órgão e perfil, e a senha provisória entra<br>`us21.e2e-spec.ts` › US21-1 recusa e-mail fora do domínio funcional, e-mail repetido, órgão ou perfil inexistente e campo vazio<br>`us21.e2e-spec.ts` › US21-1 edita nome, órgão e perfil<br>`us21.e2e-spec.ts` › US21-1 inativa sem excluir: o usuário deixa de entrar, a sessão aberta cai e ele continua na lista<br>`us21.e2e-spec.ts` › US21-1 o administrador não inativa nem muda o próprio perfil<br>`us21.e2e-spec.ts` › US21-1 nova senha provisória substitui a anterior |
 | Execução | automatizado e manual; manual: Tela de usuários e senha provisória. Tela: Usuários e perfis, cerca de 15 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-119 — Recusar com 403 o que o perfil não permite
 
@@ -1784,7 +1784,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Os quatro perfis acumulam consultar, operar, configurar e administrar; a recusa explica o motivo; na tela, botões não permitidos desabilitados e a aba Usuários apagada para quem não administra. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-2 os quatro perfis acumulam consultar, operar, configurar e administrar<br>`us21.e2e-spec.ts` › US21-2 o perfil de consulta não reconhece alerta nem registra providência, e a recusa explica o motivo |
 | Execução | automatizado e manual; manual: Botões e aba por perfil. Tela: Usuários e perfis, cerca de 20 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-120 — Ver as ocorrências de todos e atualizar só as do próprio órgão
 
@@ -1797,7 +1797,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Vê as duas; na da Mobilidade, 403 e a tela mostra quem pode atualizar; na da Defesa Civil, aceita. Sem órgão, qualquer operador atualiza; o administrador atualiza qualquer uma. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-3 operador da Defesa Civil vê a ocorrência da Mobilidade e não a atualiza; atualiza a da Defesa Civil<br>`us21.e2e-spec.ts` › US21-3 ocorrência sem órgão pode ser atualizada por qualquer operador, e o administrador atualiza a de qualquer órgão |
 | Execução | automatizado e manual; manual: Detalhe da ocorrência de outro órgão. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-121 — Registrar no log toda alteração de usuário ou perfil
 
@@ -1810,7 +1810,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Cadastro, duas edições e nova senha, com o autor e antes e depois só dos campos alterados; a repetição sem mudança não gera registro; nenhuma senha no log. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-4 cadastro, edição de perfil e órgão, inativação e nova senha ficam no log com o autor |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-122 — Perfil P1, consulta: permissões nas rotas
 
@@ -1823,7 +1823,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Consulta 200; operar, configurar dispositivo, configurar regra e administrar 403. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-2 perfil consulta: consultar, operar, configurar dispositivo, configurar regra e administrar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-123 — Perfil P2, operador: permissões nas rotas
 
@@ -1836,7 +1836,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Consulta 200; operar passa da permissão (400 da validação); configurar e administrar 403. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-2 perfil operador: consultar, operar, configurar dispositivo, configurar regra e administrar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-124 — Perfil P3, gestor: permissões nas rotas
 
@@ -1849,7 +1849,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Consulta 200; operar e configurar passam da permissão (400); administrar 403. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-2 perfil gestor: consultar, operar, configurar dispositivo, configurar regra e administrar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-125 — Perfil P4, administrador: permissões nas rotas
 
@@ -1862,7 +1862,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Tudo passa da permissão: consulta e administrar 200, as escritas 400 da validação. |
 | Teste automatizado | `us21.e2e-spec.ts` › US21-2 perfil administrador: consultar, operar, configurar dispositivo, configurar regra e administrar |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-126 — Aplicar as regras de PM2.5 e PM10 às leituras do Open-Meteo de cada bairro
 
@@ -1875,7 +1875,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Uma requisição para todos os bairros, sem horas futuras e sem duplicar; alerta para o Centro e encerrado quando a leitura volta; a duração conta horas seguidas; falha da fonte registrada. |
 | Teste automatizado | `us18.e2e-spec.ts` › US18-1 uma requisição traz PM2.5 e PM10 de todos os bairros, gravados por bairro sem duplicar e sem as horas futuras<br>`us18.e2e-spec.ts` › US18-1 a regra dispara para o bairro acima do limite e o alerta não grave se encerra quando a leitura volta<br>`us18.e2e-spec.ts` › US18-1 a duração mínima conta as horas seguidas acima do limite no bairro<br>`us18.e2e-spec.ts` › US18-1 falha do Open-Meteo fica registrada na fonte, sem derrubar a rotina |
 | Execução | automatizado e manual; manual: Coleta real uma vez por rodada, contra a fonte. Tela: Publicação MQTT nas fronteiras, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-127 — Indicar o bairro e a fonte no alerta
 
@@ -1888,7 +1888,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Sem dispositivo, com "Open-Meteo", o bairro e a fonte "Open-Meteo Air Quality API"; no mapa, dentro do bairro. |
 | Teste automatizado | `us18.e2e-spec.ts` › US18-2 o alerta do bairro não tem dispositivo e traz o bairro, a fonte e a posição dentro do bairro |
 | Execução | automatizado e manual; manual: Painel do alerta mostrando a fonte. Tela: Alertas e faixa grave, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-128 — Sugerir o Meio Ambiente ao abrir ocorrência do alerta de poluição
 
@@ -1901,7 +1901,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Poluição: órgão Meio Ambiente e categoria Qualidade do ar preenchidos, com a nota de sugestão; ocorrência vinculada. Nível: sem sugestão. |
 | Teste automatizado | `us18.e2e-spec.ts` › US18-3 o alerta de poluição sugere o Meio Ambiente e a ocorrência aberta dele fica vinculada<br>`us18.e2e-spec.ts` › US18-3 alerta de outra grandeza não sugere órgão |
 | Execução | automatizado e manual; manual: Formulário preenchido na tela. Tela: Ocorrências, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-129 — Abrir o gráfico histórico com período de 24 h, 7 dias ou 30 dias
 
@@ -1914,7 +1914,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 24 h em blocos de 5 min; 7 e 30 dias por hora com faixa mínimo–máximo; recusas com mensagem; dispositivo sem leitura, histórico vazio. |
 | Teste automatizado | `us19.e2e-spec.ts` › US19-1 sem parâmetros, 24 h da grandeza da última leitura, em blocos de 5 min<br>`us19.e2e-spec.ts` › US19-1 7 e 30 dias usam blocos de 1 h e só as leituras do período<br>`us19.e2e-spec.ts` › US19-1 recusa período inválido, grandeza sem leitura e dispositivo inexistente<br>`us19.e2e-spec.ts` › US19-1 dispositivo sem leituras devolve o histórico vazio, sem grandeza |
 | Execução | automatizado e manual; manual: Tela do histórico. Tela: Dispositivos e histórico, cerca de 10 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-130 — Mostrar a linha do limite das regras ativas
 
@@ -1927,7 +1927,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Linha tracejada da regra ativa (55 µg/m³) e legenda; regras desativadas não aparecem. |
 | Teste automatizado | `us19.e2e-spec.ts` › US19-2 traz as regras ativas da grandeza, sem as desativadas |
 | Execução | automatizado e manual; manual: Linhas tracejadas no gráfico. Tela: Dispositivos e histórico, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-131 — Mostrar o minigráfico das últimas 3 h
 
@@ -1940,7 +1940,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Coluna "Últimas 3 h" com nove barras de 20 min; "–" sem leitura. |
 | Teste automatizado | `us19.e2e-spec.ts` › US19-3 nove médias de 20 min na grandeza da última leitura, nulas onde não houve leitura |
 | Execução | automatizado e manual; manual: Barrinha na tela. Tela: Dispositivos e histórico, cerca de 5 min. |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-132 — Agregar no banco os períodos longos
 
@@ -1953,7 +1953,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | No máximo um ponto por hora, somando as mil leituras; mínimo ≤ média ≤ máximo. |
 | Teste automatizado | `us19.e2e-spec.ts` › US19-4 mil leituras em 30 dias chegam como no máximo um ponto por hora |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-133 — Ocorrência O1: aberta, primeira providência, em atendimento
 
@@ -1966,7 +1966,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Em atendimento. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-3 a primeira providência de uma ocorrência aberta passa para em atendimento |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-134 — Ocorrência O2: em atendimento, nova providência, em atendimento
 
@@ -1979,7 +1979,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Continua em atendimento e entra no histórico. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-3 providência em atendimento mantém a situação e também entra no histórico |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-135 — Ocorrência O3: voltar para aberta, recusado
 
@@ -1992,7 +1992,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 400; situação inalterada. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-3 providência vazia ou situação inválida é recusada |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-136 — Ocorrência O4: encerrar sem observação, recusado
 
@@ -2005,7 +2005,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 400; continua aberta. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-4 sem observação o encerramento é recusado |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-137 — Ocorrência O5: aberta, encerrar com observação, encerrada
 
@@ -2018,7 +2018,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Encerrada, com data; alertas em atendimento encerrados. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-4 encerrar grava a data e encerra só os alertas vinculados em atendimento |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-138 — Ocorrência O6: encerrada, nova providência, recusado
 
@@ -2031,7 +2031,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | 409; continua encerrada. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-4 ocorrência encerrada não aceita outra atualização |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |
 
 ### CT-139 — Alerta T7: em atendimento, encerrar a ocorrência vinculada, encerrado
 
@@ -2044,4 +2044,4 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Resultado esperado | Alerta encerrado; um alerta aberto vinculado continua aberto. |
 | Teste automatizado | `us06.e2e-spec.ts` › US06-4 encerrar grava a data e encerra só os alertas vinculados em atendimento |
 | Execução | automatizado |
-| Na execução | resultado obtido · passou, falhou ou bloqueado · evidência (checkpoint 2) |
+| Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |

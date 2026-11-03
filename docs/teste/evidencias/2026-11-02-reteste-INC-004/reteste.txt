@@ -1,0 +1,22 @@
+Reteste do INC-004 pelo CT-129 e pelo CT-130 · 02/11/2026 21:52 a 21:58 (BRT)
+Versão corrigida: commit a73fdd9 (branch sprint-6-inc-004, PR #30), construída numa instância separada
+(projeto do Compose scoc-inc004, interface em http://localhost:8180), com banco novo e o simulador publicando.
+Navegador: Google Chrome no macOS, janela redimensionada para 1440 × 900.
+
+CT-129, Dispositivos › SN-014 › Ver histórico, período 24 h (CT-129.png):
+- svg do gráfico com 320 px de altura e a largura da área do gráfico (escala 1);
+- fonte dos rótulos dos eixos com 11 px (token --texto-legenda); a maior caixa de texto do gráfico tem 13 px de altura;
+- a seção do gráfico, com o eixo do tempo e a legenda das duas regras ativas de nível, termina a 634 px
+  do topo da página; a página não tem rolagem.
+
+CT-130, histórico de PM2.5 da EA-03 (CT-130.png):
+- linha tracejada do limite da regra ativa "Material particulado elevado" (55 µg/m³), com o rótulo à direita;
+- legenda dos limites no rodapé do gráfico; gráfico inteiro visível sem rolagem.
+
+Observação: a instância era nova, então o período de 24 h tinha poucos pontos. A altura do gráfico é fixa
+(320 px) e não depende da quantidade de pontos nem do período.
+
+Regressão na versão corrigida, com o banco de teste recriado: unidade 53/53 (unidade.txt) e
+integração 216/216 (integracao.txt).
+
+Resultado: passou.
