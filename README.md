@@ -276,8 +276,29 @@ validados com os órgãos antes de qualquer uso real.
 
 ## Situação
 
-A Sprint 4 é a primeira sprint de implementação. Os itens em andamento e seus critérios de aceite
-estão em [`docs/Sprint_4_Replanejamento.pdf`](docs/Sprint_4_Replanejamento.pdf).
+A Sprint 6 é a sprint em andamento. A implementação foi das Sprints 4 a 6. A versão entregue é a
+tag `v1.0-sprint-6` (commit `01ecf29`), a `main` no corte de 31/10/2026. Ela traz o núcleo
+obrigatório das Sprints 1 a 5 e os itens da Sprint 6: TT02-9, US06, US07, US09, US10, US12, US18,
+US19, US21 e US26. A US17 (qualidade do ar por região) e a US27 (camadas do mapa) não entraram
+e foram para o backlog da Sprint 7.
+
+A entrega da Sprint 6 é a documentação de teste dessa versão, segundo a ISO/IEC/IEEE 29119-3, em
+[`docs/teste/`](docs/teste/):
+
+- **Plano de teste:** [`plano-de-teste.md`](docs/teste/plano-de-teste.md).
+- **Casos:** [`casos-de-teste.md`](docs/teste/casos-de-teste.md).
+- **Execução:** [`log-de-execucao.md`](docs/teste/log-de-execucao.md) e
+  [`incidentes.md`](docs/teste/incidentes.md).
+
+O documento consolidado está em
+[`docs/Documentacao_de_Teste_Sprint_6.pdf`](docs/Documentacao_de_Teste_Sprint_6.pdf). Depois do
+corte, a `main` só recebe correção de incidente registrado, com o número do incidente no commit,
+teste automatizado e documentação.
+
+Os critérios de aceite de cada sprint e o teste ou a evidência de cada um estão em
+[`docs/sprint-5-criterios.md`](docs/sprint-5-criterios.md),
+[`docs/sprint-6-criterios.md`](docs/sprint-6-criterios.md) e nos arquivos de verificação das
+Sprints 4 a 6.
 
 As tarefas são acompanhadas no [quadro Kanban da equipe](https://trello.com/b/tzN6oUT8).
 
