@@ -142,17 +142,28 @@ describe('US02 lista de alertas ativos ordenados por gravidade', () => {
   });
 
   it('US02-3 os dispositivos sem comunicação são contados por tipo', async () => {
-    const antes = await resumo();
-    await fonte.query(
-      `INSERT INTO dispositivo (identificador, tipo_dispositivo_id, localizacao, atributos_especificos)
-       SELECT $1, id, (SELECT ST_PointOnSurface(area)::geography FROM bairro WHERE nome = 'Olarias'), '{}'
-         FROM tipo_dispositivo WHERE nome = 'Câmera'`,
-      [`U2-${randomUUID().slice(0, 8)}`],
-    );
-    const depois = await resumo();
-    expect(depois.semComunicacao - antes.semComunicacao).toBe(1);
-    const cameras = (r: { semComunicacaoPorTipo: { tipo: string; quantidade: number }[] }) =>
-      r.semComunicacaoPorTipo.find((p) => p.tipo === 'Câmera')?.quantidade ?? 0;
-    expect(cameras(depois) - cameras(antes)).toBe(1);
+    // tipo próprio do caso: a contagem não depende dos dispositivos das outras suítes (INC-003)
+    const sufixo = randomUUID().slice(0, 8);
+    const tipo = `Tipo U2-${sufixo}`;
+    const [{ id: tipoId }] = await fonte.query(`INSERT INTO tipo_dispositivo (nome, categoria) VALUES ($1, 'Teste') RETURNING id::text`, [tipo]);
+    const [nunca, antigo, recente] = ['nunca', 'antigo', 'recente'].map((n) => `U2-${sufixo}-${n}`);
+    try {
+      await fonte.query(
+        `INSERT INTO dispositivo (identificador, tipo_dispositivo_id, localizacao, ultima_comunicacao)
+         SELECT d.identificador, $1, (SELECT ST_PointOnSurface(area)::geography FROM bairro WHERE nome = 'Olarias'), d.ultima
+           FROM (VALUES ($2, NULL::timestamptz), ($3, now() - interval '2 hours'), ($4, now())) AS d (identificador, ultima)`,
+        [tipoId, nunca, antigo, recente],
+      );
+      const lista: { identificador: string; situacao: string }[] = (await autenticado(http().get('/api/dispositivos')).expect(200)).body;
+      const situacao = Object.fromEntries(lista.filter((d) => d.identificador.startsWith(`U2-${sufixo}-`)).map((d) => [d.identificador, d.situacao]));
+      expect(situacao).toEqual({ [nunca]: 'sem_comunicacao', [antigo]: 'sem_comunicacao', [recente]: 'operando' });
+
+      const { semComunicacao, semComunicacaoPorTipo } = await resumo();
+      expect(semComunicacaoPorTipo).toContainEqual({ tipo, quantidade: 2 });
+      expect(semComunicacao).toBe(semComunicacaoPorTipo.reduce((soma: number, p: { quantidade: number }) => soma + p.quantidade, 0));
+    } finally {
+      await fonte.query(`DELETE FROM dispositivo WHERE tipo_dispositivo_id = $1`, [tipoId]);
+      await fonte.query(`DELETE FROM tipo_dispositivo WHERE id = $1`, [tipoId]);
+    }
   });
 });
