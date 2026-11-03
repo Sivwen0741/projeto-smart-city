@@ -17,12 +17,20 @@ plano.
 | 1 | 02/11/2026 21:14:17 a 21:15:40 | Suíte de integração e sistema, em série (`--runInBand`), banco de teste recriado | 216 testes em 20 suítes | 216 | 0 | `2026-11-02-rodada-1/integracao.txt` |
 | 1 | 02/11/2026 21:15:47 a 21:15:55 | Coleção do Postman pelo Newman 6.2.1, contra o ambiente no ar | 74 requisições, 133 verificações | 133 | 0 | `2026-11-02-rodada-1/newman.txt` |
 
+| Reteste INC-001 | 02/11/2026 21:25:36 a 21:28:32 | CT-005 na versão corrigida `0c48fd4`, segunda instância isolada pelo `.env`, com regressão: unidade e integração, banco de teste recriado | 1 caso; 53 + 216 testes | 1; 53 + 216 | 0 | `2026-11-02-reteste-INC-001/` |
+
 Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
 98,79% das linhas.
 
 Todos os comandos do Compose usaram `-p teste-sprint-6`. O nome do projeto é fixo (`scoc`) no
 `docker-compose.yml`, e sem essa opção o clone dividiria o banco com a cópia de desenvolvimento da
 mesma máquina (INC-001).
+
+Dados que as rodadas deixaram no ambiente da versão sob teste e que aparecem nos casos de tela: as
+leituras e as ocorrências 2026-11-0001 e 2026-11-0002, do smoke; e, da coleção do Postman, o
+dispositivo `PM-MVZXSVM8`, a regra "Validação no Postman PM-MVZXSVM8", o usuário
+`postman.<número>@pontagrossa.pr.gov.br`, as ocorrências 2026-11-0003 e 2026-11-0004 e um alerta
+reconhecido.
 
 ## Casos
 
@@ -37,6 +45,7 @@ CT-043, CT-082 e CT-107) entram quando forem executados.
 | CT-002 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
 | CT-003 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `tt01.e2e-spec.ts` |  |
 | CT-005 | 02/11 | `v1.0-sprint-6` | Bryan Charles, autor do README (DT08) | Ambiente subiu e login do administrador funcionou seguindo o README, com `-p` de fora dele (INC-001); painel na tela não conferido. Pré-condição atendida parcialmente: máquina com Node 24.1.0 (Homebrew) e sem PostgreSQL; nenhum passo do README usou o Node (registro abaixo). | pendente (tela) | Registro do CT-005, abaixo | INC-001, INC-002 |
+| CT-005 (reteste do INC-001) | 02/11 | `0c48fd4` | Bryan Charles, autor do README (DT08) | Segunda instância subiu isolada sem `-p`, com `COMPOSE_PROJECT_NAME` e portas no `.env`, como o README corrigido manda; outras cópias intactas; `down -v` removeu só os volumes dela; regressão 53/53 e 216/216. | passou | `2026-11-02-reteste-INC-001/reteste.txt` | INC-001 |
 | CT-006 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-007 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts` |  |
 | CT-008 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us20.e2e-spec.ts` |  |

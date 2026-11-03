@@ -9,7 +9,7 @@ texto, aparência ou incômodo sem efeito no resultado.
 
 | ID | Resumo | Caso | Severidade | Prioridade | Status |
 |---|---|---|---|---|---|
-| INC-001 | O README não informa como subir uma segunda cópia isolada na mesma máquina, e a saída que ele dá (`docker compose down -v`) apaga o banco da outra cópia | CT-005 | baixa | média | aberto |
+| INC-001 | O README não informa como subir uma segunda cópia isolada na mesma máquina, e a saída que ele dá (`docker compose down -v`) apaga o banco da outra cópia | CT-005 | baixa | média | fechado |
 | INC-002 | A seção "Situação" do README está desatualizada: diz que a Sprint 4 é a sprint em andamento | CT-005 | baixa | baixa | aberto |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
@@ -24,7 +24,9 @@ texto, aparência ou incômodo sem efeito no resultado.
 | O que era esperado | Que o README permitisse subir uma segunda cópia isolada sem apagar a primeira, por exemplo indicando `docker compose -p <nome>` ou `COMPOSE_PROJECT_NAME`. A seção 1.4 do plano conta com isso: o ensaio em máquina limpa usa outro nome de projeto e outras portas. Numa máquina realmente limpa, sem outra cópia, o problema não aparece. |
 | Ambiente | macOS 15.7 (arm64), Docker 28.1.1, Compose 2.35.1; clone da tag numa pasta separada; cópia de desenvolvimento parada, com o volume preservado. |
 | Severidade e prioridade | Baixa: a subida funciona numa máquina limpa. Média: afeta todo integrante que executar os casos manuais numa máquina que já tenha a cópia de desenvolvimento. |
-| Status e responsável | Aberto. Correção no repositório de trabalho, não no clone da versão sob teste. |
+| Correção | Commit `0c48fd4` (branch `sprint-6-inc-001`, PR #27, mesclado na `main` em `2074e46`). O `docker-compose.yml` passou a `name: ${COMPOSE_PROJECT_NAME:-scoc}`: sem a variável, o nome continua `scoc`, e o comando do README não muda. O `.env.example` traz o `COMPOSE_PROJECT_NAME` comentado. O README explica como subir a segunda cópia com o `COMPOSE_PROJECT_NAME` e as quatro portas no `.env`, e avisa que o `down -v` vale para o projeto do `.env`. Teste automatizado: não se aplica, porque o nome do projeto é configuração do Compose, fora do alcance das suítes, que rodam dentro dos contêineres. |
+| Reteste | 02/11/2026, 21:25 a 21:28, pelo CT-005, na versão `0c48fd4`, por Bryan Charles. Clone novo da branch, seguindo só o README corrigido, sem `-p`, com a cópia de desenvolvimento e o ambiente da versão sob teste presentes na máquina. A segunda instância subiu como projeto `scoc-teste`, com volumes próprios, nas portas 8180, 3100, 1983 e 5532. Interface, health e login do administrador responderam. Os volumes das outras cópias não mudaram, e o ambiente da versão sob teste ficou de pé o tempo todo. O `docker compose down -v` do README removeu só os volumes de `scoc-teste`. Regressão na versão corrigida: unidade 53/53 e integração 216/216. **Passou.** Evidência: `evidencias/2026-11-02-reteste-INC-001/`. |
+| Status e responsável | Fechado em 02/11/2026, depois do reteste. Bryan Charles. |
 
 ## INC-002 — Seção "Situação" do README desatualizada
 

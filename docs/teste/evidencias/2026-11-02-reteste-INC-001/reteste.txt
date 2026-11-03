@@ -1,0 +1,38 @@
+Reteste do INC-001 pelo CT-005 · 02/11/2026 21:25:36 a 21:28:32 (BRT)
+Versão corrigida: commit 0c48fd4 (branch sprint-6-inc-001, PR #27), clone novo da branch numa pasta separada.
+Estado da máquina antes: cópia de desenvolvimento parada, com os volumes do projeto scoc; ambiente da versão
+sob teste (v1.0-sprint-6, projeto teste-sprint-6) de pé nas portas padrão, com os casos manuais por fazer.
+
+Volumes antes do reteste:
+scoc_dados-banco 2026-10-21T02:16:16Z
+scoc_dados-mosquitto 2026-10-21T02:16:16Z
+teste-sprint-6_dados-banco 2026-11-03T00:11:17Z
+teste-sprint-6_dados-mosquitto 2026-11-03T00:11:17Z
+
+Passos, seguindo só o README da versão corrigida, sem -p:
+1. cp .env.example .env; DB_PASSWORD, JWT_SEGREDO e ADMIN_SENHA gerados com openssl rand -hex 32.
+2. Bloco do README para a segunda cópia, copiado no .env:
+   COMPOSE_PROJECT_NAME=scoc-teste, WEB_PORTA_LOCAL=8180, API_PORTA_LOCAL=3100,
+   MQTT_PORTA_LOCAL=1983, DB_PORTA_LOCAL=5532 (as quatro portas estavam livres).
+3. docker compose up --build -d (21:25:48 a 21:26:12).
+   Contêineres scoc-teste-db-1, -mosquitto-1 e -api-1 saudáveis; -simulador-1 e -web-1 em execução.
+   Banco novo: 13 migrações, território com 5 distritos e 16 bairros, administrador inicial criado,
+   14 dispositivos, 7 regras, ingestão assinando o tópico, simulador com 11 dispositivos.
+4. http://localhost:8180 respondeu 200; /api/health em 3100 respondeu 200 com PostGIS 3.4.3;
+   login do administrador do .env em 3100 devolveu o token, com perfil administrador.
+
+Isolamento:
+- volumes novos só do projeto scoc-teste (scoc-teste_dados-banco e scoc-teste_dados-mosquitto, 00:25:50Z);
+- volumes scoc_* e teste-sprint-6_* com as mesmas datas de criação de antes;
+- ambiente teste-sprint-6 de pé o tempo todo, com a interface em http://localhost:8080 respondendo 200.
+
+Regressão na versão corrigida, com o banco de teste recriado: unidade 53/53, cobertura 98,3% das
+instruções e 81,44% dos desvios (unidade.txt); integração e sistema 216/216 (integracao.txt). Os
+contêineres de teste também ficaram no projeto scoc-teste.
+
+Remoção, como o README indica: docker compose --profile teste down -v (21:28:32), com
+COMPOSE_PROJECT_NAME=scoc-teste no .env. Removeu só scoc-teste_dados-banco e scoc-teste_dados-mosquitto.
+Volumes depois: idênticos à lista de antes do reteste.
+
+Resultado: passou. A segunda instância subiu isolada sem -p, só com o que o README corrigido diz, e o
+down -v do README não alcançou o banco das outras cópias.
