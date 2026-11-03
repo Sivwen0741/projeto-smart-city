@@ -35,3 +35,7 @@ Node e sem PostgreSQL seguindo só o manual, e as lacunas encontradas são corri
 O resultado do CT-005 continua válido para verificar que o ambiente sobe pelo Compose numa máquina
 sem Node e sem PostgreSQL, mas não verifica a suficiência do README para um leitor novo. Lacunas no
 manual de instalação podem não ser detectadas (risco registrado na seção 1.2 do plano de teste).
+
+Segunda restrição, registrada em 02/11/2026: a máquina da execução de 02/11 tinha Node 24.1.0
+instalado, sem PostgreSQL, então a pré-condição de máquina sem Node também não foi atendida. Nenhum
+passo do README usou o Node (detalhes no registro do CT-005 em `docs/teste/log-de-execucao.md`).
