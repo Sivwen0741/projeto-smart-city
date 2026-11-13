@@ -15,7 +15,7 @@ por automação de navegador, sem a independência que o plano previa.
 | Métrica | Valor |
 |---|---|
 | Casos executados / planejados | 139 / 139 (100%). Rodada 1 (02/11, `v1.0-sprint-6`): os 75 casos só automatizados, a parte automatizada dos 57 casos "automatizado e manual" e o ensaio do CT-005. Rodada 2 (12/11, `v1.0.2-sprint-6`): a parte de tela dos 57, os 6 só manuais e a parte do painel do CT-005. Retestes em 12 e 13/11 nas versões corrigidas. |
-| Taxa de aprovação ao final | 139 de 139 (100%). Na primeira execução, 136 de 139 (97,8%): falharam CT-018, CT-111 e CT-127, todos de prioridade média. CT-018 e CT-111 passaram no reteste depois das correções dos INC-007 e INC-006. CT-127 passou na reavaliação: a parte que falhou não tinha critério de origem (INC-008, reclassificado). Prioridade alta: 78 de 78 (100%), todos na primeira execução. |
+| Taxa de aprovação ao final | Primeira execução: 136 de 139 (97,8%). Após correção e reteste: 139 de 139 (100%). Falharam na primeira execução CT-018, CT-111 e CT-127, todos de prioridade média: CT-018 e CT-111 passaram no reteste depois das correções dos INC-007 e INC-006; CT-127 passou na reavaliação, porque a parte que falhou não tinha critério de origem (INC-008, reclassificado). Prioridade alta: 78 de 78 (100%), todos na primeira execução. |
 | Incidentes registrados | 14. Um deles, o INC-008, foi reclassificado como achado investigado, porque nenhum critério o exige. Dos 13 defeitos: alta 0, média 1 (INC-007), baixa 12 (INC-001 a INC-006 e INC-009 a INC-014). Seis vieram dos casos especificados e seis do teste exploratório (INC-009 a INC-014). |
 | Incidentes abertos | 3, todos de severidade baixa: INC-005 (data em mês/dia num navegador em inglês), INC-013 (mensagem de validação que fica na tela) e INC-014 ("Detalhes" de alerta aberto abre o painel de reconhecimento). Os outros dez foram fechados depois do reteste. |
 | Testes automatizados | Na versão final, `v1.0.3-sprint-6` (13/11): unidade 56 de 56, com cobertura de 98,33% das instruções, 82,17% dos desvios, 96% das funções e 98,82% das linhas; integração e sistema 217 de 217, com o banco de teste recriado; coleção do Postman pelo Newman com 74 requisições e 133 de 133 verificações. Os quatro testes a mais (três de unidade e um de integração) vieram com a correção do INC-007. Na `v1.0.2-sprint-6` (12/11), a integração deu 216/216 em cinco execuções seguidas, cada uma com o banco recriado, e o Newman deu 133/133. |
@@ -68,6 +68,19 @@ por automação de navegador, sem a independência que o plano previa.
   poluição "no mapa, dentro do bairro", o que nenhum critério da US18 ou da US01 exige. O caso falhou
   por isso, e o INC-008 foi aberto. Investigado, o incidente foi reclassificado como achado, a
   exigência saiu da ficha, com uma observação, e o caso foi reavaliado no log.
+
+- **Capturas com o pacote da tela em cache (12 e 13/11/2026).** O Chrome guardava o `index.html` da
+  versão anterior e, ao navegar, carregava o pacote JavaScript antigo, mesmo com o servidor já
+  servindo a versão nova. Duas rodadas de reteste foram afetadas: a do INC-006, em 12/11, cujas
+  capturas dos gráficos de rios e do histórico foram descartadas e refeitas em 13/11; e a dos
+  INC-009 a INC-012, em 13/11, cujas primeiras capturas mostravam o código da `v1.0.2` e foram
+  descartadas antes de entrar no repositório. Todas as capturas guardadas desses retestes foram
+  feitas com a página recarregada sem cache e com o pacote conferido no DOM. A rodada 2 não
+  conferiu o pacote no DOM. Entre a `v1.0-sprint-6` e a `v1.0.2-sprint-6`, só o componente de
+  gráfico e a tela de histórico mudaram, e as capturas que dependem deles (CT-095, CT-111, CT-129 e
+  CT-130) foram refeitas em 13/11 na `v1.0.2`, com o pacote conferido, com o mesmo resultado
+  (`evidencias/2026-11-13-recaptura-v1.0.2/`). As demais telas da rodada 2 têm o mesmo código nas
+  duas versões.
 
 ## 5.4 Riscos residuais
 

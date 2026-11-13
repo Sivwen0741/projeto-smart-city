@@ -1,0 +1,16 @@
+Recaptura na v1.0.2-sprint-6 · 13/11/2026 01:59 a 02:01 (BRT)
+Ambiente da rodada 2 (~/teste-v102, projeto teste-v102), religado com os dados da rodada; Chrome no macOS, 1440 × 763.
+Cada página foi recarregada sem cache (Cmd+Shift+R), e o pacote foi conferido no DOM antes da captura:
+index-C--Xtlx1.js, o pacote da imagem da v1.0.2 (o da v1.0-sprint-6 é index-Br1hI4ls.js).
+
+Motivo: na rodada 2, o pacote carregado não foi conferido no DOM. Entre a v1.0-sprint-6 e a v1.0.2-sprint-6
+só mudaram, no código da tela, o componente de gráfico e a tela de histórico (INC-004). As capturas de
+tela cujo conteúdo depende desses dois arquivos foram refeitas com o pacote conferido.
+
+CT-111: eixo 0, 2, 3 com 3 ocorrências hoje; a linha rotulada "2" está na posição de 1,65 (o defeito do
+  INC-006, igual ao da rodada 2). CT-111-1.png (painel inteiro), CT-111-2.png (gráficos).
+CT-095: tela dos rios, série de 6 h com a cota tracejada. CT-095.png.
+CT-129: SN-027, 24 h "Média por 5 min", 7 dias e 30 dias "Média por hora, com a faixa entre o mínimo e o
+  máximo", gráfico de altura fixa com rótulos de 11 px (a correção do INC-004). CT-129-1.png a CT-129-3.png.
+CT-130: EA-03 PM2.5, linha tracejada de 55 µg/m³ e legenda. CT-130.png.
+Resultado: os mesmos da rodada 2. Nenhuma situação muda.

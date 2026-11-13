@@ -33,6 +33,7 @@ plano.
 | Reteste INC-007 | 13/11/2026 00:50 a 00:58 | CT-018 na versão corrigida `85afa54`, banco limpo, listas por texto pela interface de programação, e regressão | 1 caso; 56 + 217 testes | 1; 56 + 217 | 0 | `2026-11-12-reteste-INC-007/` |
 | Reteste INC-009 a INC-012 | 13/11/2026 00:56 a 00:59 | Os quatro achados corrigidos, na `main` com todas as correções (`31aad37`), banco limpo, página recarregada sem cache | 4 achados | 4 | 0 | `2026-11-13-reteste-INC-009-a-012/` |
 | Versão final | 13/11/2026 00:59 a 01:03 | Tag `v1.0.3-sprint-6` (`31aad37`): unidade com cobertura, integração com o banco recriado e Newman | 56 + 217 testes; 74 requisições, 133 verificações | 56 + 217; 133 | 0 | `2026-11-13-v1.0.3/` |
+| Recaptura v1.0.2 | 13/11/2026 01:59 a 02:01 | CT-095, CT-111, CT-129 e CT-130 na `v1.0.2-sprint-6`, página recarregada sem cache e pacote conferido (`index-C--Xtlx1.js`): telas que dependem do único código de tela que mudou entre a `v1.0` e a `v1.0.2` | 4 casos | mesmo resultado da rodada 2 | 0 | `2026-11-13-recaptura-v1.0.2/` |
 
 Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
 98,79% das linhas.
@@ -213,7 +214,10 @@ terminal ("automação de terminal").
 
 **Evidências.** Uma captura por caso em `evidencias/CT-NNN.png`, ou `CT-NNN-1.png`, `CT-NNN-2.png`
 quando o caso tem mais de uma tela, como pedido para esta rodada. As saídas de terminal e banco
-ficam em `evidencias/2026-11-12-rodada-2/`.
+ficam em `evidencias/2026-11-12-rodada-2/`. O pacote da tela não foi conferido no DOM nesta rodada;
+as capturas do CT-095, CT-111, CT-129 e CT-130, que dependem do código que mudou entre a `v1.0` e a
+`v1.0.2`, foram refeitas em 13/11 com o pacote conferido, com o mesmo resultado
+(`evidencias/2026-11-13-recaptura-v1.0.2/`; seção 5.3 do relatório).
 
 **Preparação de dados, registrada como pré-condição.** Tudo pela interface do sistema (tela,
 interface de programação ou MQTT), sem comando manual no banco:
