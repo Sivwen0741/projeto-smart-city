@@ -82,11 +82,13 @@ function duracao(minutos: number): string {
   return `${new Intl.NumberFormat('pt-BR').format(Math.floor(horas / 24))} dias`;
 }
 
+const SINGULAR: Record<string, string> = { pontos: 'ponto', vagas: 'vaga' };
+
 // o limite usa as mesmas casas da medição, como "3,81 m, limite 3,50 m" no protótipo
 export const medida = (valor: number, unidade: string | null, casas = casasDe(valor)) =>
   unidade === 'min'
     ? duracao(valor)
-    : `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${unidade}` : ''}`;
+    : `${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: Math.max(casas, 2) }).format(valor)}${unidade ? ` ${valor === 1 ? (SINGULAR[unidade] ?? unidade) : unidade}` : ''}`;
 
 // us07: sem valor é o dispositivo que nunca se comunicou
 export const medicao = (valor: number | null, unidade: string | null) => (valor === null ? 'nunca se comunicou' : medida(valor, unidade));
