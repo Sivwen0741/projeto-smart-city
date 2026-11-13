@@ -160,6 +160,7 @@ th[aria-sort] .ordenar {
   background: none;
   border: 0;
   font-weight: inherit;
+  text-align: left;
   cursor: pointer;
 }
 
