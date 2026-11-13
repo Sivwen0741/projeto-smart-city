@@ -5,6 +5,7 @@ import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { SITUACAO } from '../dispositivos/dispositivos.service';
 import { unidadeDaGrandeza } from '../grandezas';
 import { AlertaDto, ResumoAlertasDto, Visao } from './dto/alerta.dto';
+import { compararTexto } from '../ordem-texto';
 
 // us18: o alerta do open-meteo é do bairro, sem dispositivo; a posição vira um ponto dentro do bairro
 export const ROTULO_FONTE_EXTERNA = 'Open-Meteo';
@@ -130,8 +131,9 @@ export class AlertasService {
       `SELECT t.nome AS tipo, count(*)::int AS quantidade
          FROM dispositivo d JOIN tipo_dispositivo t ON t.id = d.tipo_dispositivo_id
         WHERE ${SITUACAO} = 'sem_comunicacao'
-        GROUP BY t.nome ORDER BY count(*) DESC, t.nome`,
+        GROUP BY t.nome`,
     );
+    porTipo.sort((a, b) => b.quantidade - a.quantidade || compararTexto(a.tipo, b.tipo));
     const [maisAntigo] = await this.fonte.query(
       `${CONSULTA} WHERE ${GRAVE_SEM_RECONHECIMENTO} ORDER BY a.data_hora, a.id LIMIT 1`,
     );

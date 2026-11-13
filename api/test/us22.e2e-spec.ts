@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { preparar } from '../src/database/preparar';
 import { limiteComunicacaoSegundos, situacaoDispositivo } from '../src/dispositivos/comunicacao';
 import { criarApp, criarUsuario, entrar, UsuarioDeTeste } from './apoio';
+import { compararTexto } from '../src/ordem-texto';
 
 interface Ponto {
   latitude: number;
@@ -323,8 +324,7 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
     });
 
     it('US22-6 ordena por código, tipo, localização, situação e comunicação, nos dois sentidos', async () => {
-      const [{ antes }] = await fonte.query(`SELECT $1::text < 'Olarias' AS antes`, [outroBairro.nome]);
-      const esperadoLocal = antes ? 'BAC' : 'ACB';
+      const esperadoLocal = compararTexto(outroBairro.nome, 'Olarias') < 0 ? 'BAC' : 'ACB';
       const casos: [string, string][] = [
         ['codigo', 'ABC'],
         ['tipo', 'BCA'],
@@ -335,6 +335,16 @@ describe('US22 - Cadastrar, editar e inativar dispositivos com localização geo
       for (const [campo, esperado] of casos) {
         expect(`${campo} ${await ordem({ ordem: campo, direcao: 'asc' })}`).toBe(`${campo} ${esperado}`);
         expect(`${campo} ${await ordem({ ordem: campo, direcao: 'desc' })}`).toBe(`${campo} ${[...esperado].reverse().join('')}`);
+      }
+    });
+
+    it('US22-6 tipo e localização seguem a ordem alfabética do português, com os acentos no lugar (INC-007)', async () => {
+      const tiposOrdenados = (await autenticado(http().get('/api/tipos-dispositivo')).expect(200)).body.map((t: { nome: string }) => t.nome);
+      expect(tiposOrdenados.indexOf('Câmera')).toBeLessThan(tiposOrdenados.indexOf('Controlador de iluminação'));
+      for (const campo of ['tipo', 'localizacao']) {
+        const lista = (await autenticado(http().get('/api/dispositivos')).query({ ordem: campo, direcao: 'asc' }).expect(200)).body;
+        const chave = (d: { tipo: string; bairro: string | null; distrito: string }) => (campo === 'tipo' ? d.tipo : (d.bairro ?? d.distrito));
+        for (let i = 1; i < lista.length; i++) expect(compararTexto(chave(lista[i - 1]), chave(lista[i]))).toBeLessThanOrEqual(0);
       }
     });
 

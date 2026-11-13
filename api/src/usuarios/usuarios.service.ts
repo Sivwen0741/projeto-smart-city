@@ -5,6 +5,7 @@ import { gerarHashSenha } from '../auth/senha';
 import { Autor } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { AtualizarUsuarioDto, CriarUsuarioDto, PerfilDto, UsuarioCriadoDto, UsuarioDto } from './dto/usuario.dto';
+import { compararTexto } from '../ordem-texto';
 
 // sem caracteres que se confundem ao ditar ou copiar (0/o, 1/l/i)
 const ALFABETO = 'abcdefghjkmnpqrstuvwxyz23456789';
@@ -30,8 +31,9 @@ export class UsuariosService {
     private readonly log: LogAtividadeService,
   ) {}
 
-  listar(): Promise<UsuarioDto[]> {
-    return this.fonte.query(`${CONSULTA} ORDER BY u.ativo DESC, lower(u.nome)`);
+  async listar(): Promise<UsuarioDto[]> {
+    const usuarios: UsuarioDto[] = await this.fonte.query(`${CONSULTA} ORDER BY u.ativo DESC`);
+    return usuarios.sort((a, b) => Number(b.ativo) - Number(a.ativo) || compararTexto(a.nome, b.nome));
   }
 
   perfis(): Promise<PerfilDto[]> {
