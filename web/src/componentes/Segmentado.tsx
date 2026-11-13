@@ -16,7 +16,7 @@ export function Segmentado<T extends string>({ rotulo, opcoes, valor, aoMudar, e
       <legend className={estilos.rotulo}>{rotulo}</legend>
       <div
         className={estilos.opcoes}
-        style={{ gridTemplateColumns: `repeat(${opcoes.length}, minmax(0, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${opcoes.length}, minmax(min-content, 1fr))` }}
         aria-invalid={erro ? true : undefined}
       >
         {opcoes.map((o) => (
