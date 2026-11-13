@@ -3,6 +3,7 @@ import { DataSource, EntityManager } from 'typeorm';
 import { Autor } from '../dispositivos/dispositivos.service';
 import { LogAtividadeService } from '../log-atividade/log-atividade.service';
 import { AlteracaoRegraDto, AtualizarRegraAlertaDto, CriarRegraAlertaDto, RegraAlertaDto } from './dto/regra-alerta.dto';
+import { compararTexto } from '../ordem-texto';
 
 const CONSULTA = `
   SELECT r.id::text AS id, r.nome, r.tipo_grandeza AS "tipoGrandeza", r.operador,
@@ -36,8 +37,10 @@ export class RegrasAlertaService {
     private readonly log: LogAtividadeService,
   ) {}
 
-  listar(): Promise<RegraAlertaDto[]> {
-    return this.fonte.query(`${CONSULTA} ORDER BY r.ativa DESC, array_position(ARRAY['grave', 'atencao', 'informativo'], r.criticidade::text), r.nome`);
+  async listar(): Promise<RegraAlertaDto[]> {
+    const regras: RegraAlertaDto[] = await this.fonte.query(`${CONSULTA}`);
+    const gravidade = (r: RegraAlertaDto) => ['grave', 'atencao', 'informativo'].indexOf(r.criticidade);
+    return regras.sort((a, b) => Number(b.ativa) - Number(a.ativa) || gravidade(a) - gravidade(b) || compararTexto(a.nome, b.nome));
   }
 
   async buscar(id: string, manager: EntityManager = this.fonte.manager): Promise<RegraAlertaDto> {

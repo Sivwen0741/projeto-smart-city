@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { BairroOcorrenciasDto, PainelDto, PontoHoraDto } from './dto/painel.dto';
 import { calcularIndicadores, GRANDEZAS, Leitura } from './indicadores';
+import { compararTexto } from '../ordem-texto';
 
 // última leitura de cada dispositivo na última hora, com a de uma hora antes ao lado
 const LEITURAS = `
@@ -84,11 +85,12 @@ export class PainelService {
   }
 
   private async ocorrenciasPorBairro(): Promise<BairroOcorrenciasDto[]> {
-    return this.fonte.query(
+    const bairros: BairroOcorrenciasDto[] = await this.fonte.query(
       `SELECT COALESCE(b.nome, 'Zona rural') AS bairro, count(*)::int AS total
          FROM ocorrencia o LEFT JOIN bairro b ON b.id = o.bairro_id
         WHERE o.data_abertura > now() - interval '24 hours'
-        GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT 5`,
+        GROUP BY 1`,
     );
+    return bairros.sort((a, b) => b.total - a.total || compararTexto(a.bairro, b.bairro)).slice(0, 5);
   }
 }

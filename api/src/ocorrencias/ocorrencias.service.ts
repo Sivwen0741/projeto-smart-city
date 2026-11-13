@@ -13,6 +13,7 @@ import {
   RegistroHistoricoDto,
   VisaoOcorrencia,
 } from './dto/ocorrencia.dto';
+import { compararTexto } from '../ordem-texto';
 
 const CONSULTA = `
   SELECT o.id::text AS id, o.protocolo, o.categoria, o.descricao, o.criticidade, o.situacao, o.origem,
@@ -152,8 +153,9 @@ export class OcorrenciasService {
     return resultado;
   }
 
-  orgaos(): Promise<OrgaoDto[]> {
-    return this.fonte.query(`SELECT id::text AS id, nome, sigla FROM orgao ORDER BY nome`);
+  async orgaos(): Promise<OrgaoDto[]> {
+    const orgaos: OrgaoDto[] = await this.fonte.query(`SELECT id::text AS id, nome, sigla FROM orgao`);
+    return orgaos.sort((a, b) => compararTexto(a.nome, b.nome));
   }
 
   async buscar(id: string, manager: EntityManager = this.fonte.manager): Promise<OcorrenciaDto> {

@@ -25,6 +25,7 @@ import {
   PERIODOS,
   PontoHistoricoDto,
 } from './dto/dispositivo.dto';
+import { compararTexto } from '../ordem-texto';
 
 // último recurso quando nem o dispositivo nem o tipo informam intervalo (docs/decisoes/2026-10-22-situacao-sem-comunicacao.md)
 export const LIMITE_SEM_INTERVALO_SEGUNDOS = 30 * 60;
@@ -90,10 +91,8 @@ const CONSULTA = `
 
 const ORDEM_SITUACAO = `array_position(ARRAY['operando', 'sem_comunicacao', 'manutencao', 'inativo'], ${SITUACAO})`;
 
-const ORDENACAO: Record<Ordenacao, (direcao: string) => string> = {
+const ORDENACAO: Record<Exclude<Ordenacao, 'tipo' | 'localizacao'>, (direcao: string) => string> = {
   codigo: (dir) => `upper(d.identificador) ${dir}`,
-  tipo: (dir) => `t.nome ${dir}, upper(d.identificador)`,
-  localizacao: (dir) => `coalesce(b.nome, di.nome) ${dir}, d.endereco ${dir} NULLS LAST, upper(d.identificador)`,
   situacao: (dir) => `${ORDEM_SITUACAO} ${dir}, upper(d.identificador)`,
   // crescente = comunicação mais recente primeiro, como "há 3 s" antes de "há 2 min"
   comunicacao: (dir) => `d.ultima_comunicacao ${dir === 'ASC' ? 'DESC' : 'ASC'} NULLS LAST, upper(d.identificador)`,
@@ -126,8 +125,9 @@ export class DispositivosService {
 
   async listarTipos(): Promise<TipoDispositivoDto[]> {
     const tipos: { id: string; nome: string; categoria: string; intervalo: number | null }[] = await this.fonte.query(
-      `SELECT id::text, nome, categoria, intervalo_leitura_segundos AS intervalo FROM tipo_dispositivo ORDER BY nome`,
+      `SELECT id::text, nome, categoria, intervalo_leitura_segundos AS intervalo FROM tipo_dispositivo`,
     );
+    tipos.sort((a, b) => compararTexto(a.nome, b.nome));
     return tipos.map((t) => ({
       id: t.id,
       nome: t.nome,
@@ -140,7 +140,16 @@ export class DispositivosService {
 
   async listar(ordem: Ordenacao = 'codigo', direcao: 'asc' | 'desc' = 'asc'): Promise<DispositivoDto[]> {
     const dir = direcao === 'desc' ? 'DESC' : 'ASC';
-    return this.fonte.query(`${CONSULTA} ORDER BY ${ORDENACAO[ordem](dir)}`);
+    if (ordem !== 'tipo' && ordem !== 'localizacao') return this.fonte.query(`${CONSULTA} ORDER BY ${ORDENACAO[ordem](dir)}`);
+    const lista: DispositivoDto[] = await this.fonte.query(`${CONSULTA} ORDER BY upper(d.identificador)`);
+    const sentido = dir === 'DESC' ? -1 : 1;
+    const comparar =
+      ordem === 'tipo'
+        ? (a: DispositivoDto, b: DispositivoDto) => sentido * compararTexto(a.tipo, b.tipo)
+        : (a: DispositivoDto, b: DispositivoDto) =>
+            sentido * compararTexto(a.bairro ?? a.distrito, b.bairro ?? b.distrito) ||
+            (a.endereco === b.endereco ? 0 : a.endereco === null ? 1 : b.endereco === null ? -1 : sentido * compararTexto(a.endereco, b.endereco));
+    return lista.sort(comparar);
   }
 
   async buscar(id: string, manager: EntityManager = this.fonte.manager): Promise<DispositivoDto> {

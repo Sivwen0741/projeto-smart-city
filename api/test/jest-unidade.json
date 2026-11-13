@@ -4,7 +4,7 @@
   "testRegex": "test/unidade/.*\\.spec\\.ts$",
   "transform": { "^.+\\.ts$": ["ts-jest", { "tsconfig": "tsconfig.scripts.json" }] },
   "testEnvironment": "node",
-  "collectCoverageFrom": ["src/qualidade-ar/iqar.ts", "src/alertas/regra.ts", "src/dispositivos/comunicacao.ts", "src/painel/indicadores.ts"],
+  "collectCoverageFrom": ["src/qualidade-ar/iqar.ts", "src/alertas/regra.ts", "src/dispositivos/comunicacao.ts", "src/painel/indicadores.ts", "src/ordem-texto.ts"],
   "coverageDirectory": "coverage/unidade",
   "coverageReporters": ["text", "text-summary", "json-summary"]
 }
