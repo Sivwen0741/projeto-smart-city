@@ -35,14 +35,14 @@ plano.
 | Versão final | 13/11/2026 00:59 a 01:03 | Tag `v1.0.3-sprint-6` (`31aad37`): unidade com cobertura, integração com o banco recriado e Newman | 56 + 217 testes; 74 requisições, 133 verificações | 56 + 217; 133 | 0 | `2026-11-13-v1.0.3/` |
 | Recaptura v1.0.2 | 13/11/2026 01:59 a 02:01 | CT-095, CT-111, CT-129 e CT-130 na `v1.0.2-sprint-6`, página recarregada sem cache e pacote conferido (`index-C--Xtlx1.js`): telas que dependem do único código de tela que mudou entre a `v1.0` e a `v1.0.2` | 4 casos | mesmo resultado da rodada 2 | 0 | `2026-11-13-recaptura-v1.0.2/` |
 
-Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
-98,79% das linhas.
+Cobertura da suíte de unidade na rodada 1: 98,3% das instruções, 81,44% dos desvios, 95,91% das
+funções e 98,79% das linhas.
 
-Todos os comandos do Compose usaram `-p teste-sprint-6`. O nome do projeto é fixo (`scoc`) no
+Na rodada 1, todos os comandos do Compose usaram `-p teste-sprint-6`. O nome do projeto é fixo (`scoc`) no
 `docker-compose.yml`, e sem essa opção o clone dividiria o banco com a cópia de desenvolvimento da
 mesma máquina (INC-001).
 
-Dados que as rodadas deixaram no ambiente da versão sob teste e que aparecem nos casos de tela: as
+Dados que a rodada 1 deixou no ambiente da versão sob teste e que aparecem nos casos de tela: as
 leituras e as ocorrências 2026-11-0001 e 2026-11-0002, do smoke; e, da coleção do Postman, o
 dispositivo `PM-MVZXSVM8`, a regra "Validação no Postman PM-MVZXSVM8", o usuário
 `postman.<número>@pontagrossa.pr.gov.br`, as ocorrências 2026-11-0003 e 2026-11-0004 e um alerta
@@ -50,10 +50,12 @@ reconhecido.
 
 ## Casos
 
-Linhas dos casos executados na rodada 1 e nos retestes. Situação segue o vocabulário do plano:
-passou, falhou, bloqueado ou pendente (tela). O último valor foi acrescentado durante a execução e
-marca o caso cuja parte automatizada passou e cuja verificação de tela ainda não foi executada. Os casos só manuais ainda não executados (CT-004, CT-038, CT-039,
-CT-043, CT-082 e CT-107) entram quando forem executados.
+Linhas dos casos executados na rodada 1 e nos retestes de 02/11. Situação segue o vocabulário do
+plano: passou, falhou, bloqueado ou pendente (tela). O último valor foi acrescentado durante a
+execução e marca o caso cuja parte automatizada passou e cuja verificação de tela ainda não foi
+executada. As verificações de tela pendentes, os seis casos só manuais (CT-004, CT-038, CT-039,
+CT-043, CT-082 e CT-107) e os retestes de 12 e 13/11 estão na seção "Rodada 2", abaixo. A situação
+final de cada caso é a da sua linha mais recente.
 
 | Caso | Data | Versão (tag ou commit) | Quem executou | Resultado obtido | Situação | Evidência | Incidente |
 |---|---|---|---|---|---|---|---|
@@ -354,4 +356,4 @@ Resultado: o ambiente subiu e o login do administrador funcionou seguindo o READ
 de uma informação que o README não dá, a opção `-p`, necessária só porque a máquina já tinha outra
 cópia do projeto. Do painel, foi conferido que a interface web respondeu e que a interface de
 programação listou os 14 dispositivos de exemplo. A conferência do painel aberto na tela, com os
-dispositivos de exemplo no mapa, fica pendente para o registro de quem executa o caso pela tela.
+dispositivos de exemplo no mapa, foi feita na rodada 2 (linha do CT-005 na seção "Rodada 2").

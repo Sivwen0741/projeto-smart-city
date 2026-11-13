@@ -68,7 +68,6 @@ por automação de navegador, sem a independência que o plano previa.
   poluição "no mapa, dentro do bairro", o que nenhum critério da US18 ou da US01 exige. O caso falhou
   por isso, e o INC-008 foi aberto. Investigado, o incidente foi reclassificado como achado, a
   exigência saiu da ficha, com uma observação, e o caso foi reavaliado no log.
-
 - **Capturas com o pacote da tela em cache (12 e 13/11/2026).** O Chrome guardava o `index.html` da
   versão anterior e, ao navegar, carregava o pacote JavaScript antigo, mesmo com o servidor já
   servindo a versão nova. Duas rodadas de reteste foram afetadas: a do INC-006, em 12/11, cujas
@@ -79,8 +78,10 @@ por automação de navegador, sem a independência que o plano previa.
   conferiu o pacote no DOM. Entre a `v1.0-sprint-6` e a `v1.0.2-sprint-6`, só o componente de
   gráfico e a tela de histórico mudaram, e as capturas que dependem deles (CT-095, CT-111, CT-129 e
   CT-130) foram refeitas em 13/11 na `v1.0.2`, com o pacote conferido, com o mesmo resultado
-  (`evidencias/2026-11-13-recaptura-v1.0.2/`). As demais telas da rodada 2 têm o mesmo código nas
-  duas versões.
+  (`evidencias/2026-11-13-recaptura-v1.0.2/`). As capturas originais da rodada 2 desses quatro casos
+  continuam no repositório, ao lado da recaptura: `evidencias/CT-095-1.png`, `CT-095-2.png`,
+  `CT-111-1.png` a `CT-111-3.png`, `CT-129-1.png` a `CT-129-4.png`, `CT-130-1.png` e `CT-130-2.png`.
+  As demais telas da rodada 2 têm o mesmo código nas duas versões.
 
 ## 5.4 Riscos residuais
 
