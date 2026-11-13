@@ -67,7 +67,9 @@ export function GraficoLinha({
   const y = (v: number) => TOPO + (1 - (v - minimo) / (maximo - minimo)) * (altura - TOPO - BAIXO);
   const linha = (pontos: Ponto[]) => pontos.map((p) => `${x(p.x).toFixed(1)},${y(p.y).toFixed(1)}`).join(' ');
   const numero = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
-  const marcas = [piso === undefined ? minimo + folga : minimo, (minimo + maximo) / 2, maximo - folga];
+  // a grade fica no valor que o rótulo mostra, senão o eixo marca um número que a linha não tem
+  const escala = 10 ** casas;
+  const marcas = [...new Set([piso === undefined ? minimo + folga : minimo, (minimo + maximo) / 2, maximo - folga].map((m) => Math.round(m * escala) / escala))];
 
   return (
     <svg className={estilos.grafico} viewBox={`0 0 ${largura} ${altura}`} role="img" aria-label={rotulo}>
