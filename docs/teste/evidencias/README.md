@@ -14,6 +14,10 @@ Evidências da seção 3 (log de execução) da documentação de teste da Sprin
   (`CT-034.png`). Quando o caso precisa de mais de uma captura, numere na ordem dos passos:
   `CT-049-1.png`, `CT-049-2.png` e assim por diante.
 
+**Rodada 2 (12/11/2026), casos de tela:** por pedido para esta rodada, as capturas ficam direto em
+`evidencias/`, com o nome do caso (`CT-034.png`, ou `CT-049-1.png`, `CT-049-2.png` quando há mais
+de uma tela), e as saídas de terminal, banco e suíte ficam em `2026-11-12-rodada-2/`.
+
 **Reteste de incidente:** pasta própria, `AAAA-MM-DD-reteste-INC-NNN/`, com a versão corrigida
 identificada pelo commit.
 

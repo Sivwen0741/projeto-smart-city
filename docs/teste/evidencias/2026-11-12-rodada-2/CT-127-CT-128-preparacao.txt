@@ -1,0 +1,26 @@
+CT-127/CT-128 — preparação documentada no README das evidências — 12/11/2026 20:42:02
+Pré-condição alterada: regra 'Material particulado elevado' com limite 5 µg/m³ (alterado pela tela às 20:41; original 55).
+20:42:02 docker compose restart api (força a coleta do Open-Meteo)
+ Container teste-v102-api-1  Started
+20:42:47 alertas de bairro (sem dispositivo) abertos:
+ id  |       bairro       | valor_observado | valor_limite | criticidade | situacao |   hora   
+-----+--------------------+-----------------+--------------+-------------+----------+----------
+ 176 | Boa Vista          |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 184 | Cará-Cará          |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 185 | Centro             |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 186 | Chapada            |            10.4 |            5 | atencao     | aberto   | 20:42:25
+ 187 | Colônia Dona Luiza |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 188 | Contorno           |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 189 | Estrela            |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 190 | Jardim Carvalho    |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 191 | Neves              |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 177 | Nova Rússia        |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 178 | Oficinas           |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 179 | Olarias            |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 181 | Piriquitos 10      |            10.4 |            5 | atencao     | aberto   | 20:42:25
+ 182 | Ronda              |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 183 | Uvaranas           |             8.6 |            5 | atencao     | aberto   | 20:42:25
+ 180 | Órfãs              |             8.6 |            5 | atencao     | aberto   | 20:42:25
+(16 rows)
+
+20:44:39 limite da regra 'Material particulado elevado' devolvido para 55 pela tela (histórico: 'Valor limite 55 → 5' 20:41 e 'Valor limite 5 → 55' 20:44; CT-128-4.png)

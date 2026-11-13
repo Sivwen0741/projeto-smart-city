@@ -1,0 +1,24 @@
+CT-004 — 12/11/2026 20:09:54 — clone da tag v1.0.2-sprint-6 (0a38751)
+$ git ls-files | grep -i env
+.env.example
+$ git log --all --oneline -- .env
+(fim; vazio = .env nunca versionado)
+$ git check-ignore -v .env
+.gitignore:5:.env	.env
+$ git grep -nIiE "(senha|password|segredo|secret|token)[\"' ]*[:=][ ]*[\"'][^\"'$]{6,}" -- . ":!*.md" ":!*.lock" ":!package-lock.json"
+api/package-lock.json:150:        "@inquirer/password": "^4.0.9",
+api/package-lock.json:1096:        "@inquirer/password": "^4.0.23",
+api/package-lock.json:2179:        "@types/jsonwebtoken": "9.0.10",
+api/package-lock.json:9842:        "@tokenizer/token": "^0.3.0"
+api/package-lock.json:10225:        "@tokenizer/token": "^0.3.0",
+api/test/us20.e2e-spec.ts:48:      const outroSegredo = new JwtService({ secret: 'outro-segredo-qualquer-com-mais-de-32-caracteres' }).sign({ sub: '1' });
+api/test/us20.e2e-spec.ts:82:      const senhaErrada = await http().post('/api/auth/login').send({ email: usuario.email, senha: 'senha-errada' });
+api/test/us20.e2e-spec.ts:85:        .send({ email: 'ninguem.aqui@pontagrossa.pr.gov.br', senha: 'senha-errada' });
+api/test/us20.e2e-spec.ts:137:      await http().post('/api/auth/login').send({ email: usuario.email, senha: 'senha-errada' }).expect(401);
+api/test/us20.e2e-spec.ts:156:      await http().post('/api/auth/login').send({ email: usuario.email, senha: 'senha-errada' }).expect(401);
+api/test/us20.e2e-spec.ts:171:      await http().post('/api/auth/login').send({ email, senha: 'qualquer' }).expect(401);
+$ grep -nE "PASSWORD|SEGREDO|SENHA" docker-compose.yml
+8:    POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+19:  DB_PASSWORD: ${DB_PASSWORD}
+50:      JWT_SEGREDO: ${JWT_SEGREDO:?defina JWT_SEGREDO no .env}
+53:      ADMIN_SENHA: ${ADMIN_SENHA:?defina ADMIN_SENHA no .env}

@@ -1,0 +1,7 @@
+CT-070 — 12/11/2026 20:39:22 — v1.0.2-sprint-6, projeto teste-v102
+Regra: Nível do arroio acima da cota (> 3,5 m, 10 min, grave). Dispositivo SN-901 (não simulado). t0 = 2026-11-12T23:24:22Z (UTC)
+  publicado dataHora=2026-11-12T23:23:22Z valor=1.0 -> alertas de nível do SN-901: []
+  publicado dataHora=2026-11-12T23:24:22Z valor=3.6 -> alertas de nível do SN-901: []
+  publicado dataHora=2026-11-12T23:29:22Z valor=3.6 -> alertas de nível do SN-901: []
+  publicado dataHora=2026-11-12T23:34:21Z valor=3.6 -> alertas de nível do SN-901: []
+  publicado dataHora=2026-11-12T23:34:22Z valor=3.6 -> alertas de nível do SN-901: [('165', 'Nível do arroio acima da cota', 3.6)]

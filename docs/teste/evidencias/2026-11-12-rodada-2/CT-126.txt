@@ -1,0 +1,37 @@
+CT-126 (parte manual: coleta real contra a fonte) — 12/11/2026 20:41:37 — v1.0.2-sprint-6, projeto teste-v102
+Regra Material particulado elevado com o limite original (> 55 µg/m³). Coleta disparada pela subida da interface de programação às 20:40:54 (reinício do CT-047).
+
+$ SELECT nome, url_base, ultima_coleta, ultima_tentativa, ultimo_erro FROM fonte_dados
+            nome            |                       url_base                        |       ultima_coleta        |      ultima_tentativa      | ultimo_erro 
+----------------------------+-------------------------------------------------------+----------------------------+----------------------------+-------------
+ Open-Meteo Flood API       | https://flood-api.open-meteo.com/v1/flood             | 2026-11-12 20:41:01.247817 | 2026-11-12 20:41:01.247817 | (nenhum)
+ Open-Meteo Air Quality API | https://air-quality-api.open-meteo.com/v1/air-quality | 2026-11-12 20:41:07.304806 | 2026-11-12 20:41:07.304806 | (nenhum)
+(2 rows)
+
+$ PM2.5 por bairro, hora mais recente não futura
+        nome        | valor |        hora         
+--------------------+-------+---------------------
+ Boa Vista          |   8.6 | 2026-11-12 20:00:00
+ Cará-Cará          |   8.6 | 2026-11-12 20:00:00
+ Centro             |   8.6 | 2026-11-12 20:00:00
+ Chapada            |  10.4 | 2026-11-12 20:00:00
+ Colônia Dona Luiza |   8.6 | 2026-11-12 20:00:00
+ Contorno           |   8.6 | 2026-11-12 20:00:00
+ Estrela            |   8.6 | 2026-11-12 20:00:00
+ Jardim Carvalho    |   8.6 | 2026-11-12 20:00:00
+ Neves              |   8.6 | 2026-11-12 20:00:00
+ Nova Rússia        |   8.6 | 2026-11-12 20:00:00
+ Oficinas           |   8.6 | 2026-11-12 20:00:00
+ Olarias            |   8.6 | 2026-11-12 20:00:00
+ Piriquitos 10      |  10.4 | 2026-11-12 20:00:00
+ Ronda              |   8.6 | 2026-11-12 20:00:00
+ Uvaranas           |   8.6 | 2026-11-12 20:00:00
+ Órfãs              |   8.6 | 2026-11-12 20:00:00
+(16 rows)
+
+$ leituras de bairro no futuro (deve ser 0)
+0
+$ duplicadas por bairro/grandeza/hora (deve ser 0)
+0
+$ alertas de poluição de bairro abertos (limite 55; deve ser 0)
+0

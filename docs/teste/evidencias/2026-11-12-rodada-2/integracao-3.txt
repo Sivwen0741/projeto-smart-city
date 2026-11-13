@@ -1,0 +1,664 @@
+Rodada 2 · suíte de integração e sistema (em série, --runInBand), execução 3 de 5 · 12/11/2026 20:49:59 a 20:51:28 (BRT)
+Versão: v1.0.2-sprint-6 (0a38751), clone da tag em pasta separada, projeto do Compose teste-v102 (COMPOSE_PROJECT_NAME no .env)
+Banco de teste recriado antes: docker compose --profile teste rm -sf db-teste
+Comando: docker compose --profile teste run --rm --build api-teste
+Resultado: Tests:       216 passed, 216 total
+
+ Container teste-v102-db-teste-1  Creating
+ Container teste-v102-mosquitto-teste-1  Running
+ db-teste The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested 
+ Container teste-v102-db-teste-1  Created
+ Container teste-v102-db-teste-1  Starting
+ Container teste-v102-db-teste-1  Started
+Compose can now delegate builds to bake for better performance.
+ To do so, set COMPOSE_BAKE=true.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [api-teste internal] load build definition from Dockerfile
+#1 transferring dockerfile: 613B done
+#1 DONE 0.0s
+
+#2 [api-teste internal] load metadata for docker.io/library/node:24-alpine
+#2 DONE 0.6s
+
+#3 [api-teste internal] load .dockerignore
+#3 transferring context: 72B done
+#3 DONE 0.0s
+
+#4 [api-teste internal] load build context
+#4 transferring context: 7.70kB done
+#4 DONE 0.0s
+
+#5 [api-teste dependencias 1/4] FROM docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5
+#5 resolve docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 0.0s done
+#5 DONE 0.0s
+
+#6 [api-teste dependencias 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [api-teste dependencias 3/4] COPY package.json package-lock.json ./
+#7 CACHED
+
+#8 [api-teste dependencias 4/4] RUN npm ci
+#8 CACHED
+
+#9 [api-teste teste 1/1] COPY . .
+#9 CACHED
+
+#10 [api-teste] exporting to image
+#10 exporting layers done
+#10 exporting manifest sha256:f788040546a956b552ad945b64b3c5fc67d99e0fabe76645641a690a8a5506d6 done
+#10 exporting config sha256:a7fef9119299384caf9cc6a003f93c6bba715e54b04c18b46f19b554c609183f done
+#10 exporting attestation manifest sha256:ab27ea3bd97ebb91fdd61971856ba1318220f30a69563ee425c12031afecc427 done
+#10 exporting manifest list sha256:3563bb4c38e213b1adf4300d0fe801a55c81794eb84898a1acf2c8620279d234 done
+#10 naming to docker.io/library/teste-v102-api-teste:latest done
+#10 unpacking to docker.io/library/teste-v102-api-teste:latest done
+#10 DONE 0.0s
+
+#11 [api-teste] resolving provenance for metadata file
+#11 DONE 0.0s
+
+> scoc-api@0.1.0 test:e2e
+> jest --config test/jest-e2e.json --runInBand
+
+PASS test/us22.e2e-spec.ts (7.948 s)
+  ● Console
+
+    console.log
+      migração aplicada: HabilitaPostgis1792454400000
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: CriaEsquemaInicial1792454400001
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: IntervaloLeituraPorTipo1792454400002
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: IngestaoEAlertas1792454400003
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: EncerramentoDoAlerta1792454400004
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: OcorrenciaManual1792454400005
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: OrigemDaComunicacao1792454400006
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: AlertaSemComunicacao1792454400007
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: AlertaNuncaComunicou1792454400008
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: ColetaOpenMeteo1792454400009
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: RiscoDeEnchente1792454400010
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: BuscaSemAcento1792454400011
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      migração aplicada: QualidadeDoArPorBairro1792454400012
+
+      at preparar (src/database/preparar.ts:12:38)
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us22.e2e-spec.ts:60:23)
+
+    console.log
+      dispositivos de exemplo carregados: 14
+
+      at carregarDispositivosExemplo (src/database/seeds/dispositivos-exemplo.seed.ts:54:30)
+
+    console.log
+      regras de alerta de exemplo carregadas: 7
+
+      at carregarRegrasExemplo (src/database/seeds/regras-exemplo.seed.ts:26:30)
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at Object.<anonymous> (test/us22.e2e-spec.ts:391:5)
+
+PASS test/tt02.e2e-spec.ts (7.408 s)
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/tt02.e2e-spec.ts:76:23)
+
+PASS test/us06.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us06.e2e-spec.ts:49:23)
+
+PASS test/us21.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us21.e2e-spec.ts:47:23)
+
+PASS test/us12.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us12.e2e-spec.ts:51:23)
+
+PASS test/us23.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us23.e2e-spec.ts:51:23)
+
+PASS test/us18.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us18.e2e-spec.ts:67:23)
+
+PASS test/us09.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us09.e2e-spec.ts:64:23)
+
+PASS test/us05.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us05.e2e-spec.ts:31:23)
+
+PASS test/us10.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us10.e2e-spec.ts:47:23)
+
+PASS test/us02.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us02.e2e-spec.ts:47:23)
+
+PASS test/us28.e2e-spec.ts (9.872 s)
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us28.e2e-spec.ts:55:23)
+
+PASS test/us20.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us20.e2e-spec.ts:16:23)
+
+PASS test/us19.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us19.e2e-spec.ts:53:23)
+
+PASS test/us07.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us07.e2e-spec.ts:41:23)
+
+PASS test/us01.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us01.e2e-spec.ts:53:23)
+
+PASS test/us04.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us04.e2e-spec.ts:45:23)
+
+PASS test/us03.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us03.e2e-spec.ts:61:23)
+
+[31m[Nest] 18  - [39m11/12/2026, 11:51:23 PM [31m  ERROR[39m [38;5;3m[IngestaoService] [39m[31mfalha ao avisar as telas: Connection terminated[39m
+PASS test/us26.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at criarApp (test/apoio.ts:17:3)
+      at Object.<anonymous> (test/us26.e2e-spec.ts:27:23)
+
+PASS test/tt01.e2e-spec.ts
+  ● Console
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at Object.<anonymous> (test/tt01.e2e-spec.ts:33:5)
+
+    console.log
+      território carregado: 5 distritos, 16 bairros
+
+      at carregarTerritorio (src/database/seeds/territorio.seed.ts:38:11)
+
+    console.warn
+      ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado
+
+      46 |   const senha = process.env.ADMIN_SENHA;
+      47 |   if (!email || !senha) {
+    > 48 |     console.warn('ADMIN_EMAIL ou ADMIN_SENHA não definidos: usuário administrador inicial não criado');
+         |             ^
+      49 |     return;
+      50 |   }
+      51 |   const [existente] = await fonte.query(`SELECT id FROM usuario WHERE lower(email) = $1`, [email]);
+
+      at carregarAcesso (src/database/seeds/acesso.seed.ts:48:13)
+      at preparar (src/database/preparar.ts:14:3)
+      at Object.<anonymous> (test/tt01.e2e-spec.ts:69:5)
+
+
+Test Suites: 20 passed, 20 total
+Tests:       216 passed, 216 total
+Snapshots:   0 total
+Time:        70.962 s
+Ran all test suites.

@@ -1,0 +1,9 @@
+CT-047 — 12/11/2026 20:40:31 — v1.0.2-sprint-6, projeto teste-v102
+20:40:31 docker compose stop api
+ Container teste-v102-api-1  Stopped
+20:40:51 docker compose start api
+ Container teste-v102-api-1  Started
+20:40:55 health ok
+publicado_ms 1794526855058
+20:40:55 EA-02 temperatura 44.5 publicada
+tela: alerta EA-02 44,5 °C apareceu na lista em 1794526855419 (+361 ms), marca JS preservada (sem recarga)

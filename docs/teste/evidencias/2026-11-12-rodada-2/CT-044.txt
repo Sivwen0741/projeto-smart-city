@@ -1,0 +1,23 @@
+CT-044 — 12/11/2026 20:16 — v1.0.2-sprint-6, projeto teste-v102, Chrome 1440 × 900 (macOS)
+Método: três abas autenticadas, sem recarregar (Alertas, Mapa e Painel). Em cada aba, um
+MutationObserver registra Date.now() no primeiro instante em que o DOM mostra o alerta novo.
+O horário de publicação é o relógio da mesma máquina, imediatamente antes do mosquitto_pub.
+
+Publicação 1: EA-07 temperatura 43,5 (regra "Temperatura crítica (teste)", > 40, grave, 0 min)
+  publicado            1794525408054
+  lista (Alertas)      1794525408477   +423 ms
+  painel, quadro       1794525408521   +467 ms
+  painel, mapa         1794525408478   +424 ms   (legenda "Grave · 3")
+  aba Mapa             1794525408550   +496 ms   (legenda "Grave · 3")
+  contador do menu: continuou "Alertas 5", valor correto, porque a mesma leitura encerrou o
+  alerta de sem comunicação da EA-07 e abriu o grave (saldo zero). Medido na publicação 2.
+
+Publicação 2: EA-02 temperatura 44 (mesma regra)
+  publicado            1794525428872
+  lista (Alertas)      1794525429454   +582 ms
+  menu (aba Alertas)   1794525429481   +609 ms   ("Alertas 5" -> "Alertas 6")
+  painel, quadro       1794525429277   +405 ms
+  menu (aba Painel)    1794525429540   +668 ms
+
+Todas as áreas abaixo de 2 s. A variável window.__marcaSemRecarga, gravada antes da publicação,
+continuava na página depois: não houve recarga.

@@ -1,0 +1,8 @@
+CT-049 (fim) — 12/11/2026 20:46:11 — reconhecimento dos graves abertos, seis pela API e o mais antigo (id 5) pela tela, pela faixa
+POST /api/alertas/171/reconhecimento -> 200
+POST /api/alertas/162/reconhecimento -> 200
+POST /api/alertas/159/reconhecimento -> 200
+POST /api/alertas/72/reconhecimento -> 200
+POST /api/alertas/43/reconhecimento -> 200
+POST /api/alertas/9/reconhecimento -> 200
+20:46:45 tela: faixa '1 alerta grave sem reconhecimento'; 'Ver alerta' abriu o mais antigo (id 5, Chuva forte acumulada EA-02); reconhecido pela tela às 20:46; a faixa sumiu nas três sessões abertas (admin em Alertas, gestor no Mapa, operador em Rios), sem recarregar

@@ -1,0 +1,19 @@
+CT-033 — 12/11/2026 20:31:53 — v1.0.2-sprint-6, projeto teste-v102
+simulador-1  | simulador conectado a mqtt://mosquitto:1883: 11 dispositivos a cada 30 s
+ identificador |   origem   | count |         ultima          
+---------------+------------+-------+-------------------------
+ EA-02         | mqtt       |     1 | 2026-11-12 20:17:09.106
+ EA-02         | simulador  |    94 | 2026-11-12 20:31:28.505
+ EA-03         | simulador  |    94 | 2026-11-12 20:31:28.505
+ EA-07         | mqtt       |     1 | 2026-11-12 20:16:48.32
+ IL-118        | simulador  |    94 | 2026-11-12 20:31:28.505
+ SN-014        | open-meteo |     8 | 2026-11-12 12:00:00
+ SN-014        | simulador  |    47 | 2026-11-12 20:31:28.505
+ SN-019        | open-meteo |     8 | 2026-11-12 12:00:00
+ SN-027        | mqtt       |   755 | 2026-11-12 20:25:00
+ SN-027        | open-meteo |     8 | 2026-11-12 12:00:00
+ SN-031        | simulador  |    47 | 2026-11-12 20:31:28.505
+ SN-042        | simulador  |    47 | 2026-11-12 20:31:28.505
+ SV-212        | simulador  |    47 | 2026-11-12 20:31:28.505
+(13 rows)
+

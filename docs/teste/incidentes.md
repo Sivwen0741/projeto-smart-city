@@ -1,6 +1,7 @@
 # Relatórios de incidente — Sprint 6
 
-Seção 4 da documentação de teste. Versão sob teste: tag `v1.0-sprint-6` (commit `01ecf29`).
+Seção 4 da documentação de teste. Versão sob teste: tag `v1.0-sprint-6` (commit `01ecf29`) na
+rodada 1 e tag `v1.0.2-sprint-6` (commit `0a38751`) na rodada 2, de 12/11/2026.
 Severidade conforme o plano. Alta: impede uma função do núcleo, expõe dado ou quebra o controle
 de acesso. Média: a função falha, mas há contorno, ou falha um item do escopo estendido. Baixa:
 texto, aparência ou incômodo sem efeito no resultado.
@@ -14,6 +15,9 @@ texto, aparência ou incômodo sem efeito no resultado.
 | INC-003 | O teste US02-3 conta todos os dispositivos sem comunicação do banco, e não só os que ele cria, o que o torna não determinístico mesmo com o banco recriado | CT-042 | baixa | alta | fechado |
 | INC-004 | Gráfico histórico fora de escala: rótulos dos eixos com cerca de 40 px e gráfico com mais de 1200 px de altura; não cabe sem rolagem na resolução de teste | CT-129 | baixa | média | fechado |
 | INC-005 | Campo "Instalado em" do formulário de dispositivo mostra a data em formato americano (03/14/2024) | CT-013 | baixa | baixa | aberto |
+| INC-006 | O eixo vertical do gráfico "Ocorrências abertas hoje" do painel rotula a linha do meio com o valor arredondado: com 3 ocorrências mostra 0, 2, 3; com 1, mostra 0, 1, 1 | CT-111 | baixa | média | aberto |
+| INC-007 | A ordenação da lista de dispositivos por Tipo e por Localização põe os nomes acentuados no fim ("Controlador" antes de "Câmera", "Órfãs" depois de "Uvaranas") | CT-018 | média | média | aberto |
+| INC-008 | O alerta de poluição por bairro, que não tem dispositivo, não aparece no mapa | CT-127 | média | média | aberto |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
 
@@ -95,4 +99,49 @@ texto, aparência ou incômodo sem efeito no resultado.
 | Severidade e prioridade | Baixa. Baixa. |
 | Investigação | O documento já declara `lang="pt-BR"` (`web/index.html`) desde a primeira versão, e o campo continua em mês/dia/ano. O Chrome formata o `input type="date"` pelo idioma da interface do navegador, não pelo `lang` da página. A única correção na aplicação é trocar o campo nativo por um componente próprio de data. |
 | Decisão | Não corrigir nesta entrega (decisão de 02/11/2026). A duas semanas da entrega, trocar um componente de formulário traz risco maior que o defeito. O incidente fica aberto e entra nos riscos residuais (seção 5.4 do relatório de conclusão). |
+| Status e responsável | Aberto. Bryan Charles. |
+
+## INC-006 — Rótulo arredondado no eixo do gráfico de ocorrências do painel
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 12/11/2026, Bryan Charles, na rodada 2 (automação de navegador) |
+| Item testado e versão | US12 (painel, gráfico "Ocorrências abertas hoje"), `v1.0.2-sprint-6` |
+| Caso de teste relacionado | CT-111 |
+| Passos para reproduzir | 1. Banco limpo. 2. Registrar uma ocorrência e abrir o painel: o eixo vertical mostra 0, 1, 1. 3. Registrar mais duas: o eixo mostra 0, 2, 3. |
+| O que aconteceu | O gráfico desenha três linhas de grade: o mínimo, o meio e o máximo. A do meio fica em (mínimo + máximo) / 2, e o rótulo é formatado com zero casas decimais. Com máximo 1, a linha de 0,5 aparece como "1", repetindo o rótulo do topo. Com máximo 3, a linha de 1,5 aparece como "2". Com 5 ocorrências, 2,5 aparece como "3". A linha da série está certa, mas quem lê pelo eixo encontra um valor que a linha do meio não tem. Origem: `web/src/componentes/GraficoLinha.tsx:70`. |
+| O que era esperado | Rótulos que correspondam à posição das linhas de grade: marcas inteiras para contagem (0, 1, 2, 3) ou rótulo com a casa decimal. |
+| Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`, Chrome no macOS. |
+| Severidade e prioridade | Baixa: a série e os totais estão corretos, e o defeito está no rótulo do eixo. Média: o gráfico fica na tela inicial e o mesmo componente desenha os gráficos de rios e do histórico. |
+| Evidência | `evidencias/CT-111-1.png`, `CT-111-2.png`, `CT-111-3.png` |
+| Status e responsável | Aberto. Bryan Charles. |
+
+## INC-007 — Ordenação alfabética da lista de dispositivos ignora os acentos
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 12/11/2026, Bryan Charles, na rodada 2 (automação de navegador) |
+| Item testado e versão | US22 (lista de dispositivos), `v1.0.2-sprint-6` |
+| Caso de teste relacionado | CT-018 |
+| Passos para reproduzir | 1. Dispositivos. 2. Clicar no cabeçalho Tipo: a ordem crescente começa por "Controlador de iluminação" e só depois "Câmera". 3. Clicar em Localização: "Órfãs" fica depois de "Uvaranas". |
+| O que aconteceu | A ordenação é feita pelo banco (`ORDER BY` em `api/src/dispositivos/dispositivos.service.ts`). O banco da imagem `postgis/postgis:16-3.4-alpine` usa a collation `en_US.utf8`, mas a biblioteca C da Alpine (musl) não implementa essa collation e compara byte a byte, então letras acentuadas vão para depois do "z". O mesmo efeito aparece na lista de tipos do formulário de dispositivo, também ordenada pelo banco. |
+| O que era esperado | Ordem alfabética do português: "Câmera" antes de "Controlador"; "Órfãs" entre "Olarias" e "Ronda". |
+| Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`; banco `en_US.utf8` (consultado em `pg_database`). |
+| Severidade e prioridade | Média: a ordenação, uma função do critério US22, dá resultado errado para nomes acentuados; há contorno (ler a lista inteira). Média. |
+| Evidência | `evidencias/CT-018-1.png`, `CT-018-2.png`; ordens lidas na tela registradas no log (CT-018) |
+| Status e responsável | Aberto. Bryan Charles. |
+
+## INC-008 — Alerta de poluição por bairro não aparece no mapa
+
+| Campo | Valor |
+|---|---|
+| Data e quem registrou | 12/11/2026, Bryan Charles, na rodada 2 (automação de navegador) |
+| Item testado e versão | US18 (alerta de poluição por bairro), `v1.0.2-sprint-6` |
+| Caso de teste relacionado | CT-127 |
+| Passos para reproduzir | 1. Preparar o alerta como no README das evidências: regra "Material particulado elevado" com limite 5 e reinício da interface de programação. 2. Conferir em Alertas: 16 alertas "Material particulado elevado" com "Open-Meteo" no lugar do dispositivo. 3. Abrir o Mapa ou o painel. |
+| O que aconteceu | O mapa não mostra nenhum dos 16 alertas: a legenda fica em "Atenção · 0" e não há marca nos bairros. O componente do mapa (`web/src/componentes/MapaCidade.tsx`) só desenha dispositivos, coloridos pelo alerta ativo, e ocorrências. Um alerta sem dispositivo não tem o que pintar. A interface de programação devolve a latitude e a longitude do alerta (critério US18-2, verificado só pela API na Sprint 6). Na lista e no painel do alerta, a fonte, o bairro e a ausência de dispositivo aparecem corretamente. |
+| O que era esperado | A ficha do CT-127 pede o alerta "no mapa, dentro do bairro". |
+| Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`, Chrome no macOS; pré-condição alterada e desfeita (limite 5 às 20:41, de volta a 55 às 20:44). |
+| Severidade e prioridade | Média: falha um item do escopo estendido, com contorno (o alerta aparece na lista, no painel do alerta e no indicador de qualidade do ar). Média. |
+| Evidência | `evidencias/CT-127-1.png` a `CT-127-4.png`; `evidencias/2026-11-12-rodada-2/CT-127-CT-128-preparacao.txt` |
 | Status e responsável | Aberto. Bryan Charles. |

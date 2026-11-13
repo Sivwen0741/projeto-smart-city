@@ -1,0 +1,13 @@
+CT-082 — 12/11/2026 20:34 — v1.0.2-sprint-6, projeto teste-v102, Chrome, administrador
+Método: em cada tela, todos os elementos com "backlog" no atributo title, com o estado (disabled ou
+aria-disabled) lido no DOM.
+
+/painel           2: Relatórios (US16) desab; Filtrar (US08) desab
+/alertas          6: Relatórios (US16); Buscar alerta, Gravidade, Todos os bairros, Últimas 24 h (US08); Exportar (US25) — todos desab
+/ocorrencias      6: Relatórios (US16); Buscar ocorrência, Gravidade, Órgão, Bairro (US08); Exportar (US25) — todos desab
+/ocorrencias/2    2: Relatórios (US16); Exportar do histórico (US25) — desab
+/mapa             2: Relatórios (US16); Filtrar (US08) — desab
+/dispositivos     6: Relatórios (US16); Buscar dispositivo, Tipo, Situação, Bairro (US08); Exportar (US25) — todos desab
+/regras, /usuarios, /dispositivos/12/historico: Relatórios (US16) desab
+Título de cada um: "Previsto: USnn, backlog". Marca visível "backlog" ao lado de Relatórios, Filtrar,
+das caixas de busca, do grupo de filtros e de Exportar.

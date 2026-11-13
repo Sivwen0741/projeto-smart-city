@@ -1,0 +1,19 @@
+CT-086 / CT-087 / CT-089 — 12/11/2026 20:27:45 — v1.0.2-sprint-6, projeto teste-v102
+   hora   |          acao           | entidade_afetada | entidade_id | usuario_id |                                                            detalhes                                                            
+----------+-------------------------+------------------+-------------+------------+--------------------------------------------------------------------------------------------------------------------------------
+ 20:26:30 | registro_ocorrencia     | ocorrencia       |           4 |          1 | {"origem": "alerta", "alertaId": "46", "protocolo": "2026-11-0004"}
+ 20:27:07 | atualizacao_ocorrencia  | ocorrencia       |           4 |          1 | {"protocolo": "2026-11-0004", "situacaoNova": "em_atendimento", "situacaoAnterior": "aberta", "alertasEncerrados": []}
+ 20:27:18 | atualizacao_ocorrencia  | ocorrencia       |           4 |          1 | {"protocolo": "2026-11-0004", "situacaoNova": "em_atendimento", "situacaoAnterior": "em_atendimento", "alertasEncerrados": []}
+ 20:27:35 | encerramento_ocorrencia | ocorrencia       |           4 |          1 | {"protocolo": "2026-11-0004", "situacaoNova": "encerrada", "situacaoAnterior": "em_atendimento", "alertasEncerrados": ["46"]}
+(4 rows)
+
+ id |            nome             | situacao  | ocorrencia_id |   enc    
+----+-----------------------------+-----------+---------------+----------
+ 46 | Temperatura crítica (teste) | encerrado |             4 | 20:27:35
+(1 row)
+
+  protocolo   | situacao  |      enc       
+--------------+-----------+----------------
+ 2026-11-0004 | encerrada | 12/11 20:27:35
+(1 row)
+
