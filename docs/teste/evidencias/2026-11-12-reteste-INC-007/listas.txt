@@ -1,0 +1,10 @@
+Reteste do INC-007 · outras listas ordenadas por texto, pela interface de programação · 13/11/2026 00:53:30
+Versão: commit 85afa54 (branch sprint-6-inc-007), projeto reteste-inc007
+GET /api/tipos-dispositivo:
+  Câmera | Controlador de iluminação | Estação ambiental | Semáforo inteligente | Sensor de nível | Sensor de ruído | Sensor de tráfego | Sensor de vagas
+GET /api/orgaos:
+  Defesa Civil | Departamento de Tecnologia da Informação | Infraestrutura | Meio Ambiente | Mobilidade
+GET /api/regras-alerta:
+  Chuva forte acumulada | Nível do arroio acima da cota | Risco de enchente | Dispositivo sem comunicação | Material particulado elevado | Ruído noturno acima do permitido | Tráfego lento | Falha na iluminação pública | Temperatura alta
+GET /api/usuarios:
+  Administrador

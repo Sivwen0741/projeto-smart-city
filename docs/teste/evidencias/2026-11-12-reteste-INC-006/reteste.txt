@@ -1,0 +1,9 @@
+Reteste do INC-006 · 12/11/2026 21:16 a 21:25 (BRT)
+Versão corrigida: commit 95e7189 (branch sprint-6-inc-006), clone em ~/reteste-inc006, projeto reteste-inc006, banco limpo.
+CT-111: com 1 ocorrência o eixo mostra 0 e 1, sem rótulo repetido (CT-111-1.png); com 3, mostra 0, 2 e 3,
+e no DOM cada rótulo está na posição do próprio valor (0@0,00; 2@2,00; 3@3,00) (CT-111-2.png).
+Gráficos de rios e histórico, que usam o mesmo componente: rótulos coerentes com a grade, conferidos em 13/11 no
+ambiente da main com as correções (commit 31aad37), com a página recarregada sem cache (regressao-*.png). A primeira
+captura desses dois, de 12/11, foi descartada: a navegação tinha reaproveitado o pacote antigo em cache.
+Regressão: unidade 53/53; integração 216/216 com o banco recriado (unidade.txt, integracao.txt).
+Resultado: passou.

@@ -1,0 +1,89 @@
+Reteste do INC-007 · suíte de unidade, com cobertura · 13/11/2026 00:53:38 a 00:53:49 (BRT)
+Versão: commit 85afa54, clone em pasta separada, projeto do Compose reteste-inc007
+Comando: docker compose --profile teste run --rm --no-deps --build api-teste npm run test:unidade
+
+Compose can now delegate builds to bake for better performance.
+ To do so, set COMPOSE_BAKE=true.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [api-teste internal] load build definition from Dockerfile
+#1 transferring dockerfile: 613B done
+#1 DONE 0.0s
+
+#2 [api-teste internal] load metadata for docker.io/library/node:24-alpine
+#2 DONE 1.1s
+
+#3 [api-teste internal] load .dockerignore
+#3 transferring context: 72B done
+#3 DONE 0.0s
+
+#4 [api-teste dependencias 1/4] FROM docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5
+#4 resolve docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 0.0s done
+#4 DONE 0.0s
+
+#5 [api-teste internal] load build context
+#5 transferring context: 231.72kB 0.0s done
+#5 DONE 0.0s
+
+#6 [api-teste dependencias 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [api-teste dependencias 3/4] COPY package.json package-lock.json ./
+#7 CACHED
+
+#8 [api-teste dependencias 4/4] RUN npm ci
+#8 CACHED
+
+#9 [api-teste teste 1/1] COPY . .
+#9 DONE 0.0s
+
+#10 [api-teste] exporting to image
+#10 exporting layers 0.1s done
+#10 exporting manifest sha256:c3f1eca2b560dc604b3fbb1a4da4109391ae6211fe6205f0410d444879bf9c36
+#10 exporting manifest sha256:c3f1eca2b560dc604b3fbb1a4da4109391ae6211fe6205f0410d444879bf9c36 done
+#10 exporting config sha256:cb84d9889c87ad6c33e5a85d645441797fb65cd305d7b7dc32c91b5cbe78b413 done
+#10 exporting attestation manifest sha256:239840801cb90591b49aaef980d7fc6d4883d1034ea79bb06c85c7ab731a3530 done
+#10 exporting manifest list sha256:13e21845b1f93fd3bdac71f1b0eef0ce3cbafb61d933a6823fa8ea66c123e5e1 done
+#10 naming to docker.io/library/reteste-inc007-api-teste:latest done
+#10 unpacking to docker.io/library/reteste-inc007-api-teste:latest 0.0s done
+#10 DONE 0.1s
+
+#11 [api-teste] resolving provenance for metadata file
+#11 DONE 0.0s
+
+> scoc-api@0.1.0 test:unidade
+> jest --config test/jest-unidade.json --coverage
+
+PASS test/unidade/regra.spec.ts (5.222 s)
+PASS test/unidade/ordem-texto.spec.ts (5.167 s)
+PASS test/unidade/iqar.spec.ts (5.702 s)
+PASS test/unidade/indicadores.spec.ts (6.12 s)
+PASS test/unidade/comunicacao.spec.ts (6.826 s)
+------------------|---------|----------|---------|---------|-------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------|---------|----------|---------|---------|-------------------
+All files         |   98.33 |    82.17 |      96 |   98.82 |                   
+ src              |     100 |      100 |     100 |     100 |                   
+  ordem-texto.ts  |     100 |      100 |     100 |     100 |                   
+ src/alertas      |     100 |      100 |     100 |     100 |                   
+  regra.ts        |     100 |      100 |     100 |     100 |                   
+ src/dispositivos |     100 |      100 |     100 |     100 |                   
+  comunicacao.ts  |     100 |      100 |     100 |     100 |                   
+ src/painel       |   97.59 |    75.67 |   95.12 |   98.11 |                   
+  indicadores.ts  |   97.59 |    75.67 |   95.12 |   98.11 | 78                
+ src/qualidade-ar |     100 |      100 |     100 |     100 |                   
+  iqar.ts         |     100 |      100 |     100 |     100 |                   
+------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.33% ( 118/120 )
+Branches     : 82.17% ( 83/101 )
+Functions    : 96% ( 48/50 )
+Lines        : 98.82% ( 84/85 )
+================================================================================
+
+Test Suites: 5 passed, 5 total
+Tests:       56 passed, 56 total
+Snapshots:   0 total
+Time:        7.697 s
+Ran all test suites.

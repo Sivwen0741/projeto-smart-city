@@ -29,6 +29,10 @@ plano.
 | 2 | 12/11/2026 20:47:05 a 20:54:22 | Suíte de integração e sistema, cinco execuções seguidas, banco de teste recriado antes de cada uma, na `v1.0.2-sprint-6` | 5 × 216 testes | 5 × 216 | 0 | `2026-11-12-rodada-2/integracao-1.txt` a `integracao-5.txt` |
 | 2 | 12/11/2026 20:55 | Suíte de unidade, com cobertura, na `v1.0.2-sprint-6` | 53 testes | 53 | 0 | `2026-11-12-rodada-2/unidade.txt` |
 | 2 | 12/11/2026 21:13 | Coleção do Postman pelo Newman 6.2.1, na `v1.0.2-sprint-6`, contra o ambiente da rodada | 74 requisições, 133 verificações | 133 | 0 | `2026-11-12-rodada-2/newman.txt` |
+| Reteste INC-006 | 12/11/2026 21:16 a 21:25 | CT-111 na versão corrigida `95e7189`, banco limpo, e regressão: unidade e integração, banco de teste recriado | 1 caso; 53 + 216 testes | 1; 53 + 216 | 0 | `2026-11-12-reteste-INC-006/` |
+| Reteste INC-007 | 13/11/2026 00:50 a 00:58 | CT-018 na versão corrigida `85afa54`, banco limpo, listas por texto pela interface de programação, e regressão | 1 caso; 56 + 217 testes | 1; 56 + 217 | 0 | `2026-11-12-reteste-INC-007/` |
+| Reteste INC-009 a INC-012 | 13/11/2026 00:56 a 00:59 | Os quatro achados corrigidos, na `main` com todas as correções (`31aad37`), banco limpo, página recarregada sem cache | 4 achados | 4 | 0 | `2026-11-13-reteste-INC-009-a-012/` |
+| Versão final | 13/11/2026 00:59 a 01:03 | Tag `v1.0.3-sprint-6` (`31aad37`): unidade com cobertura, integração com o banco recriado e Newman | 56 + 217 testes; 74 requisições, 133 verificações | 56 + 217; 133 | 0 | `2026-11-13-v1.0.3/` |
 
 Cobertura da suíte de unidade: 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e
 98,79% das linhas.
@@ -298,19 +302,13 @@ interface de programação ou MQTT), sem comando manual no banco:
 | CT-129 | 12/11 | `v1.0.2-sprint-6` | automação de navegador | SN-027: 24 h em médias de 5 min; 7 e 30 dias em médias por hora com a faixa mínimo–máximo; troca de grandeza na EA-03. | passou | `CT-129-1.png` a `CT-129-4.png` |  |
 | CT-130 | 12/11 | `v1.0.2-sprint-6` | automação de navegador | EA-03 PM2.5: linha tracejada de 55 µg/m³ e legenda; na EA-02, só a regra ativa de temperatura aparece, e a desativada "Temperatura alta" não. | passou | `CT-130-1.png`, `CT-130-2.png` |  |
 | CT-131 | 12/11 | `v1.0.2-sprint-6` | automação de navegador | Coluna "Últimas 3 h" com nove barras de 20 min no SN-027; "–" nas câmeras e semáforos, sem leitura. | passou | `CT-131-1.png`, `CT-131-2.png` |  |
+| CT-111 (reteste do INC-006) | 12/11 | `95e7189` | automação de navegador | Com 1 ocorrência, o eixo mostra 0 e 1; com 3, mostra 0, 2 e 3, e cada rótulo está na posição do próprio valor. | passou | `2026-11-12-reteste-INC-006/CT-111-1.png`, `CT-111-2.png` | INC-006 |
+| CT-018 (reteste do INC-007) | 13/11 | `85afa54` | automação de navegador | Tipo crescente começa por "Câmera, Câmera, Controlador de iluminação"; Localização põe "Órfãs" entre "Olarias" e "Ronda"; decrescente, o inverso. | passou | `2026-11-12-reteste-INC-007/CT-018-1.png`, `CT-018-2.png` | INC-007 |
+| CT-127 (reavaliação) | 13/11 | `v1.0.2-sprint-6` | Bryan Charles, pela leitura dos critérios | A expectativa "no mapa, dentro do bairro" não tem critério de origem (INC-008 reclassificado como achado investigado) e saiu da ficha. Pelo critério US18-2, o resultado obtido na rodada 2 atende: sem dispositivo, "Open-Meteo", o bairro e a fonte na lista e no painel do alerta. | passou | `CT-127-1.png` a `CT-127-3.png` | INC-008 (reclassificado) |
 
-**Observações fora das fichas**, encontradas durante a rodada 2. Nenhuma muda o resultado esperado
-de um caso, e por isso não foram abertas como incidente sem decisão (seção 5.4 do relatório):
-
-- Na tabela de regras e na de usuários, o nome fica centralizado quando quebra em duas linhas (é um
-  botão sem alinhamento à esquerda).
-- No seletor de perfil do formulário de usuário, o texto "Administrador" passa da borda do botão
-  (`2026-11-12-rodada-2/observacao-perfil-administrador.png`).
-- Na lista de dispositivos, a última leitura do controlador de iluminação aparece como "1 pontos", e
-  o cabeçalho "Últimas 3 h" quebra o "h" para a segunda linha.
-- No formulário de dispositivo, as mensagens de validação continuam na tela depois de o campo ser
-  corrigido, até o próximo envio.
-- "Detalhes" de um alerta aberto abre o mesmo painel de "Reconhecer".
+**Teste exploratório.** Além dos casos especificados, as telas foram percorridas sem roteiro durante
+a rodada 2. Os seis achados foram abertos em 13/11/2026 como INC-009 a INC-014, com o campo Caso
+preenchido como "achado em teste exploratório, fora dos casos especificados" (`incidentes.md`).
 
 ## Registro do CT-005 — ensaio seguindo só o README
 

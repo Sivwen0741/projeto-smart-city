@@ -1,32 +1,34 @@
 # Relatório de conclusão — Sprint 6
 
-Seção 5 da documentação de teste, fechada em 12/11/2026, depois da rodada 2.
+Seção 5 da documentação de teste, fechada em 13/11/2026, depois da rodada 2 e das correções
+reunidas na tag `v1.0.3-sprint-6`.
 
-**Resumo.** A versão `v1.0.2-sprint-6` está pronta para a entrega, com ressalvas. Os 139 casos
-planejados foram executados, 136 passaram, todos os 78 de prioridade alta passaram e nenhum
-incidente de severidade alta foi registrado. Ficam abertos quatro incidentes, dois médios (INC-007 e
-INC-008) e dois baixos (INC-005 e INC-006). A verificação de tela foi feita por um único integrante,
+**Resumo.** A versão `v1.0.3-sprint-6` está pronta para a entrega, com ressalvas. Os 139 casos
+planejados foram executados. Na primeira execução, 136 passaram. Ao final, os 139 estão aprovados:
+dois passaram no reteste depois da correção, e um passou na reavaliação, depois que a exigência que
+o fez falhar se mostrou sem critério de origem. Nenhum incidente de severidade alta foi registrado, e
+três de severidade baixa continuam abertos. A verificação de tela foi feita por um único integrante,
 por automação de navegador, sem a independência que o plano previa.
 
 ## 5.1 Métricas
 
 | Métrica | Valor |
 |---|---|
-| Casos executados / planejados | 139 / 139 (100%). Rodada 1 (02/11, `v1.0-sprint-6`): os 75 casos só automatizados, a parte automatizada dos 57 casos "automatizado e manual" e o ensaio do CT-005. Rodada 2 (12/11, `v1.0.2-sprint-6`): a parte de tela dos 57, os 6 só manuais e a parte do painel do CT-005. |
-| Taxa de aprovação ao final | 136 de 139 (97,8%). Falharam CT-018, CT-111 e CT-127, todos de prioridade média. Prioridade alta: 78 de 78 (100%). |
-| Incidentes registrados | 8: alta 0, média 2 (INC-007, INC-008), baixa 6 (INC-001 a INC-006). |
-| Incidentes abertos | 4: alta 0, média 2 (INC-007, INC-008), baixa 2 (INC-005, INC-006). INC-001 a INC-004 foram fechados depois do reteste. |
-| Testes automatizados | Unidade: 53 testes, 53 aprovados; cobertura de 98,3% das instruções, 81,44% dos desvios, 95,91% das funções e 98,79% das linhas (rodada 1); de novo 53/53, com a mesma cobertura, na `v1.0.2-sprint-6` em 12/11. Integração e sistema: 216 testes; 216 aprovados na rodada 1 e em todos os retestes, e 216/216 em cada uma das cinco execuções seguidas na `v1.0.2-sprint-6`, em 12/11, com o banco de teste recriado antes de cada uma. Postman pelo Newman: 74 requisições, 133 verificações, 133 aprovadas (rodada 1). |
+| Casos executados / planejados | 139 / 139 (100%). Rodada 1 (02/11, `v1.0-sprint-6`): os 75 casos só automatizados, a parte automatizada dos 57 casos "automatizado e manual" e o ensaio do CT-005. Rodada 2 (12/11, `v1.0.2-sprint-6`): a parte de tela dos 57, os 6 só manuais e a parte do painel do CT-005. Retestes em 12 e 13/11 nas versões corrigidas. |
+| Taxa de aprovação ao final | 139 de 139 (100%). Na primeira execução, 136 de 139 (97,8%): falharam CT-018, CT-111 e CT-127, todos de prioridade média. CT-018 e CT-111 passaram no reteste depois das correções dos INC-007 e INC-006. CT-127 passou na reavaliação: a parte que falhou não tinha critério de origem (INC-008, reclassificado). Prioridade alta: 78 de 78 (100%), todos na primeira execução. |
+| Incidentes registrados | 14. Um deles, o INC-008, foi reclassificado como achado investigado, porque nenhum critério o exige. Dos 13 defeitos: alta 0, média 1 (INC-007), baixa 12 (INC-001 a INC-006 e INC-009 a INC-014). Seis vieram dos casos especificados e seis do teste exploratório (INC-009 a INC-014). |
+| Incidentes abertos | 3, todos de severidade baixa: INC-005 (data em mês/dia num navegador em inglês), INC-013 (mensagem de validação que fica na tela) e INC-014 ("Detalhes" de alerta aberto abre o painel de reconhecimento). Os outros dez foram fechados depois do reteste. |
+| Testes automatizados | Na versão final, `v1.0.3-sprint-6` (13/11): unidade 56 de 56, com cobertura de 98,33% das instruções, 82,17% dos desvios, 96% das funções e 98,82% das linhas; integração e sistema 217 de 217, com o banco de teste recriado; coleção do Postman pelo Newman com 74 requisições e 133 de 133 verificações. Os quatro testes a mais (três de unidade e um de integração) vieram com a correção do INC-007. Na `v1.0.2-sprint-6` (12/11), a integração deu 216/216 em cinco execuções seguidas, cada uma com o banco recriado, e o Newman deu 133/133. |
 | Histórias cobertas por pelo menos um caso | 21 de 21 itens do escopo: 11 do núcleo (TT01, US20, US22, US23, TT02, US01, US02, US03, US28, US04, US05) e 10 do estendido (TT02-9, US06, US07, US09, US10, US12, US26, US21, US18, US19). Os elementos de tela de US08, US16 e US25, do backlog, têm o CT-082. |
 
 ## 5.2 Avaliação dos critérios de conclusão
 
 | Critério (do plano) | Situação |
 |---|---|
-| 1. Todos os casos de prioridade alta aprovados | Atendido. Os 78 casos de prioridade alta passaram. Os três que falharam são de prioridade média. |
-| 2. Nenhum incidente de severidade alta em aberto | Atendido. Nenhum incidente de severidade alta foi registrado. Estão abertos dois de severidade média e dois de severidade baixa. |
-| 3. Suíte automatizada verde num banco de teste recriado, na versão final | Atendido. Na `v1.0.2-sprint-6`, versão final, a suíte de integração e sistema deu 216/216 em cinco execuções seguidas, cada uma com o banco de teste recriado, e a de unidade deu 53/53. A coleção do Postman não foi repetida nessa versão: a última execução, 133 de 133 verificações, foi na `v1.0-sprint-6`, e as correções da `v1.0.2` não mudaram rotas da interface de programação. |
-| 4. Cada história do núcleo coberta por ao menos um caso executado | Atendido. As 11 histórias e tarefas do núcleo têm casos executados. A US22 tem um caso que falhou (CT-018, INC-007), e os outros dez casos dela passaram. |
+| 1. Todos os casos de prioridade alta aprovados | Atendido. Os 78 casos de prioridade alta passaram, todos na primeira execução. |
+| 2. Nenhum incidente de severidade alta em aberto | Atendido. Nenhum incidente de severidade alta foi registrado. Os três abertos são de severidade baixa. |
+| 3. Suíte automatizada verde num banco de teste recriado, na versão final | Atendido. Na `v1.0.3-sprint-6`, a unidade deu 56/56, a integração e sistema 217/217 com o banco recriado e a coleção do Postman 133 de 133 verificações. |
+| 4. Cada história do núcleo coberta por ao menos um caso executado | Atendido. As 11 histórias e tarefas do núcleo têm casos executados e aprovados. |
 
 ## 5.3 Desvios do plano
 
@@ -57,6 +59,15 @@ por automação de navegador, sem a independência que o plano previa.
   como histórico de 30 dias, chuva num bairro sem estação e perfis de usuário. Esses dados foram
   criados pela tela, pela interface de programação ou pelo MQTT, nunca por comando no banco, e cada
   preparação está registrada como pré-condição no log da rodada 2.
+- **Teste exploratório além dos casos especificados (12/11/2026).** O plano só prevê os 139 casos.
+  Na rodada 2, as telas também foram percorridas sem roteiro, e esse teste exploratório gerou seis
+  achados, abertos como INC-009 a INC-014, com o campo Caso preenchido como "achado em teste
+  exploratório, fora dos casos especificados". Quatro, que eram texto ou uma linha de estilo, foram
+  corrigidos; dois ficam abertos.
+- **Exigência sem critério de origem numa ficha (13/11/2026).** A ficha do CT-127 pedia o alerta de
+  poluição "no mapa, dentro do bairro", o que nenhum critério da US18 ou da US01 exige. O caso falhou
+  por isso, e o INC-008 foi aberto. Investigado, o incidente foi reclassificado como achado, a
+  exigência saiu da ficha, com uma observação, e o caso foi reavaliado no log.
 
 ## 5.4 Riscos residuais
 
@@ -67,18 +78,16 @@ por automação de navegador, sem a independência que o plano previa.
   foi julgado mais arriscado que o defeito, a duas semanas da entrega. Efeito: quem usa o
   navegador em inglês pode ler ou digitar a data com dia e mês trocados; com o navegador em
   português, o campo já aparece em dia/mês.
-- **INC-006, rótulo arredondado no eixo do gráfico de ocorrências do painel (aberto, severidade
-  baixa).** A série e os totais estão corretos. A linha do meio do eixo vertical é rotulada com o
-  valor arredondado, então quem lê pela grade encontra um número que a linha não marca. O mesmo
-  componente desenha os gráficos dos rios e do histórico, onde os valores têm casas decimais e o
-  efeito não apareceu na rodada 2.
-- **INC-007, ordenação que ignora os acentos (aberto, severidade média).** Na lista de dispositivos,
-  Tipo e Localização põem os nomes acentuados no fim, e a lista de tipos do formulário também. A
-  causa é a collation do banco na imagem Alpine, e pode atingir outras ordenações por texto feitas
-  no banco que a rodada não exercitou.
-- **INC-008, alerta de poluição por bairro fora do mapa (aberto, severidade média).** O alerta
-  aparece na lista, no painel do alerta, na faixa de indicadores e no quadro do painel, mas não no
-  mapa, que é a visão de situação da cidade. Quem acompanha só o mapa não vê o alerta.
+- **INC-013, mensagem de validação que fica na tela (aberto, severidade baixa).** No formulário de
+  dispositivo, depois de um envio recusado, as mensagens continuam visíveis enquanto o operador
+  corrige os campos, até o próximo envio. O cadastro funciona; o operador pode achar que o campo
+  corrigido ainda está errado.
+- **INC-014, "Detalhes" de alerta aberto abre o painel de reconhecimento (aberto, severidade
+  baixa).** Quem só quer consultar o alerta cai no painel que pede a providência. Nada é gravado sem
+  confirmar.
+- **Alerta de poluição por bairro fora do mapa (achado, sem incidente).** O alerta aparece na lista,
+  no painel do alerta, no indicador de qualidade do ar e no quadro do painel, mas não no mapa. Não
+  há critério que o exija; fica como item de backlog, junto com a camada de qualidade do ar da US17.
 - **Três testes de integração ainda medem contagens do banco inteiro (risco residual, sem
   incidente).** O mecanismo é o do INC-003: o teste lê um total do banco de teste antes e depois de
   agir e compara a diferença, então qualquer registro que outra suíte ou uma rotina crie entre as
@@ -93,28 +102,60 @@ por automação de navegador, sem a independência que o plano previa.
   `integracao-5.txt`). O risco é uma falha intermitente sem defeito no sistema, como a do INC-003.
 - **DT08 e DT06: verificação sem independência.** O ensaio em máquina limpa (CT-005) e todas as
   verificações de tela foram executados pelo autor do código, por automação. Defeito de entendimento
-  do requisito pode passar pelo código, pelo teste e pela verificação ao mesmo tempo. A lacuna mais
-  sensível continua sendo o README lido por quem nunca o viu, que é o avaliador.
-- **Observações sem incidente.** Cinco imperfeições de aparência e de texto registradas no log da
-  rodada 2, fora do que as fichas verificam: nomes centralizados quando quebram linha nas tabelas de
-  regras e de usuários, "Administrador" passando da borda do botão de perfil, "1 pontos" e o
-  cabeçalho "Últimas 3 h" quebrado na lista de dispositivos, mensagens de validação que ficam na tela
-  depois da correção do campo e "Detalhes" de alerta aberto com o mesmo painel de "Reconhecer". Ficam
-  para decisão: abrir como incidente ou levar ao backlog.
+  do requisito pode passar pelo código, pelo teste e pela verificação ao mesmo tempo, como mostrou a
+  exigência sem critério na ficha do CT-127. A lacuna mais sensível continua sendo o README lido por
+  quem nunca o viu, que é o avaliador.
+
+## 5.5 Lições aprendidas
+
+**O que funcionou**
+
+- Registramos os débitos em vez de escondê-los. A falta de automação de tela (DT05), a falta de
+  revisão cruzada (DT06), as suítes acopladas pela ordem de execução (DT07) e o ensaio sem
+  independência (DT08) estão em `docs/decisoes/` e na verificação de cada sprint, com a origem e o
+  destino. Quando o INC-003 apareceu, deu para dizer em minutos que não era o DT07, porque o DT07
+  estava escrito.
+- Cada critério tem um teste com o número no nome. Isso permitiu ligar cada caso de teste a um
+  arquivo e a um teste existentes, e o gerador de casos recusa citar um teste que não exista.
+- Correções pequenas, cada uma numa branch com o número do incidente, reteste do caso que falhou e
+  regressão das suítes, reunidas numa tag. O que entrou depois do corte pode ser rastreado commit a
+  commit.
+- Recriar o banco de teste antes de cada execução oficial tirou o DT07 do caminho das rodadas.
+- Investigar antes de corrigir. O INC-008 seria uma tela nova feita às pressas; a leitura dos
+  critérios mostrou que a exigência não existia.
+
+**O que faríamos diferente**
+
+- Dividiríamos o trabalho de teste quando o plano foi aprovado, e não na véspera da execução. A
+  divisão dos 64 casos manuais entre quatro pessoas, com ordem e tempo estimado, não se concretizou:
+  na hora de executar, só um integrante estava disponível, e a independência que justificava a
+  divisão se perdeu.
+- Daríamos o CT-005 a outra pessoa enquanto ainda havia tempo. O ensaio em máquina limpa existe para
+  pegar o que o autor do README não enxerga; feito pelo autor, perdeu o propósito, e isso virou o
+  DT08 em vez de ser resolvido.
+- Escreveríamos os testes de integração sobre os próprios dados, e não sobre totais do banco. Os
+  testes que comparam contagens do banco inteiro antes e depois são não determinísticos por
+  construção; o INC-003 corrigiu um, e três seguem com a mesma forma.
+- Não deixaríamos uma ferramenta gravar sobre um documento editado à mão. O gerador dos casos
+  sobrescreveu a distribuição manual duas vezes com a versão antiga, e a divisão revisada só não se
+  perdeu porque estava no histórico do git. A correção foi separar as saídas: o gerador só escreve a
+  distribuição quando pedido.
+- Conferiríamos cada resultado esperado das fichas contra o critério de origem antes de executar. A
+  exigência do mapa no CT-127 foi escrita por quem escreveu o código e os testes, e ninguém a leu
+  contra a US18 até ela falhar.
 
 ## 5.6 Recomendação
 
-Liberar a `v1.0.2-sprint-6` para a entrega. Os quatro critérios de conclusão do plano estão
-atendidos, e os quatro incidentes abertos têm contorno e estão descritos na 5.4.
+Liberar a `v1.0.3-sprint-6` para a entrega. Os quatro critérios de conclusão do plano estão
+atendidos, os 139 casos estão aprovados e os três incidentes abertos são de severidade baixa, com
+efeito descrito na 5.4.
 
 Em seguida:
 
-1. Decidir, com o tempo até 16/11, quais incidentes corrigir. O INC-006 e o INC-007 têm causa
-   localizada e correção pequena. O INC-008 pede desenhar o alerta de bairro no mapa, o que é tela
-   nova e precisa ser mostrado antes, pela regra do projeto.
-2. Cada correção segue o processo das anteriores: branch própria com o número do incidente,
-   reteste do caso que falhou e regressão com a suíte de unidade e a de integração num banco
-   recriado. Os casos de tela de prioridade alta afetados pela correção são repetidos, e uma nova
-   tag reúne as correções.
+1. Levar ao backlog da Sprint 7 o INC-013, o INC-014 e o alerta de bairro no mapa, este junto com a
+   camada de qualidade do ar da US17. O alerta no mapa e o painel de consulta do INC-014 são telas
+   novas e precisam ser desenhados e mostrados antes, pela regra do projeto.
+2. Reescrever os três testes de integração que comparam totais do banco, cada um sobre os próprios
+   dados, como foi feito no INC-003.
 3. Na próxima entrega, executar o CT-005 e uma amostra dos casos de tela por outro integrante, para
    fechar o DT08 e reduzir o risco do DT06.

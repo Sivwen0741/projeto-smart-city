@@ -1,0 +1,10 @@
+Reteste do INC-007 · 13/11/2026 00:50 a 00:58 (BRT)
+Versão corrigida: commit 85afa54 (branch sprint-6-inc-007), clone em ~/reteste-inc007, projeto reteste-inc007, banco limpo.
+CT-018 na tela: Tipo crescente "Câmera | Câmera | Controlador de iluminação | Estação ambiental | …" e decrescente
+o inverso; Localização crescente "… Olarias | Olarias | Órfãs | Ronda | Uvaranas" e decrescente o inverso
+(CT-018-1.png, CT-018-2.png). As outras listas ordenadas por texto, pela interface de programação: tipos de
+dispositivo, órgãos, regras (dentro de cada gravidade) e usuários (listas.txt). Alertas e ocorrências não
+ordenam por texto: gravidade, situação e data.
+Regressão: unidade 56/56 (53 + 3 do comparador novo), cobertura 98,33% / 82,17% / 96% / 98,82%;
+integração 217/217 (216 + "US22-6 tipo e localização seguem a ordem alfabética do português"), banco recriado.
+Resultado: passou.

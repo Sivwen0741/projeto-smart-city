@@ -1886,6 +1886,7 @@ Mesmas colunas do modelo. Na coluna História, US e TT são a numeração do pro
 | Pré-condições | Ambiente completo no ar; administrador do `.env` autenticado na tela. |
 | Entradas e passos | Disparar alerta de poluição de bairro; abrir em Alertas. |
 | Resultado esperado | Sem dispositivo, com "Open-Meteo", o bairro e a fonte "Open-Meteo Air Quality API"; no mapa, dentro do bairro. |
+| Observação | Em 13/11/2026, a parte "no mapa, dentro do bairro" foi retirada do que este caso verifica: nenhum critério da US18 ou da US01 a exige, e a camada de qualidade do ar no mapa é a US17-2, fora do escopo. Foi escrita na ficha sem critério de origem. O caso verifica o critério US18-2: o alerta indica o bairro e a fonte do dado. Ver o INC-008, reclassificado como achado investigado. |
 | Teste automatizado | `us18.e2e-spec.ts` › US18-2 o alerta do bairro não tem dispositivo e traz o bairro, a fonte e a posição dentro do bairro |
 | Execução | automatizado e manual; manual: Painel do alerta mostrando a fonte. Tela: Alertas e faixa grave, cerca de 5 min. |
 | Na execução | resultado obtido · passou, falhou, bloqueado ou pendente (tela) · evidência (checkpoint 2) |

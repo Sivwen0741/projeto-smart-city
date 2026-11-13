@@ -1,0 +1,10 @@
+Reteste dos INC-009 a INC-012 · 13/11/2026 00:56 a 00:59 (BRT)
+Versão: main com as seis correções (commit 31aad37), clone em ~/teste-v103, projeto teste-v103, banco limpo,
+Chrome com a página recarregada sem cache (Cmd+Shift+R) e o pacote conferido (index-DUc74Aew.js).
+INC-009: usuário de nome longo, criado pela interface de programação, com o painel lateral aberto: o nome quebra em
+duas linhas alinhado à esquerda (text-align left) (INC-009-usuarios.png).
+INC-010: seletor de perfil no formulário de usuário: colunas 75/75/75/90 px, as quatro opções cabem no botão
+(INC-010-perfil.png).
+INC-011: lista de dispositivos, IL-118 com "1 ponto" (INC-011-INC-012-dispositivos.png).
+INC-012: cabeçalho "Últimas / 3 h", com espaço sem quebra entre 3 e h (INC-011-INC-012-dispositivos.png).
+Resultado: passou nos quatro.

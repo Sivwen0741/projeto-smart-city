@@ -1,7 +1,8 @@
 # Relatórios de incidente — Sprint 6
 
 Seção 4 da documentação de teste. Versão sob teste: tag `v1.0-sprint-6` (commit `01ecf29`) na
-rodada 1 e tag `v1.0.2-sprint-6` (commit `0a38751`) na rodada 2, de 12/11/2026.
+rodada 1 e tag `v1.0.2-sprint-6` (commit `0a38751`) na rodada 2, de 12/11/2026. As correções
+depois da rodada 2 estão na tag `v1.0.3-sprint-6` (commit `31aad37`).
 Severidade conforme o plano. Alta: impede uma função do núcleo, expõe dado ou quebra o controle
 de acesso. Média: a função falha, mas há contorno, ou falha um item do escopo estendido. Baixa:
 texto, aparência ou incômodo sem efeito no resultado.
@@ -15,9 +16,15 @@ texto, aparência ou incômodo sem efeito no resultado.
 | INC-003 | O teste US02-3 conta todos os dispositivos sem comunicação do banco, e não só os que ele cria, o que o torna não determinístico mesmo com o banco recriado | CT-042 | baixa | alta | fechado |
 | INC-004 | Gráfico histórico fora de escala: rótulos dos eixos com cerca de 40 px e gráfico com mais de 1200 px de altura; não cabe sem rolagem na resolução de teste | CT-129 | baixa | média | fechado |
 | INC-005 | Campo "Instalado em" do formulário de dispositivo mostra a data em formato americano (03/14/2024) | CT-013 | baixa | baixa | aberto |
-| INC-006 | O eixo vertical do gráfico "Ocorrências abertas hoje" do painel rotula a linha do meio com o valor arredondado: com 3 ocorrências mostra 0, 2, 3; com 1, mostra 0, 1, 1 | CT-111 | baixa | média | aberto |
-| INC-007 | A ordenação da lista de dispositivos por Tipo e por Localização põe os nomes acentuados no fim ("Controlador" antes de "Câmera", "Órfãs" depois de "Uvaranas") | CT-018 | média | média | aberto |
-| INC-008 | O alerta de poluição por bairro, que não tem dispositivo, não aparece no mapa | CT-127 | média | média | aberto |
+| INC-006 | O eixo vertical do gráfico "Ocorrências abertas hoje" do painel rotula a linha do meio com o valor arredondado: com 3 ocorrências mostra 0, 2, 3; com 1, mostra 0, 1, 1 | CT-111 | baixa | média | fechado |
+| INC-007 | A ordenação da lista de dispositivos por Tipo e por Localização põe os nomes acentuados no fim ("Controlador" antes de "Câmera", "Órfãs" depois de "Uvaranas") | CT-018 | média | média | fechado |
+| INC-008 | O alerta de poluição por bairro, que não tem dispositivo, não aparece no mapa | CT-127 | — | — | fechado: reclassificado como achado investigado, sem critério que o exija |
+| INC-009 | Nas tabelas de regras e de usuários, o nome fica centralizado quando quebra em duas linhas | achado em teste exploratório, fora dos casos especificados | baixa | baixa | fechado |
+| INC-010 | No seletor de perfil do formulário de usuário, o texto "Administrador" passa da borda do botão | achado em teste exploratório, fora dos casos especificados | baixa | baixa | fechado |
+| INC-011 | Na lista de dispositivos, a última leitura do controlador de iluminação aparece como "1 pontos" | achado em teste exploratório, fora dos casos especificados | baixa | baixa | fechado |
+| INC-012 | O cabeçalho "Últimas 3 h" da lista de dispositivos quebra o "h" para a segunda linha | achado em teste exploratório, fora dos casos especificados | baixa | baixa | fechado |
+| INC-013 | No formulário de dispositivo, as mensagens de validação continuam na tela depois de o campo ser corrigido, até o próximo envio | achado em teste exploratório, fora dos casos especificados | baixa | baixa | aberto |
+| INC-014 | "Detalhes" de um alerta aberto abre o mesmo painel de "Reconhecer" | achado em teste exploratório, fora dos casos especificados | baixa | baixa | aberto |
 
 ## INC-001 — README sem forma de isolar uma segunda cópia do projeto
 
@@ -114,7 +121,9 @@ texto, aparência ou incômodo sem efeito no resultado.
 | Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`, Chrome no macOS. |
 | Severidade e prioridade | Baixa: a série e os totais estão corretos, e o defeito está no rótulo do eixo. Média: o gráfico fica na tela inicial e o mesmo componente desenha os gráficos de rios e do histórico. |
 | Evidência | `evidencias/CT-111-1.png`, `CT-111-2.png`, `CT-111-3.png` |
-| Status e responsável | Aberto. Bryan Charles. |
+| Correção | Commit `95e7189` (branch `sprint-6-inc-006`, mesclada na `main` em `9d5d478`). As marcas da grade passam a ficar no valor arredondado que o rótulo mostra, e marcas repetidas são removidas. A correção vale para os três gráficos que usam o componente: ocorrências do painel, rios e histórico. |
+| Reteste | 12/11/2026, 21:16 a 21:25, pelo CT-111, na versão `95e7189`, num clone com banco limpo. Com 1 ocorrência, o eixo mostra 0 e 1; com 3, mostra 0, 2 e 3, e cada rótulo está na posição do próprio valor. Os gráficos de rios e do histórico foram conferidos de novo em 13/11 na `main` com todas as correções. Regressão: unidade 53/53 e integração 216/216 com o banco recriado. **Passou.** Evidência: `evidencias/2026-11-12-reteste-INC-006/`. |
+| Status e responsável | Fechado em 12/11/2026, depois do reteste. Bryan Charles. |
 
 ## INC-007 — Ordenação alfabética da lista de dispositivos ignora os acentos
 
@@ -129,9 +138,11 @@ texto, aparência ou incômodo sem efeito no resultado.
 | Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`; banco `en_US.utf8` (consultado em `pg_database`). |
 | Severidade e prioridade | Média: a ordenação, uma função do critério US22, dá resultado errado para nomes acentuados; há contorno (ler a lista inteira). Média. |
 | Evidência | `evidencias/CT-018-1.png`, `CT-018-2.png`; ordens lidas na tela registradas no log (CT-018) |
-| Status e responsável | Aberto. Bryan Charles. |
+| Correção | Commit `85afa54` (branch `sprint-6-inc-007`, mesclada na `main` em `23aa0c5`). As ordenações por texto deixam de depender da collation do banco e passam a usar `localeCompare` em pt-BR (`api/src/ordem-texto.ts`): dispositivos por tipo e por localização, tipos de dispositivo, usuários, regras, órgãos, dispositivos sem comunicação por tipo e bairros do gráfico do painel. A conferência das listas pedida no reteste mostrou que alertas e ocorrências não ordenam por texto (gravidade, situação e data). Testes novos: três na suíte de unidade e "US22-6 tipo e localização seguem a ordem alfabética do português" na integração. |
+| Reteste | 13/11/2026, 00:50 a 00:58, pelo CT-018, na versão `85afa54`, num clone com banco limpo. Tipo crescente: "Câmera, Câmera, Controlador de iluminação, …"; Localização crescente: "… Olarias, Olarias, Órfãs, Ronda, Uvaranas"; decrescente, o inverso. Tipos, órgãos, regras e usuários conferidos pela interface de programação. Regressão: unidade 56/56 e integração 217/217 com o banco recriado. **Passou.** Evidência: `evidencias/2026-11-12-reteste-INC-007/`. |
+| Status e responsável | Fechado em 13/11/2026, depois do reteste. Bryan Charles. |
 
-## INC-008 — Alerta de poluição por bairro não aparece no mapa
+## INC-008 — Alerta de poluição por bairro não aparece no mapa (reclassificado)
 
 | Campo | Valor |
 |---|---|
@@ -142,6 +153,42 @@ texto, aparência ou incômodo sem efeito no resultado.
 | O que aconteceu | O mapa não mostra nenhum dos 16 alertas: a legenda fica em "Atenção · 0" e não há marca nos bairros. O componente do mapa (`web/src/componentes/MapaCidade.tsx`) só desenha dispositivos, coloridos pelo alerta ativo, e ocorrências. Um alerta sem dispositivo não tem o que pintar. A interface de programação devolve a latitude e a longitude do alerta (critério US18-2, verificado só pela API na Sprint 6). Na lista e no painel do alerta, a fonte, o bairro e a ausência de dispositivo aparecem corretamente. |
 | O que era esperado | A ficha do CT-127 pede o alerta "no mapa, dentro do bairro". |
 | Ambiente | Clone da tag `v1.0.2-sprint-6`, projeto `teste-v102`, Chrome no macOS; pré-condição alterada e desfeita (limite 5 às 20:41, de volta a 55 às 20:44). |
-| Severidade e prioridade | Média: falha um item do escopo estendido, com contorno (o alerta aparece na lista, no painel do alerta e no indicador de qualidade do ar). Média. |
+| Severidade e prioridade | Registrada como média na abertura. Retirada na reclassificação. |
 | Evidência | `evidencias/CT-127-1.png` a `CT-127-4.png`; `evidencias/2026-11-12-rodada-2/CT-127-CT-128-preparacao.txt` |
-| Status e responsável | Aberto. Bryan Charles. |
+| Investigação | Nenhum critério de aceite exige o alerta de bairro no mapa. Os critérios da US18 (`docs/sprint-6-criterios.md`) pedem que as regras valham para as leituras do Open-Meteo, que o alerta indique o bairro e a fonte do dado e que o Meio Ambiente seja sugerido. Os da US01 pedem no mapa os dispositivos, com a cor do alerta ativo, e as ocorrências abertas. A camada de qualidade do ar no mapa é a US17-2, fora do escopo e no backlog da Sprint 7. A decisão `2026-10-27-poluicao-por-bairro.md` diz que o alerta guarda o ponto interno do bairro como posição, mas não o põe na tela. A expectativa "no mapa, dentro do bairro" foi escrita na ficha do CT-127 sem critério de origem. |
+| Reclassificação | Não é defeito: é comportamento não especificado. Fica registrado como achado investigado (seção "Achados investigados", abaixo) e como item de backlog: mostrar no mapa o alerta de bairro, junto com a camada de qualidade do ar da US17. A ficha do CT-127 ganhou uma observação, e o caso foi reavaliado no log. |
+| Status e responsável | Fechado em 13/11/2026, reclassificado como achado investigado. Bryan Charles. |
+
+## INC-009 a INC-014 — Achados em teste exploratório
+
+Durante a rodada 2, além dos casos especificados, as telas foram percorridas sem roteiro. Esse teste
+exploratório gerou seis achados, que estavam no log como observações e foram abertos como incidentes
+em 13/11/2026, por Bryan Charles, na versão `v1.0.2-sprint-6`. Severidade conforme o efeito: os seis
+são de aparência, texto ou incômodo, sem efeito no resultado. Os que eram texto ou uma linha de
+estilo foram corrigidos (INC-009 a INC-012). Os dois que pedem mudar comportamento de tela ficam
+abertos (INC-013 e INC-014).
+
+| Campo | INC-009 | INC-010 | INC-011 | INC-012 | INC-013 | INC-014 |
+|---|---|---|---|---|---|---|
+| Item testado | US23 e US21 (tabelas de regras e de usuários) | US21 (formulário de usuário) | US22 (lista de dispositivos) | US19 (lista de dispositivos) | US22 (formulário de dispositivo) | US04 e US02 (lista de alertas) |
+| Caso de teste relacionado | achado em teste exploratório, fora dos casos especificados | idem | idem | idem | idem | idem |
+| Passos para reproduzir | Abrir Regras ou Usuários e abrir o painel lateral, com um nome que quebre em duas linhas | Usuários › abrir um usuário › ver o seletor Perfil | Dispositivos › IL-118 com 1 ponto apagado | Dispositivos › cabeçalho da coluna das últimas 3 h | Cadastrar dispositivo › enviar vazio › preencher código e tipo | Alertas › "Detalhes" num alerta aberto |
+| O que aconteceu | O nome é um botão, e o botão centraliza o texto quando quebra | Colunas de largura igual (`minmax(0, 1fr)`), menores que a palavra "Administrador" | "1 pontos" | "Últimas 3" na primeira linha e "h" na segunda | "Escolha o tipo do dispositivo." e "Informe o código identificador." continuam visíveis até o próximo envio | Abre o painel de reconhecimento, o mesmo do botão "Reconhecer" |
+| O que era esperado | Nome alinhado à esquerda, como as outras colunas | O texto inteiro dentro do botão | "1 ponto" | "Últimas" e "3 h" | A mensagem some quando o campo é corrigido | Um painel de consulta, separado da ação de reconhecer |
+| Severidade e prioridade | Baixa. Baixa. | Baixa. Baixa. | Baixa. Baixa. | Baixa. Baixa. | Baixa. Baixa. | Baixa. Baixa. |
+| Correção | `cd11a3d` (`sprint-6-inc-009`): `text-align: left` no botão do nome | `6c9243a` (`sprint-6-inc-010`): colunas `minmax(min-content, 1fr)` | `9a844d9` (`sprint-6-inc-011`): unidade no singular quando o valor é 1 ("ponto", "vaga") | `55668ca` (`sprint-6-inc-012`): espaço sem quebra entre "3" e "h" | Não corrigido: muda a validação do formulário | Não corrigido: pede um painel de consulta novo |
+| Reteste | 13/11/2026, na `main` com as correções (`31aad37`): o nome longo quebra alinhado à esquerda. **Passou.** | Idem: as quatro opções cabem (75, 75, 75 e 90 px). **Passou.** | Idem: "1 ponto". **Passou.** | Idem: "Últimas" / "3 h". **Passou.** | — | — |
+| Status | Fechado | Fechado | Fechado | Fechado | Aberto | Aberto |
+
+Evidência dos retestes: `evidencias/2026-11-13-reteste-INC-009-a-012/`. A regressão das quatro
+correções é a da tag `v1.0.3-sprint-6`: unidade 56/56, integração 217/217 com o banco recriado e
+Newman 133/133 (`evidencias/2026-11-13-v1.0.3/`).
+
+## Achados investigados, sem incidente
+
+Situações que pareciam defeito e, investigadas, não eram, por não haver requisito que as exigisse.
+
+| Achado | Data | O que foi visto | Investigação | Destino |
+|---|---|---|---|---|
+| "137 dispositivos em campo" na tela de login | 02/11/2026 | A tela de login mostra "137 dispositivos em campo", e o sistema tem 14 dispositivos. | O número é texto fixo do protótipo `01-login.svg`. A tela de login é pública, e as rotas públicas não podem ler o banco (decisão das rotas públicas). | Mantido como no protótipo; não aberto como incidente. |
+| Alerta de poluição por bairro fora do mapa (era o INC-008) | 12/11/2026 | O alerta de bairro, sem dispositivo, não aparece no mapa. | Nenhum critério da US18 ou da US01 pede isso; a camada de qualidade do ar no mapa é a US17-2, fora do escopo. Ver a ficha do INC-008. | Fechado como achado; item de backlog para a Sprint 7, junto com a US17. |

@@ -1,0 +1,397 @@
+Versão final v1.0.3-sprint-6 · coleção do Postman pelo Newman 6.2.1 · 13/11/2026 01:01:41 a 01:01:46 (BRT)
+Versão: commit 31aad37 (tag v1.0.3-sprint-6), contra o ambiente do clone em http://localhost:3000 (projeto teste-v103)
+Comando: npx newman@6.2.1 run docs/postman/scoc.postman_collection.json --env-var "senha=<ADMIN_SENHA do .env>" --color off
+
+(node:10967) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+newman
+
+SCOC - Sprints 4 a 6
+
+❏ Saúde e autenticação (TT01, US20)
+↳ GET /api/health sem token
+  GET http://localhost:3000/api/health [200 OK, 270B, 36ms]
+  ✓  responde 200
+
+↳ POST /api/auth/login sem senha
+  POST http://localhost:3000/api/auth/login [400 Bad Request, 397B, 8ms]
+  ✓  responde 400
+
+↳ POST /api/auth/login com senha errada
+  POST http://localhost:3000/api/auth/login [401 Unauthorized, 326B, 76ms]
+  ✓  responde 401
+  ✓  mensagem genérica
+
+↳ POST /api/auth/login com e-mail inexistente
+  POST http://localhost:3000/api/auth/login [401 Unauthorized, 326B, 46ms]
+  ✓  responde 401
+  ✓  mesma mensagem do e-mail existente
+
+↳ POST /api/auth/login
+  POST http://localhost:3000/api/auth/login [200 OK, 626B, 48ms]
+  ✓  responde 200
+  ✓  devolve token e usuário sem hash
+  ┌
+  │ `Using "atob" is deprecated. Use "require('atob')" ins
+  │ tead.`
+  └
+  ✓  token vale oito horas
+
+↳ GET /api/auth/eu
+  GET http://localhost:3000/api/auth/eu [200 OK, 423B, 10ms]
+  ✓  responde 200
+  ✓  devolve o usuário autenticado
+
+↳ GET /api/dispositivos sem token
+  GET http://localhost:3000/api/dispositivos [401 Unauthorized, 347B, 2ms]
+  ✓  responde 401
+
+❏ Dispositivos (US22)
+↳ GET /api/grandezas
+  GET http://localhost:3000/api/grandezas [200 OK, 1.12kB, 10ms]
+  ✓  responde 200
+  ✓  lista grandezas
+
+↳ GET /api/tipos-dispositivo
+  GET http://localhost:3000/api/tipos-dispositivo [200 OK, 3.5kB, 10ms]
+  ✓  responde 200
+  ✓  traz o sensor de nível com os campos próprios
+
+↳ GET /api/territorio/localizar
+  GET http://localhost:3000/api/territorio/localizar?latitude=-25.09514&longitude=-50.16187 [200 OK, 295B, 57ms]
+  ✓  responde 200
+  ✓  bairro e distrito pela coordenada
+
+↳ GET /api/territorio/localizar fora do município
+  GET http://localhost:3000/api/territorio/localizar?latitude=-23.55&longitude=-46.63 [422 Unprocessable Entity, 370B, 14ms]
+  ✓  responde 422
+
+↳ GET /api/dispositivos ordenado por situação
+  GET http://localhost:3000/api/dispositivos?ordem=situacao&direcao=desc [200 OK, 9.89kB, 73ms]
+  ✓  responde 200
+  ✓  cada item traz as colunas da listagem
+
+↳ GET /api/dispositivos com ordenação inválida
+  GET http://localhost:3000/api/dispositivos?ordem=xyz [400 Bad Request, 321B, 9ms]
+  ✓  responde 400
+
+↳ POST /api/dispositivos
+  POST http://localhost:3000/api/dispositivos [201 Created, 834B, 41ms]
+  ✓  responde 201
+  ✓  bairro calculado pela coordenada
+  ✓  atributos do tipo gravados
+
+↳ POST /api/dispositivos com código repetido
+  POST http://localhost:3000/api/dispositivos [409 Conflict, 385B, 17ms]
+  ✓  responde 409
+  ✓  mensagem cita o código
+
+↳ GET /api/dispositivos/{id}
+  GET http://localhost:3000/api/dispositivos/15 [200 OK, 829B, 23ms]
+  ✓  responde 200
+  ✓  é o dispositivo cadastrado
+
+↳ PATCH /api/dispositivos/{id} inativa
+  PATCH http://localhost:3000/api/dispositivos/15 [200 OK, 823B, 42ms]
+  ✓  responde 200
+  ✓  fica inativo, sem excluir
+
+↳ GET /api/dispositivos/{id}/leituras após inativar
+  GET http://localhost:3000/api/dispositivos/15/leituras [200 OK, 235B, 23ms]
+  ✓  responde 200
+  ✓  histórico continua acessível
+
+↳ GET /api/dispositivos/{id} inexistente
+  GET http://localhost:3000/api/dispositivos/999999999 [404 Not Found, 321B, 18ms]
+  ✓  responde 404
+
+❏ Regras de alerta (US23)
+↳ GET /api/regras-alerta
+  GET http://localhost:3000/api/regras-alerta [200 OK, 2.77kB, 13ms]
+  ✓  responde 200
+  ✓  lista as regras
+
+↳ POST /api/regras-alerta
+  POST http://localhost:3000/api/regras-alerta [201 Created, 530B, 18ms]
+  ✓  responde 201
+  ✓  devolve os campos da regra
+
+↳ POST /api/regras-alerta sem limite, sem operador e com duração negativa
+  POST http://localhost:3000/api/regras-alerta [400 Bad Request, 407B, 10ms]
+  ✓  responde 400
+  ✓  mensagem para cada caso
+
+↳ GET /api/regras-alerta/{id}
+  GET http://localhost:3000/api/regras-alerta/10 [200 OK, 525B, 12ms]
+  ✓  responde 200
+
+↳ PATCH /api/regras-alerta/{id} altera o limite
+  PATCH http://localhost:3000/api/regras-alerta/10 [200 OK, 525B, 19ms]
+  ✓  responde 200
+  ✓  novo limite gravado
+
+↳ PATCH /api/regras-alerta/{id} desativa
+  PATCH http://localhost:3000/api/regras-alerta/10 [200 OK, 526B, 20ms]
+  ✓  responde 200
+  ✓  desativada, sem excluir
+
+↳ GET /api/regras-alerta/{id}/alteracoes
+  GET http://localhost:3000/api/regras-alerta/10/alteracoes [200 OK, 808B, 14ms]
+  ✓  responde 200
+  ✓  registra o limite anterior e o novo, com autor
+
+❏ Sprint 5: mapa, alertas e ocorrências (US01 a US05, US28)
+↳ GET /api/territorio/bairros
+  GET http://localhost:3000/api/territorio/bairros [200 OK, 52.46kB, 149ms]
+  ✓  responde 200
+  ✓  contornos dos bairros em GeoJSON
+
+↳ GET /api/ocorrencias/categorias
+  GET http://localhost:3000/api/ocorrencias/categorias [200 OK, 377B, 9ms]
+  ✓  responde 200
+  ✓  lista de categorias
+
+↳ GET /api/orgaos
+  GET http://localhost:3000/api/orgaos [200 OK, 506B, 10ms]
+  ✓  responde 200
+  ✓  traz a Defesa Civil
+
+↳ POST /api/ocorrencias sem categoria
+  POST http://localhost:3000/api/ocorrencias [400 Bad Request, 319B, 9ms]
+  ✓  responde 400
+  ✓  pede a categoria
+
+↳ POST /api/ocorrencias
+  POST http://localhost:3000/api/ocorrencias [201 Created, 641B, 36ms]
+  ✓  responde 201
+  ✓  protocolo no formato ano-mês-sequência
+  ✓  origem telefone, situação aberta e bairro calculado
+
+↳ GET /api/ocorrencias
+  GET http://localhost:3000/api/ocorrencias [200 OK, 638B, 18ms]
+  ✓  responde 200
+  ✓  lista as abertas com coordenada
+
+↳ GET /api/alertas/resumo
+  GET http://localhost:3000/api/alertas/resumo [200 OK, 1.19kB, 40ms]
+  ✓  responde 200
+  ✓  indicadores da tela de alertas
+
+↳ GET /api/alertas
+  GET http://localhost:3000/api/alertas?visao=ativos [200 OK, 3.09kB, 25ms]
+  ✓  responde 200
+  ✓  ordenados por gravidade
+
+↳ GET /api/alertas com visão inválida
+  GET http://localhost:3000/api/alertas?visao=todos [400 Bad Request, 358B, 10ms]
+  ✓  responde 400
+
+↳ POST /api/alertas/{id}/reconhecimento sem providência
+  POST http://localhost:3000/api/alertas/9/reconhecimento [400 Bad Request, 330B, 9ms]
+  ✓  responde 400
+
+↳ POST /api/alertas/{id}/reconhecimento
+  POST http://localhost:3000/api/alertas/9/reconhecimento [200 OK, 1.18kB, 76ms]
+  ✓  responde 200
+  ✓  passa a em atendimento
+
+↳ POST /api/alertas/{id}/reconhecimento de novo
+  POST http://localhost:3000/api/alertas/9/reconhecimento [409 Conflict, 1.34kB, 26ms]
+  ✓  responde 409
+  ✓  diz quem reconheceu
+
+❏ Sprint 6 (US06, US07, US09, US10, US12, US26, US21, US18, US19) / Ocorrências até a resolução (US06)
+↳ POST /api/ocorrencias para o atendimento
+  POST http://localhost:3000/api/ocorrencias [201 Created, 642B, 56ms]
+  ✓  responde 201
+
+↳ GET /api/ocorrencias em andamento
+  GET http://localhost:3000/api/ocorrencias?visao=andamento [200 OK, 1.04kB, 13ms]
+  ✓  responde 200
+  ✓  traz a ocorrência nova
+  ✓  abertas antes das em atendimento
+
+↳ GET /api/ocorrencias com visão inválida
+  GET http://localhost:3000/api/ocorrencias?visao=todas [400 Bad Request, 339B, 8ms]
+  ✓  responde 400
+
+↳ POST /api/ocorrencias/{id}/providencias primeira providência
+  POST http://localhost:3000/api/ocorrencias/2/providencias [200 OK, 645B, 21ms]
+  ✓  responde 200
+  ✓  passa a em atendimento
+
+↳ POST /api/ocorrencias/{id}/providencias encerra sem observação
+  POST http://localhost:3000/api/ocorrencias/2/providencias [400 Bad Request, 398B, 10ms]
+  ✓  responde 400
+
+↳ POST /api/ocorrencias/{id}/providencias encerra
+  POST http://localhost:3000/api/ocorrencias/2/providencias [200 OK, 662B, 18ms]
+  ✓  responde 200
+  ✓  encerrada com data
+
+↳ POST /api/ocorrencias/{id}/providencias depois de encerrada
+  POST http://localhost:3000/api/ocorrencias/2/providencias [409 Conflict, 336B, 13ms]
+  ✓  responde 409
+
+↳ GET /api/ocorrencias/{id} com o histórico
+  GET http://localhost:3000/api/ocorrencias/2 [200 OK, 1.51kB, 28ms]
+  ✓  responde 200
+  ✓  histórico com abertura e as duas providências
+
+↳ GET /api/ocorrencias encerradas
+  GET http://localhost:3000/api/ocorrencias?visao=encerradas [200 OK, 664B, 12ms]
+  ✓  responde 200
+  ✓  a encerrada continua consultável
+
+❏ Sprint 6 (US06, US07, US09, US10, US12, US26, US21, US18, US19) / Sem comunicação, rios e enchente (US07, US09, US10)
+↳ GET /api/regras-alerta com as regras do sistema e de enchente
+  GET http://localhost:3000/api/regras-alerta [200 OK, 3.06kB, 13ms]
+  ✓  responde 200
+  ✓  regra do sistema de sem comunicação (US07)
+  ✓  regra de risco de enchente com os três limites (US10)
+
+↳ PATCH /api/regras-alerta/{id} da regra do sistema
+  PATCH http://localhost:3000/api/regras-alerta/1 [409 Conflict, 333B, 10ms]
+  ✓  responde 409
+
+↳ PATCH /api/regras-alerta/{id} com campos de enchente numa regra simples
+  PATCH http://localhost:3000/api/regras-alerta/10 [400 Bad Request, 383B, 11ms]
+  ✓  responde 400
+
+↳ GET /api/rios
+  GET http://localhost:3000/api/rios [200 OK, 2.91kB, 36ms]
+  ✓  responde 200
+  ✓  um ponto por sensor de nível, com a vazão do Open-Meteo
+
+❏ Sprint 6 (US06, US07, US09, US10, US12, US26, US21, US18, US19) / Painel e busca (US12, US26)
+↳ GET /api/painel
+  GET http://localhost:3000/api/painel [200 OK, 2.19kB, 147ms]
+  ✓  responde 200
+  ✓  os seis indicadores na ordem do protótipo
+  ✓  qualidade do ar pelo IQAr
+  ✓  os dois gráficos de ocorrências
+
+↳ GET /api/busca com dois caracteres
+  GET http://localhost:3000/api/busca?q=ab [400 Bad Request, 342B, 38ms]
+  ✓  responde 400
+
+↳ GET /api/busca sem acento
+  GET http://localhost:3000/api/busca?q=cara [200 OK, 431B, 141ms]
+  ✓  responde 200
+  ✓  resultados agrupados
+  ✓  acha Cará-Cará sem acento
+
+↳ GET /api/busca sem token
+  GET http://localhost:3000/api/busca?q=centro [401 Unauthorized, 347B, 5ms]
+  ✓  responde 401
+
+❏ Sprint 6 (US06, US07, US09, US10, US12, US26, US21, US18, US19) / Usuários e perfis (US21)
+↳ GET /api/perfis
+  GET http://localhost:3000/api/perfis [200 OK, 746B, 49ms]
+  ✓  responde 200
+  ✓  quatro perfis que acumulam permissões
+
+↳ POST /api/usuarios com e-mail fora do domínio
+  POST http://localhost:3000/api/usuarios [400 Bad Request, 348B, 32ms]
+  ✓  responde 400
+
+↳ POST /api/usuarios com perfil de consulta
+  POST http://localhost:3000/api/usuarios [201 Created, 481B, 84ms]
+  ✓  responde 201
+  ✓  senha provisória de 12 caracteres
+
+↳ POST /api/auth/login com o usuário de consulta
+  POST http://localhost:3000/api/auth/login [200 OK, 603B, 63ms]
+  ✓  responde 200
+  ✓  só consultar
+
+↳ GET /api/painel com o perfil de consulta
+  GET http://localhost:3000/api/painel [200 OK, 2.19kB, 51ms]
+  ✓  responde 200
+
+↳ POST /api/ocorrencias com o perfil de consulta
+  POST http://localhost:3000/api/ocorrencias [403 Forbidden, 329B, 12ms]
+  ✓  responde 403
+  ✓  explica o motivo
+
+↳ GET /api/usuarios com o perfil de consulta
+  GET http://localhost:3000/api/usuarios [403 Forbidden, 329B, 16ms]
+  ✓  responde 403
+
+↳ PATCH /api/usuarios/{id} muda para operador
+  PATCH http://localhost:3000/api/usuarios/3 [200 OK, 453B, 18ms]
+  ✓  responde 200
+  ✓  perfil operador
+
+↳ POST /api/usuarios/{id}/senha-provisoria
+  POST http://localhost:3000/api/usuarios/3/senha-provisoria [200 OK, 269B, 49ms]
+  ✓  responde 200
+  ✓  nova senha diferente da anterior
+
+↳ POST /api/auth/login com a senha anterior
+  POST http://localhost:3000/api/auth/login [401 Unauthorized, 326B, 45ms]
+  ✓  responde 401
+
+↳ PATCH /api/usuarios/{id} inativa
+  PATCH http://localhost:3000/api/usuarios/3 [200 OK, 454B, 18ms]
+  ✓  responde 200
+  ✓  inativo
+
+↳ GET /api/painel com o token do usuário inativado
+  GET http://localhost:3000/api/painel [401 Unauthorized, 347B, 9ms]
+  ✓  responde 401
+
+↳ DELETE /api/usuarios/{id}
+  DELETE http://localhost:3000/api/usuarios/3 [404 Not Found, 322B, 2ms]
+  ✓  responde 404
+
+❏ Sprint 6 (US06, US07, US09, US10, US12, US26, US21, US18, US19) / Poluição por bairro e histórico (US18, US19)
+↳ GET /api/alertas com fonte e órgão sugerido
+  GET http://localhost:3000/api/alertas?visao=ativos [200 OK, 3.15kB, 52ms]
+  ✓  responde 200
+  ✓  todo alerta informa fonte e órgão sugerido (US18)
+  ✓  poluição sugere órgão, as outras grandezas não
+
+↳ GET /api/dispositivos com o minigráfico das últimas 3 h
+  GET http://localhost:3000/api/dispositivos [200 OK, 10.48kB, 68ms]
+  ✓  responde 200
+  ✓  nove barras ou nulo (US19-3)
+
+↳ GET /api/dispositivos/{id}/historico de 24 h
+  GET http://localhost:3000/api/dispositivos/11/historico?periodo=24h [200 OK, 903B, 29ms]
+  ✓  responde 200
+  ✓  blocos de 5 min
+  ✓  média entre mínimo e máximo
+
+↳ GET /api/dispositivos/{id}/historico de 30 dias
+  GET http://localhost:3000/api/dispositivos/11/historico?periodo=30d [200 OK, 904B, 25ms]
+  ✓  responde 200
+  ✓  agregado por hora, no máximo um ponto por hora
+
+↳ GET /api/dispositivos/{id}/historico com período inválido
+  GET http://localhost:3000/api/dispositivos/11/historico?periodo=1a [400 Bad Request, 332B, 10ms]
+  ✓  responde 400
+
+↳ GET /api/dispositivos/{id}/historico de grandeza sem leitura
+  GET http://localhost:3000/api/dispositivos/11/historico?grandeza=consumo_inexistente [400 Bad Request, 376B, 26ms]
+  ✓  responde 400
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                74 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                74 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │               133 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 3.6s                                       │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 111.96kB (approx)                         │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 31ms [min: 2ms, max: 149ms, s.d.: 30ms] │
+└────────────────────────────────────────────────────────────────┘
