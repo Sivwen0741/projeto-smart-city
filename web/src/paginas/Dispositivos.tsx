@@ -161,7 +161,7 @@ export function Dispositivos() {
                   Última leitura
                 </th>
                 <th className={estilos.estreita}>
-                  Últimas 3 h
+                  Últimas 3&nbsp;h
                 </th>
                 {cabecalho('comunicacao', 'Comunicação')}
               </tr>
