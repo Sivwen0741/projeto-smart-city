@@ -1,0 +1,20 @@
+CT-118 e CT-119 · usuários e log de atividades, consulta de leitura no banco · 16/11/2026 00:01:26
+             nome              |               email                |                  orgao                   |    perfil     | ativo | ultimo_acesso  
+-------------------------------+------------------------------------+------------------------------------------+---------------+-------+----------------
+ Administrador                 | admin@pontagrossa.pr.gov.br        | Departamento de Tecnologia da Informação | administrador | t     | 15/11 23:51:28
+ Consulta Mobilidade (teste)   | consulta.mob@pontagrossa.pr.gov.br | Mobilidade                               | consulta      | t     | 16/11 00:00:13
+ Gestor Meio Ambiente (teste)  | gestor.ma@pontagrossa.pr.gov.br    | Meio Ambiente                            | gestor        | t     | 16/11 00:00:47
+ Operador Defesa Civil (teste) | operador.dc@pontagrossa.pr.gov.br  | Defesa Civil                             | operador      | f     | 15/11 23:56:48
+(4 rows)
+
+   hora   |     autor     |           acao           |                                                                             detalhes                                                                              
+----------+---------------+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 23:55:40 | Administrador | cadastro_usuario         | {"depois": {"nome": "Operador Defesa Civil (teste)", "ativo": true, "email": "operador.dc@pontagrossa.pr.gov.br", "orgao": "Defesa Civil", "perfil": "operador"}}
+ 23:56:13 | Administrador | cadastro_usuario         | {"depois": {"nome": "Consulta Mobilidade (teste)", "ativo": true, "email": "consulta.mob@pontagrossa.pr.gov.br", "orgao": "Mobilidade", "perfil": "consulta"}}
+ 23:56:26 | Administrador | cadastro_usuario         | {"depois": {"nome": "Gestor Meio Ambiente (teste)", "ativo": true, "email": "gestor.ma@pontagrossa.pr.gov.br", "orgao": "Meio Ambiente", "perfil": "gestor"}}
+ 23:59:01 | Administrador | edicao_usuario           | {"antes": {"orgao": "Mobilidade", "perfil": "consulta"}, "depois": {"orgao": "Infraestrutura", "perfil": "operador"}}
+ 23:59:17 | Administrador | edicao_usuario           | {"antes": {"orgao": "Infraestrutura", "perfil": "operador"}, "depois": {"orgao": "Mobilidade", "perfil": "consulta"}}
+ 23:59:26 | Administrador | senha_provisoria_usuario | 
+ 23:59:45 | Administrador | edicao_usuario           | {"antes": {"ativo": true}, "depois": {"ativo": false}}
+(7 rows)
+

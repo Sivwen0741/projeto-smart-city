@@ -1,0 +1,8 @@
+CT-056 e CT-059 · consulta de leitura no banco · 15/11/2026 23:46:21
+  protocolo   |       categoria       | criticidade |    bairro    | distrito_pelo_ponto |    orgao     | sem_descricao |          endereco           | situacao 
+--------------+-----------------------+-------------+--------------+---------------------+--------------+---------------+-----------------------------+----------
+ 2026-11-0001 | Alagamento            | grave       | Ronda        | Ponta Grossa        | Defesa Civil | f             | Rua Dr. Colares, 500        | aberta
+ 2026-11-0002 | Trânsito e acidente   | atencao     | Uvaranas     | Ponta Grossa        | Mobilidade   | f             | Av. Carlos Cavalcanti, 4700 | aberta
+ 2026-11-0003 | Infraestrutura urbana | informativo | (sem bairro) | Itaiacoca           | (sem órgão)  | t             |                             | aberta
+(3 rows)
+

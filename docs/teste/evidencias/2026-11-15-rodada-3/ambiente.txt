@@ -1,0 +1,19 @@
+Rodada 3 · regressão de tela dos casos de prioridade alta · v1.0.3-sprint-6 (31aad37) · clone novo ~/regressao-v103, banco limpo, COMPOSE_PROJECT_NAME=regressao-v103
+subida: docker compose up --build -d, 23:14:59 a 23:40:18 (BRT) de 15/11/2026, com a construção das imagens
+ProductName:		macOS ProductVersion:		15.7.4 BuildVersion:		24G517 
+Docker 28.1.1
+Docker Compose version v2.35.1-desktop.1
+pacote da tela servido: index-DUc74Aew.js
+api Up 26 seconds (healthy)
+db Up 42 seconds (healthy)
+mosquitto Up 42 seconds (healthy)
+simulador Up 20 seconds
+web Up 20 seconds
+{"situacao":"ok","postgis":"3.4.3"}
+migrações aplicadas: 13
+simulador conectado a mqtt://mosquitto:1883: 11 dispositivos a cada 30 s
+território carregado: 5 distritos, 16 bairros
+usuário administrador inicial criado: admin@pontagrossa.pr.gov.br
+dispositivos de exemplo carregados: 14
+regras de alerta de exemplo carregadas: 7
+ingestão: conectado ao broker, assinando scoc/dispositivos/+/leituras

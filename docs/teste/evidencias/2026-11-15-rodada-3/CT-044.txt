@@ -1,0 +1,7 @@
+CT-044 · publicação MQTT SN-027 nivel_agua 2.6 · antes do mosquitto_pub 1794797546266 ms · depois 1794797546479 ms (23:52:26)
+Momento em que o alerta apareceu em cada área (Date.now() da página, MutationObserver no corpo; mesmo relógio da máquina):
+- aba Alertas, linha "Nível de atenção (teste) · Arroio Ronda": 1794797546801 ms (+0,535 s de T0; +0,322 s de T1)
+- aba Painel, quadro "Alertas ativos": 1794797546587 ms (+0,321 s de T0; +0,108 s de T1)
+- aba Painel, legenda do mapa, Atenção 0→1: 1794797546805 ms (+0,539 s de T0)
+- aba Mapa, legenda Atenção 0→1: 1794797546786 ms (+0,520 s de T0)
+- contador do menu: ficou em 6, porque a mesma leitura encerrou o alerta "Dispositivo sem comunicação" do SN-027 (id 74) e abriu o "Nível de atenção (teste)" (id 77) no mesmo segundo (CT-044-alertas.txt).

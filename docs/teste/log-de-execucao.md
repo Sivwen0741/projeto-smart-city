@@ -2,7 +2,8 @@
 
 Seção 3 da documentação de teste. Versão sob teste na rodada 1: tag `v1.0-sprint-6` (commit
 `01ecf29`); na rodada 2, de 12/11/2026, tag `v1.0.2-sprint-6` (commit `0a38751`), com as correções
-dos INC-001 a INC-004 (seção "Rodada 2", abaixo). Rodada 1 num
+dos INC-001 a INC-004 (seção "Rodada 2", abaixo); na rodada 3, de 15 a 17/11/2026, tag
+`v1.0.3-sprint-6` (commit `31aad37`), a versão final (seção "Rodada 3", abaixo). Rodada 1 num
 clone da tag numa pasta separada do repositório de trabalho, sem nenhum arquivo alterado além do
 `.env` criado a partir do `.env.example`. As evidências ficam em [`evidencias/`](evidencias/),
 uma pasta por rodada (`AAAA-MM-DD-rodada-N/`), com a convenção do [README](evidencias/README.md)
@@ -34,6 +35,8 @@ plano.
 | Reteste INC-009 a INC-012 | 13/11/2026 00:56 a 00:59 | Os quatro achados corrigidos, na `main` com todas as correções (`31aad37`), banco limpo, página recarregada sem cache | 4 achados | 4 | 0 | `2026-11-13-reteste-INC-009-a-012/` |
 | Versão final | 13/11/2026 00:59 a 01:03 | Tag `v1.0.3-sprint-6` (`31aad37`): unidade com cobertura, integração com o banco recriado e Newman | 56 + 217 testes; 74 requisições, 133 verificações | 56 + 217; 133 | 0 | `2026-11-13-v1.0.3/` |
 | Recaptura v1.0.2 | 13/11/2026 01:59 a 02:01 | CT-095, CT-111, CT-129 e CT-130 na `v1.0.2-sprint-6`, página recarregada sem cache e pacote conferido (`index-C--Xtlx1.js`): telas que dependem do único código de tela que mudou entre a `v1.0` e a `v1.0.2` | 4 casos | mesmo resultado da rodada 2 | 0 | `2026-11-13-recaptura-v1.0.2/` |
+| 3 | 15/11/2026 23:41 a 16/11/2026 00:01 | Regressão de tela da seção 1.3: os 26 casos de prioridade alta com parte de tela, repetidos na versão final `v1.0.3-sprint-6` por automação de navegador, clone novo e banco limpo, cada página recarregada sem cache e com o pacote conferido no DOM (`index-DUc74Aew.js`) | 26 casos | 26 | 0 | `2026-11-15-rodada-3/` |
+| 3 | 17/11/2026 21:09 | CT-004, caso só manual de prioridade alta sem tela: inspeção do repositório pelo terminal no clone da `v1.0.3-sprint-6` (`31aad37`) | 1 caso | 1 | 0 | `2026-11-15-rodada-3/CT-004.txt` |
 
 Cobertura da suíte de unidade na rodada 1: 98,3% das instruções, 81,44% dos desvios, 95,91% das
 funções e 98,79% das linhas.
@@ -100,7 +103,7 @@ final de cada caso é a da sua linha mais recente.
 | CT-040 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Smoke: parte automatizável passou contra o ambiente no ar. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts`; `2026-11-02-rodada-1/smoke.txt` |  |
 | CT-041 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts` |  |
 | CT-042 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us02.e2e-spec.ts` |  |
-| CT-042 (reteste do INC-003) | 02/11 | `6439f63` | Bryan Charles | Parte automatizada: o US02-3 corrigido conta só os dispositivos do próprio teste e passou nas três execuções seguidas, com o banco recriado em cada uma (216/216 nas três). Parte da tela: não executada. | pendente (tela) | `2026-11-02-reteste-INC-003/` | INC-003 |
+| CT-042 (reteste do INC-003) | 02/11 | `6439f63` | Bryan Charles | Parte automatizada: o US02-3 corrigido conta só os dispositivos do próprio teste e passou nas três execuções seguidas, com o banco recriado em cada uma (216/216 nas três). Parte da tela: não executada. Reteste do INC-003: passou. | pendente (tela) | `2026-11-02-reteste-INC-003/` | INC-003 |
 | CT-044 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts` |  |
 | CT-045 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts`, `us04.e2e-spec.ts` |  |
 | CT-046 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us03.e2e-spec.ts` |  |
@@ -185,9 +188,9 @@ final de cada caso é a da sua linha mais recente.
 | CT-127 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us18.e2e-spec.ts` |  |
 | CT-128 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us18.e2e-spec.ts` |  |
 | CT-129 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
-| CT-129 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: o gráfico de 24 h do SN-014 cabe sem rolagem em 1440 × 900, com 320 px de altura, eixos em 11 px, eixo do tempo e legenda dos limites visíveis. Os outros períodos e a troca de grandeza ficam para a execução manual. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-129.png` | INC-004 |
+| CT-129 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: o gráfico de 24 h do SN-014 cabe sem rolagem em 1440 × 900, com 320 px de altura, eixos em 11 px, eixo do tempo e legenda dos limites visíveis. Os outros períodos e a troca de grandeza ficam para a execução manual. Reteste do INC-004: passou. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-129.png` | INC-004 |
 | CT-130 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
-| CT-130 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: no histórico de PM2.5 da EA-03, a linha tracejada de 55 µg/m³ e a legenda aparecem sem rolagem em 1440 × 900. A verificação de que as regras desativadas não aparecem fica para a execução manual. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-130.png` | INC-004 |
+| CT-130 (reteste do INC-004) | 02/11 | `a73fdd9` | Bryan Charles | Parte da tela, reteste do INC-004: no histórico de PM2.5 da EA-03, a linha tracejada de 55 µg/m³ e a legenda aparecem sem rolagem em 1440 × 900. A verificação de que as regras desativadas não aparecem fica para a execução manual. Reteste do INC-004: passou. | pendente (tela) | `2026-11-02-reteste-INC-004/CT-130.png` | INC-004 |
 | CT-131 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Parte automatizada: os testes do caso passaram. Parte da tela: não executada. | pendente (tela) | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
 | CT-132 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us19.e2e-spec.ts` |  |
 | CT-133 | 02/11 | `v1.0-sprint-6` | Bryan Charles | Os testes automatizados do caso passaram. | passou | `2026-11-02-rodada-1/integracao.txt` › `us06.e2e-spec.ts` |  |
@@ -315,6 +318,89 @@ interface de programação ou MQTT), sem comando manual no banco:
 **Teste exploratório.** Além dos casos especificados, as telas foram percorridas sem roteiro durante
 a rodada 2. Os seis achados foram abertos em 13/11/2026 como INC-009 a INC-014, com o campo Caso
 preenchido como "achado em teste exploratório, fora dos casos especificados" (`incidentes.md`).
+
+## Rodada 3 — regressão na versão final (15 a 17/11/2026)
+
+Regressão prevista na seção 1.3 do plano: "no fim da execução, os casos manuais de prioridade alta
+são repetidos na versão final". A `v1.0.3-sprint-6` mudou código de tela (ordenação por texto,
+eixo dos gráficos, texto de unidade no singular, alinhamento das tabelas e largura do seletor de
+perfil), e a rodada 2 tinha sido feita na `v1.0.2-sprint-6`. Foram repetidos os 27 casos de
+prioridade alta com execução manual: os 26 que têm parte de tela (os "automatizado e manual" de
+prioridade alta, o CT-039 e a parte do painel do CT-005) e o CT-004, só manual, que é inspeção do
+repositório pelo terminal, sem tela, executado à parte em 17/11 no mesmo clone. Os de tela foram
+executados pela mesma automação de navegador da rodada 2, e o CT-004 por comandos no terminal, os
+dois conduzidos por Bryan Charles; por isso a coluna "Quem executou" registra a forma de execução.
+
+**Versão e ambiente.** Tag `v1.0.3-sprint-6` (commit `31aad37`), clone novo numa pasta separada
+(`~/regressao-v103`), banco limpo, projeto do Compose próprio (`COMPOSE_PROJECT_NAME=regressao-v103`
+no `.env`, com segredos novos gerados por `openssl rand -hex`). Subida das 23:14:59 às 23:40:18 de
+15/11, com a construção das imagens; casos das 23:41 de 15/11 às 00:01 de 16/11 (BRT). Google
+Chrome no macOS 15.7.4, Docker 28.1.1, Compose 2.35.1, viewport de 1440 × 763 px. Durante o CT-049
+a janela mudou de tamanho sozinha (845 × 821) e foi devolvida a 1440 × 900 antes da captura seguinte.
+
+**Pacote da tela conferido.** Cada página foi recarregada sem cache (Cmd+Shift+R) ao ser aberta, e
+o `src` do script foi lido no DOM antes da captura: `index-DUc74Aew.js`, o pacote servido pela
+`v1.0.3` (`ambiente.txt`). O desvio do cache da seção 5.3 não se repetiu.
+
+**Evidências.** Todas na pasta própria da rodada, `evidencias/2026-11-15-rodada-3/`: capturas
+`CT-NNN.png` ou `CT-NNN-1.png`, `CT-NNN-2.png`, saídas de terminal e consultas de leitura no banco
+(`.txt`).
+
+**Preparação de dados, registrada como pré-condição.** Tudo pela tela ou pelo MQTT, sem comando
+manual no banco; as consultas ao banco foram só de leitura:
+
+- Regra "Nível de atenção (teste)", ≥ 2 m, 0 min, atenção: cadastrada pela tela no CT-020 e usada
+  no CT-034, CT-039, CT-044 e CT-048.
+- Dispositivo SN-901, cadastrado pela tela no CT-013.
+- Ocorrências 2026-11-0001 (Ronda, Defesa Civil), 0002 (Uvaranas, Mobilidade) e 0003 (zona rural,
+  sem órgão), registradas pela tela no CT-056 e no CT-059; 0004 (Neves, Infraestrutura), registrada
+  em outra aba no CT-039 e usada no CT-086 e no CT-087.
+- Leituras do SN-027 publicadas pelo MQTT: 2,4 m (CT-039), 1,5 m (CT-048) e 2,6 m (CT-044).
+- Alertas graves abertos pelo próprio simulador: "Chuva forte acumulada" (EA-02, 23:42), "Risco de
+  enchente" (SN-014, 23:43) e "Nível do arroio acima da cota" (SN-014, 23:53), usados no CT-049, no
+  CT-051 a CT-054.
+- Usuários "Operador Defesa Civil (teste)", "Consulta Mobilidade (teste)" e "Gestor Meio Ambiente
+  (teste)", cadastrados pela tela no CT-118 e usados no CT-119 e no CT-120. As senhas provisórias
+  passaram da aba do administrador para a aba de teste pelo armazenamento local do navegador, sem
+  sair da máquina, e foram apagadas no fim.
+
+| Caso | Data | Versão (tag ou commit) | Quem executou | Resultado obtido | Situação | Evidência | Incidente |
+|---|---|---|---|---|---|---|---|
+| CT-001 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Clone novo da tag, banco limpo, `docker compose up --build -d` das 23:14:59 às 23:40:18 (com a construção das imagens); `db`, `mosquitto` e `api` saudáveis, `simulador` e `web` em execução; health 200 com PostGIS 3.4.3; 13 migrações; a tela de login abre com o pacote `index-DUc74Aew.js`. | passou | `2026-11-15-rodada-3/CT-001.png`; `2026-11-15-rodada-3/ambiente.txt` |  |
+| CT-005 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Parte da tela: depois do login do administrador, o painel abriu com os dispositivos de exemplo (13 no mapa: Normal 10 e Sem comunicação ou manutenção 3; o SN-019 inativo fora). Subida pelo README no clone novo, registrada no CT-001. Executado pelo autor do README, por automação: sem independência (DT08). | passou | `2026-11-15-rodada-3/CT-006-2.png` | DT08 |
+| CT-006 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Login pela tela com o administrador, senha mascarada; "Entrar" leva ao painel. | passou | `2026-11-15-rodada-3/CT-006-1.png`, `CT-006-2.png` |  |
+| CT-013 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Vazio: "Escolha o tipo do dispositivo." e "Informe o código identificador."; latitude 999: "Marque o ponto no mapa ou informe latitude e longitude.". Preenchido com código, tipo, descrição, coordenada, endereço, data, situação e grandeza: bairro calculado "Centro · distrito Ponta Grossa"; SN-901 cadastrado (15 dispositivos) e aberto em edição com os campos devolvidos. Lista de tipos do formulário em ordem alfabética do português ("Câmera" antes de "Controlador de iluminação"). | passou | `2026-11-15-rodada-3/CT-013-1.png` a `CT-013-4.png` | INC-013 (já aberto; INC-005 também visto) |
+| CT-020 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Regra "Nível de atenção (teste)", nível de água ≥ 2 m, 0 min, atenção, cadastrada pela tela; aparece na lista (10 regras, 9 ativas), na ordem alfabética dentro da gravidade, com "Regra cadastrada · Administrador · 15/11, 23:43" no histórico. | passou | `2026-11-15-rodada-3/CT-020-1.png`, `CT-020-2.png` |  |
+| CT-024 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Botão de salvar desabilitado e mensagem em cada caso: operador não escolhido ("Para salvar, corrija: operador."), limite vazio ("Informe o valor limite."), duração −5 ("Não pode ser negativa. Use 0 para disparar na primeira leitura."). | passou | `2026-11-15-rodada-3/CT-024-1.png` a `CT-024-3.png` |  |
+| CT-090 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | "Dispositivo sem comunicação" com a marca "regra do sistema", em cinza; o clique não abre edição (nenhum painel aberto, a página continua em /regras). | passou | `2026-11-15-rodada-3/CT-090.png` |  |
+| CT-056 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | 2026-11-0001 com categoria, gravidade, órgão, descrição, ponto no mapa e endereço, bairro Ronda calculado; 2026-11-0002 em Uvaranas (Mobilidade, atenção); 2026-11-0003 na zona rural: "sem bairro · zona rural, distrito Itaiacoca", gravada sem bairro (consulta de leitura no banco). Lista de órgãos em ordem alfabética. | passou | `2026-11-15-rodada-3/CT-056-1.png` a `CT-056-4.png`; `2026-11-15-rodada-3/CT-056-CT-059.txt` |  |
+| CT-059 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Vazio: "Escolha a categoria." e "Escolha a gravidade."; sem ponto: "Marque a localização no mapa."; ponto fora: "A coordenada está fora do município de Ponta Grossa."; sem órgão e sem descrição, registrada (2026-11-0003). | passou | `2026-11-15-rodada-3/CT-059-1.png` a `CT-059-3.png`, `CT-056-4.png` |  |
+| CT-034 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Mapa: Grave · 2 (EA-02 e SN-014, com halo), Atenção · 1 (SN-027, depois da leitura de 2,4 m), Normal · 8, Sem comunicação ou manutenção · 3 (EA-07, IL-118 e SN-901); SN-019 inativo fora (14 dispositivos no mapa de 15). O SN-014 tem um alerta grave e um de atenção e fica grave. Alerta da regra do sistema não pinta o marcador: a EA-07 fica cinza. | passou | `2026-11-15-rodada-3/CT-034-1.png`, `CT-034-2.png`; `2026-11-15-rodada-3/CT-034-CT-039.txt` |  |
+| CT-035 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Quatro ocorrências abertas com marcador de anel na cor da gravidade (Ronda grave, Uvaranas e Neves atenção, zona rural informativo). | passou | `2026-11-15-rodada-3/CT-035.png` |  |
+| CT-036 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Dispositivo: "CAM-08 · câmera", marca simulado, "Av. Carlos Cavalcanti, 4748, Uvaranas", "Operando · comunicação há 8 s". Ocorrência: "Ocorrência 2026-11-0001", "Alagamento · Ronda", "Grave · Aberta". | passou | `2026-11-15-rodada-3/CT-036-1.png`, `CT-036-2.png` |  |
+| CT-039 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Com a aba Mapa aberta: leitura de 2,4 m do SN-027 publicada pelo MQTT às 23:46:55 pintou o marcador de âmbar (legenda Atenção · 1) 3 s depois; a ocorrência 2026-11-0004 registrada em outra aba às 23:47:56 apareceu em Neves ("4 ocorrências abertas") 2 s depois; nos dois casos, sem recarregar (variável da página preservada). | passou | `2026-11-15-rodada-3/CT-039-1.png` a `CT-039-3.png` |  |
+| CT-040 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Colunas gravidade, alerta (regra, endereço e bairro), dispositivo, medição com limite, detecção, órgão e situação; Ativos (abertos e em atendimento), Em atendimento (o grave do SN-014) e Encerrados hoje (os três do SN-027) mostram os conjuntos de cada visão. | passou | `2026-11-15-rodada-3/CT-040-1.png` a `CT-040-3.png` |  |
+| CT-044 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Três abas abertas (Alertas, Mapa, Painel) e medição pelo relógio da página: o alerta apareceu entre 0,32 s e 0,54 s depois do início da publicação na lista, no quadro do painel e nos dois mapas. O contador do menu ficou em 6, corretamente: a mesma leitura encerrou o alerta de sem comunicação do SN-027 e abriu o novo. | passou | `2026-11-15-rodada-3/CT-044-1.png` a `CT-044-3.png`; `2026-11-15-rodada-3/CT-044.txt`, `CT-044-alertas.txt` |  |
+| CT-048 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Alerta de atenção sem reconhecimento (SN-027) saiu dos ativos sozinho quando a leitura normalizou (1,5 m às 23:50:47, encerrado no mesmo segundo) e apareceu em Encerrados hoje; os graves continuaram. | passou | `2026-11-15-rodada-3/CT-048-1.png`, `CT-048-2.png`; `2026-11-15-rodada-3/CT-048.txt` |  |
+| CT-051 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | O grave sem reconhecimento (EA-02, 23:42) fica acima do grave em atendimento mais recente (SN-014, 23:43). | passou | `2026-11-15-rodada-3/CT-051.png` |  |
+| CT-052 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Confirmar sem texto e só com espaços: "Informe a providência adotada.", e o alerta continua aberto. | passou | `2026-11-15-rodada-3/CT-052-1.png`, `CT-052-2.png` |  |
+| CT-053 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | "Alerta reconhecido", situação Em atendimento, "Administrador · 23:50" e a providência; tempo médio até o reconhecimento passou de "–" a "7 min". | passou | `2026-11-15-rodada-3/CT-053.png` |  |
+| CT-049 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | Faixa em todas as telas autenticadas (painel, alertas, ocorrências, mapa, dispositivos, regras, usuários), cada uma recarregada sem cache, com a quantidade e "Ver alerta", sem botão de fechar (único controle da faixa); "Ver alerta" abre o grave mais antigo (EA-02); reconhecidos pela tela os três graves (o último, aberto pelo simulador às 23:53), a faixa sumiu às 23:53:39 nas três sessões abertas, sem recarregar. | passou | `2026-11-15-rodada-3/CT-049-1.png` a `CT-049-11.png`; `2026-11-15-rodada-3/CT-049-CT-054.txt` |  |
+| CT-054 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Duas sessões com o mesmo alerta (EA-02) e confirmação quase simultânea: a primeira aceita ("Administrador · 23:53"); a segunda recebe "Este alerta foi reconhecido por Administrador às 23:53 enquanto você escrevia. A sua providência não foi gravada." | passou | `2026-11-15-rodada-3/CT-054-1.png`, `CT-054-2.png` |  |
+| CT-086 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Na 2026-11-0004: providência vazia: "Escreva a providência."; a primeira passa a Em atendimento, com o responsável "Administrador" ("Atendimento iniciado"); a segunda ("Providência registrada") mantém a situação. | passou | `2026-11-15-rodada-3/CT-086-1.png` a `CT-086-3.png` |  |
+| CT-087 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Encerrar sem texto: "Escreva a observação de encerramento."; com observação, encerrada: "Encerrada em 15/11 às 23:54. A ocorrência continua consultável, sem novas atualizações.", histórico com 4 registros. | passou | `2026-11-15-rodada-3/CT-087-1.png`, `CT-087-2.png` |  |
+| CT-120 (regressão) | 15/11 | `v1.0.3-sprint-6` | automação de navegador | Operador da Defesa Civil vê a 2026-11-0002, da Mobilidade, com "Só Mobilidade atualiza esta ocorrência." e sem caixa de providência; a 2026-11-0003, sem órgão, tem a caixa; registra providência na 2026-11-0001, da Defesa Civil, e passa a responsável; o administrador (Departamento de Tecnologia da Informação) registrou providência e encerrou a 2026-11-0001. | passou | `2026-11-15-rodada-3/CT-120-1.png` a `CT-120-4.png` |  |
+| CT-118 (regressão) | 16/11 | `v1.0.3-sprint-6` | automação de navegador e terminal | E-mail de outro domínio ("Use o e-mail funcional (@pontagrossa.pr.gov.br).") e repetido ("O e-mail operador.dc@pontagrossa.pr.gov.br já está cadastrado.") recusados; senha provisória mostrada uma vez e válida (login do operador); órgão e perfil editados e devolvidos; usuário inativado continua na lista como "Inativo", não entra ("E-mail ou senha inválidos.") e a sessão aberta dele caiu para /entrar sem ação; nova senha invalida a anterior; o administrador não inativa ("Usuário ativo" desabilitado) nem muda o próprio perfil ("Você não pode mudar o próprio perfil."); cada operação no log de atividades com o autor. Seletor de perfil com "Administrador" inteiro no botão e lista em ordem alfabética. | passou | `2026-11-15-rodada-3/CT-118-1.png` a `CT-118-12.png`; `2026-11-15-rodada-3/CT-118-CT-119.txt` |  |
+| CT-119 (regressão) | 16/11 | `v1.0.3-sprint-6` | automação de navegador | Consulta: Reconhecer (5), Abrir (3) e Registrar ocorrência desabilitados, com "Seu perfil não permite esta ação."; Operador: cadastrar regra e dispositivo desabilitados, com a mesma mensagem; Gestor: cadastrar regra habilitado; aba Usuários apagada (sem link) para os três, e /usuarios volta ao painel. | passou | `2026-11-15-rodada-3/CT-119-1.png` a `CT-119-5.png` |  |
+| CT-004 (regressão) | 17/11 | `v1.0.3-sprint-6` | automação de terminal | `git ls-files` só lista `.env.example`; `git log --all -- .env` vazio; `.env` no `.gitignore`; a busca por senha, segredo e token literais só achou nomes de dependência no `package-lock.json`, valores falsos nos testes e as mesmas linhas dentro da evidência da rodada 2 (`2026-11-12-rodada-2/CT-004.txt`), que está versionada na tag; o Compose lê as credenciais do `.env`. | passou | `2026-11-15-rodada-3/CT-004.txt` |  |
+
+Resultado: os 27 casos passaram, e nenhum incidente novo foi aberto. As correções da `v1.0.3`
+apareceram nas telas percorridas: "Câmera" antes de "Controlador de iluminação" na lista de tipos e
+órgãos e usuários em ordem alfabética (INC-007), eixo do gráfico de ocorrências com 0, 2 e 4 nas
+posições certas (INC-006), "1 ponto" no singular (INC-011), "Últimas / 3 h" no cabeçalho (INC-012),
+nomes alinhados à esquerda nas tabelas de regras e usuários (INC-009) e "Administrador" inteiro no
+seletor de perfil (INC-010). Continuam como registrados os abertos INC-005 (data em mês/dia no
+Chrome em inglês, visto no CT-013) e INC-013 (mensagem de validação que fica na tela, visto no CT-013).
 
 ## Registro do CT-005 — ensaio seguindo só o README
 

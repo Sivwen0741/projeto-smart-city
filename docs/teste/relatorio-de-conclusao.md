@@ -1,7 +1,8 @@
 # Relatório de conclusão — Sprint 6
 
 Seção 5 da documentação de teste, fechada em 13/11/2026, depois da rodada 2 e das correções
-reunidas na tag `v1.0.3-sprint-6`.
+reunidas na tag `v1.0.3-sprint-6`, e atualizada em 16 e 17/11/2026 com a regressão na versão
+final (rodada 3).
 
 **Resumo.** A versão `v1.0.3-sprint-6` está pronta para a entrega, com ressalvas. Os 139 casos
 planejados foram executados. Na primeira execução, 136 passaram. Ao final, os 139 estão aprovados:
@@ -14,9 +15,9 @@ por automação de navegador, sem a independência que o plano previa.
 
 | Métrica | Valor |
 |---|---|
-| Casos executados / planejados | 139 / 139 (100%). Rodada 1 (02/11, `v1.0-sprint-6`): os 75 casos só automatizados, a parte automatizada dos 57 casos "automatizado e manual" e o ensaio do CT-005. Rodada 2 (12/11, `v1.0.2-sprint-6`): a parte de tela dos 57, os 6 só manuais e a parte do painel do CT-005. Retestes em 12 e 13/11 nas versões corrigidas. |
+| Casos executados / planejados | 139 / 139 (100%). Rodada 1 (02/11, `v1.0-sprint-6`): os 75 casos só automatizados, a parte automatizada dos 57 casos "automatizado e manual" e o ensaio do CT-005. Rodada 2 (12/11, `v1.0.2-sprint-6`): a parte de tela dos 57, os 6 só manuais e a parte do painel do CT-005. Retestes em 02, 12 e 13/11 nas versões corrigidas. Rodada 3 (15 a 17/11, `v1.0.3-sprint-6`): regressão dos 27 casos de prioridade alta com execução manual, os 26 com parte de tela e o CT-004, todos aprovados, sem incidente novo. |
 | Taxa de aprovação ao final | Primeira execução: 136 de 139 (97,8%). Após correção e reteste: 139 de 139 (100%). Falharam na primeira execução CT-018, CT-111 e CT-127, todos de prioridade média: CT-018 e CT-111 passaram no reteste depois das correções dos INC-007 e INC-006; CT-127 passou na reavaliação, porque a parte que falhou não tinha critério de origem (INC-008, reclassificado). Prioridade alta: 78 de 78 (100%), todos na primeira execução. |
-| Incidentes registrados | 14. Um deles, o INC-008, foi reclassificado como achado investigado, porque nenhum critério o exige. Dos 13 defeitos: alta 0, média 1 (INC-007), baixa 12 (INC-001 a INC-006 e INC-009 a INC-014). Seis vieram dos casos especificados e seis do teste exploratório (INC-009 a INC-014). |
+| Incidentes registrados | 14. Um deles, o INC-008, foi reclassificado como achado investigado, porque nenhum critério o exige. Dos 13 defeitos: alta 0, média 1 (INC-007), baixa 12 (INC-001 a INC-006 e INC-009 a INC-014). Sete vieram dos casos especificados (INC-001 a INC-007) e seis do teste exploratório (INC-009 a INC-014). |
 | Incidentes abertos | 3, todos de severidade baixa: INC-005 (data em mês/dia num navegador em inglês), INC-013 (mensagem de validação que fica na tela) e INC-014 ("Detalhes" de alerta aberto abre o painel de reconhecimento). Os outros dez foram fechados depois do reteste. |
 | Testes automatizados | Na versão final, `v1.0.3-sprint-6` (13/11): unidade 56 de 56, com cobertura de 98,33% das instruções, 82,17% dos desvios, 96% das funções e 98,82% das linhas; integração e sistema 217 de 217, com o banco de teste recriado; coleção do Postman pelo Newman com 74 requisições e 133 de 133 verificações. Os quatro testes a mais (três de unidade e um de integração) vieram com a correção do INC-007. Na `v1.0.2-sprint-6` (12/11), a integração deu 216/216 em cinco execuções seguidas, cada uma com o banco recriado, e o Newman deu 133/133. |
 | Histórias cobertas por pelo menos um caso | 21 de 21 itens do escopo: 11 do núcleo (TT01, US20, US22, US23, TT02, US01, US02, US03, US28, US04, US05) e 10 do estendido (TT02-9, US06, US07, US09, US10, US12, US26, US21, US18, US19). Os elementos de tela de US08, US16 e US25, do backlog, têm o CT-082. |

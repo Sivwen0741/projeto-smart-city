@@ -20,10 +20,13 @@ Ele alimenta as seções 1 e 6 do modelo de documentação de teste. A especific
 `v1.0-sprint-6`. A `main` não recebeu commit entre 28 e 31/10; a tag foi criada sobre esse commit em
 02/11. Nenhuma funcionalidade entra depois do corte. Depois dele, a `main` só recebe correção de
 incidente registrado, teste automatizado e documentação. Cada correção de incidente entra na `main`
-depois do corte numa branch própria, com o número do incidente na mensagem do commit. As correções
-são reunidas na tag `v1.0.1-sprint-6`, criada sobre a `main` depois dos retestes. A versão sob teste
-continua sendo a `v1.0-sprint-6`. O reteste de cada incidente roda na versão corrigida,
-identificada pelo commit.
+depois do corte numa branch própria, com o número do incidente na mensagem do commit. O reteste de
+cada incidente roda na versão corrigida, identificada pelo commit. As correções foram reunidas em
+três tags, criadas sobre a `main` depois dos retestes: `v1.0.1-sprint-6` (INC-001 a INC-003),
+`v1.0.2-sprint-6` (INC-004) e `v1.0.3-sprint-6` (INC-006, INC-007 e INC-009 a INC-012), que é a
+versão final. A rodada 1 foi executada na `v1.0-sprint-6`, a versão sob teste; as verificações de
+tela da rodada 2 foram executadas na `v1.0.2-sprint-6` (desvio registrado na seção 5.3), e a
+regressão dos casos manuais de prioridade alta, na rodada 3, na `v1.0.3-sprint-6`.
 
 **Escopo conferido com a tag em 02/11/2026.** O núcleo obrigatório e todos os itens do escopo
 estendido abaixo estão na tag: os PRs #16 a #24 da Sprint 6 foram mesclados em 27/10, sem revisão de
@@ -78,15 +81,16 @@ PR #26 na mesma noite. Nenhum item saiu do escopo na conferência.
 ### 1.2 Riscos
 
 Riscos da seção 3.5 do replanejamento da Sprint 4, com a situação em 02/11/2026, e os que
-apareceram depois.
+apareceram depois. As linhas da concentração em um integrante e do DT06 foram atualizadas em
+13/11/2026, ao fim da execução.
 
 | Risco | Tipo | Grau | Efeito no teste | Tratamento |
 |---|---|---|---|---|
-| Concentração do desenvolvimento em um integrante (3.5) | projeto | Alto | Quem escreveu o código também escreveu os testes e fez as verificações de tela; defeito de entendimento passa pelos dois. | Os 64 casos com parte manual são divididos entre os quatro integrantes por tela (`distribuicao-manual.md`), e o ensaio em máquina limpa, que deveria ser de quem não escreveu o README, fica com o autor nesta execução (DT08); a ação AM04 (transferir os testes para o responsável por qualidade) segue aberta. |
+| Concentração do desenvolvimento em um integrante (3.5) | projeto | Alto | Quem escreveu o código também escreveu os testes e fez as verificações de tela; defeito de entendimento passa pelos dois. | Os 64 casos com parte manual foram divididos entre os quatro integrantes por tela (`distribuicao-manual.md`), mas a divisão não se concretizou: os casos de tela foram executados por um único integrante, por automação de navegador (seção 5.3). O ensaio em máquina limpa, que deveria ser de quem não escreveu o README, ficou com o autor (DT08); a ação AM04 (transferir os testes para o responsável por qualidade) segue aberta. |
 | Limite diário de requisições das fontes externas (3.5) | produto | Médio | Uma rodada de teste contra a fonte real pode esgotar a cota e falhar por motivo externo. | Testes automatizados com respostas simuladas do Open-Meteo; coleta real a cada 60 min e numa requisição só para os 16 bairros; a verificação manual contra a fonte real é feita uma vez por rodada. |
 | Primeira sprint de implementação depois de dois meses só de documentação (3.5) | projeto | Encerrado | — | Superado: a velocidade foi medida nas Sprints 4 e 5. |
 | DT05: sem automação de interface | produto | Alto | Os critérios de tela (mapa, faixa grave, formulários, botões por perfil) só têm verificação manual, que não se repete a cada mudança. | Casos de tela marcados como manuais, com passos e evidência por captura; regressão de tela no fim da execução, depois das correções. |
-| DT06: sem revisão cruzada | projeto | Alto | Nenhum item teve leitura de código por outro integrante, e os PRs da Sprint 6 foram mesclados sem revisão em 27/10; o teste é a única barreira. | Execução dos casos manuais por outros integrantes (distribuição em `distribuicao-manual.md`); o DT06 segue registrado. |
+| DT06: sem revisão cruzada | projeto | Alto | Nenhum item teve leitura de código por outro integrante, e os PRs da Sprint 6 foram mesclados sem revisão em 27/10; o teste é a única barreira. | Execução dos casos manuais por outros integrantes, planejada em `distribuicao-manual.md`, que não se concretizou (seção 5.3): o teste foi executado pelo autor do código, e o risco continua aberto (seção 5.4). O DT06 segue registrado. |
 | DT07: suítes acopladas pela ordem de execução | produto | Médio | Com o banco de teste reaproveitado, duas suítes falham por dados de rodadas anteriores (US12-ruído e US10-3), o que pode ser lido como regressão. | Toda rodada oficial recria o banco de teste antes de rodar; falha intermitente é comparada primeiro com o DT07, antes de virar incidente. |
 | DT08: ensaio em máquina limpa sem independência | projeto | Alto | Lacunas no manual de instalação podem não ser detectadas, porque o CT-005 é executado pelo próprio autor do README. O leitor novo do manual é o avaliador do trabalho: uma lacuna não detectada impede a execução do projeto por quem avalia. | O CT-005 continua verificando a subida pelo Compose numa máquina sem Node e sem PostgreSQL; a execução por um leitor novo fica para a próxima entrega (DT08). |
 | Escopo ainda em revisão no corte | projeto | Encerrado | — | Superado: no corte de 31/10 todos os itens do escopo estendido estavam na `main`, conferidos com a tag em 02/11. |
@@ -101,16 +105,17 @@ apareceram depois.
 | Sistema | Funcional e não funcional | Tabela de decisão e transição de estados | Newman (coleção `docs/postman/scoc.postman_collection.json`) para a interface de programação; verificação manual pela tela, porque não há automação de interface (DT05) |
 | Aceitação | Funcional | Critérios de aceite das próprias histórias (`Sprint_4_Replanejamento.pdf` 3.3, `sprint-5-criterios.md`, `sprint-6-criterios.md`) | Casos deste plano, executados pelos mesmos meios dos níveis anteriores e conferidos item a item |
 
-**Ferramentas confirmadas no repositório (27/10/2026).** O executor é o Jest 30.5, com ts-jest 29,
-Supertest 7 e `@nestjs/testing` 11. Há duas configurações:
+**Ferramentas confirmadas no repositório (versão final, `v1.0.3-sprint-6`).** O executor é o Jest
+30.5, com ts-jest 29, Supertest 7 e `@nestjs/testing` 11. Há duas configurações:
 
-- **Unidade:** `api/test/jest-unidade.json`, 4 suítes e 53 casos em `api/test/unidade/`, sem banco,
+- **Unidade:** `api/test/jest-unidade.json`, 5 suítes e 56 casos em `api/test/unidade/`, sem banco,
   com cobertura medida sobre as funções puras: IQAr e faixas (`qualidade-ar/iqar.ts`), operador da
-  regra de alerta (`alertas/regra.ts`), limiar de sem comunicação (`dispositivos/comunicacao.ts`) e
-  cálculo dos indicadores do painel (`painel/indicadores.ts`). Em 27/10: 98,3% das instruções,
-  81,4% dos desvios, 95,9% das funções e 98,8% das linhas.
+  regra de alerta (`alertas/regra.ts`), limiar de sem comunicação (`dispositivos/comunicacao.ts`),
+  cálculo dos indicadores do painel (`painel/indicadores.ts`) e ordenação de texto em português
+  (`ordem-texto.ts`, desde a correção do INC-007). Na `v1.0.3-sprint-6`: 98,33% das instruções,
+  82,17% dos desvios, 96% das funções e 98,82% das linhas.
 - **Integração e sistema pela interface de programação:** `api/test/jest-e2e.json`, rodada em série
-  (`--runInBand`), 20 suítes e 216 casos em `api/test/*.e2e-spec.ts`, cada um com o número do
+  (`--runInBand`), 20 suítes e 217 casos em `api/test/*.e2e-spec.ts`, cada um com o número do
   critério no nome.
 
 O limiar de sem comunicação é executado pelo banco, em SQL, porque também ordena, filtra e alimenta
@@ -118,7 +123,7 @@ a rotina da US07; a função em TypeScript é a referência testada na unidade, 
 da US22 confere que o banco e a referência dão o mesmo resultado para todos os dispositivos. A
 interface web não tem executor de teste, só a verificação de tipos (`tsc -b`). A coleção do
 Postman tem 74 requisições e 133 verificações, das Sprints 4 a 6, e passou pelo Newman em 27/10
-(`docs/postman/evidencia-2026-10-27-sprint-6.md`).
+(`docs/postman/evidencia-2026-10-27-sprint-6.md`) e na `v1.0.3-sprint-6` (seção 6).
 
 **Onde cada técnica se aplica:**
 
@@ -128,7 +133,7 @@ Postman tem 74 requisições e 133 verificações, das Sprints 4 a 6, e passou p
 | Transição de estados | Ciclo do alerta (aberto, em atendimento, encerrado) e da ocorrência (aberta, em atendimento, encerrada) | Cada evento (reconhecer, normalizar, registrar providência, encerrar) só vale a partir de certos estados, e as transições proibidas precisam ser recusadas. |
 | Valor limite | Cota do rio, duração mínima da regra, faixas do IQAr e os três caracteres da busca | São fronteiras numéricas onde o erro de comparação (maior contra maior ou igual) aparece. |
 | Particionamento de equivalência | Situação do dispositivo (operando, sem comunicação, manutenção, inativo) e perfis de acesso (consulta, operador, gestor, administrador) | Cada classe tem comportamento próprio, e um caso por classe basta. |
-| Cobertura de instruções | Funções puras: IQAr e faixas, operador da regra de alerta, limiar de sem comunicação e indicadores do painel | Medida pelo `--coverage` do Jest na suíte de unidade; o número entra nas métricas do relatório de conclusão. |
+| Cobertura de instruções | Funções puras: IQAr e faixas, operador da regra de alerta, limiar de sem comunicação, indicadores do painel e ordenação de texto | Medida pelo `--coverage` do Jest na suíte de unidade; o número entra nas métricas do relatório de conclusão. |
 
 **Smoke test.** Antes de cada rodada: o ambiente sobe com `docker compose up` (CT-001); o login
 do administrador funciona (CT-006); uma leitura publicada no MQTT aparece gravada (CT-026); a lista
@@ -274,4 +279,4 @@ o registro dos incidentes fica com o responsável por qualidade.
 | Ferramenta | Jest 30 com ts-jest, Supertest e `@nestjs/testing`; Newman para a coleção do Postman |
 | Local no repositório | `api/test/unidade/` (unidade), `api/test/*.e2e-spec.ts` (integração e sistema pela interface de programação), `docs/postman/` (coleção) |
 | Como executar | Unidade, com cobertura: `docker compose --profile teste run --rm --no-deps --build api-teste npm run test:unidade`. Integração: `docker compose --profile teste rm -sf db-teste` e depois `docker compose --profile teste run --rm --build api-teste`. Coleção: `npx newman run docs/postman/scoc.postman_collection.json --env-var "senha=<ADMIN_SENHA>"` |
-| Última execução | 27/10/2026, `main` mais a suíte de unidade (PR #26): 53 de unidade e 216 de integração, todos aprovados, banco recriado; cobertura da unidade de 98,3% das instruções e 81,4% dos desvios; coleção com 74 requisições e 133 verificações sem falha. O clone limpo da `main` depois do merge da Sprint 6 subiu e passou nos 215 testes de então. A execução oficial é sobre a tag do corte, no log de execução. |
+| Última execução | 13/11/2026, entre 00:59 e 01:03 (BRT), na tag `v1.0.3-sprint-6` (commit `31aad37`), com o banco de teste recriado. Unidade: 56 testes em 5 suítes, 56 aprovados e nenhuma falha, com cobertura de 98,33% das instruções, 82,17% dos desvios, 96% das funções e 98,82% das linhas. Integração e sistema: 217 testes em 20 suítes, 217 aprovados e nenhuma falha. Coleção do Postman pelo Newman 6.2.1: 74 requisições e 133 verificações, 133 aprovadas e nenhuma falha. Evidência: `evidencias/2026-11-13-v1.0.3/`. |
