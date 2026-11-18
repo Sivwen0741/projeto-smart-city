@@ -16,6 +16,10 @@
 
 .rodape {
   composes: rodape from './FormularioDispositivo.module.css';
+}
+
+/* o composes sai depois no pacote e venceria uma regra de mesma especificidade */
+.formulario > .rodape {
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
 }
 
